@@ -25,5 +25,7 @@ jobs:
       run: dotnet fake build -t AppService
       env:
           subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
+          clientId: ${{ secrets.AZURECLIENTID }}
+          tenantId: ${{ secrets.AZURETENANTID }}
 
 
