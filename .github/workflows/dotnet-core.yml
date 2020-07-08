@@ -19,6 +19,11 @@ jobs:
         dotnet-version: 3.1.101
     - name: Install dependencies
       run: dotnet tool restore
+    - name: restore dependencies
+      run: dotnet restore
     - name: Build
       run: dotnet fake build -t AppService
-    
+      env:
+          subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
+
+
