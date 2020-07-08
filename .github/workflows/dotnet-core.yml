@@ -24,6 +24,7 @@ jobs:
     - name: Build
       run: dotnet fake build -t AppService
       env:
+          environment: coobkook
           subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
           clientId: ${{ secrets.AZURECLIENTID }}
           tenantId: ${{ secrets.AZURETENANTID }}
