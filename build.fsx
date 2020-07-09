@@ -132,7 +132,7 @@ let mutable deploymentOutputs : ArmOutput option = None
 Target.create "ArmTemplate" (fun _ ->
     let environment = Environment.environVarOrDefault "environment" (Guid.NewGuid().ToString().ToLower().Split '-' |> Array.head)
     let armTemplate = @"arm-template.json"
-    let resourceGroupName = "safe-" + environment 
+    let resourceGroupName = "safe-" + environment
 
     let authCtx =
         // You can safely replace these with your own subscription and client IDs hard-coded into this script.
@@ -152,7 +152,7 @@ Target.create "ArmTemplate" (fun _ ->
         let pricingTier = Environment.environVarOrDefault "pricingTier" "F1"
         { DeploymentName = "SAFE-template-deploy"
           ResourceGroup = New(resourceGroupName, Region.Create location)
-          ArmTemplate = IO.File.ReadAllText armTemplate
+          ArmTemplate = IO.File.ReadAllText armTemplate 
           Parameters =
               Simple
                   [ "environment", ArmString environment
