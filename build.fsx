@@ -140,7 +140,7 @@ Target.create "ArmTemplate" (fun _ ->
         let clientId = try Environment.environVar "clientId" |> Guid.Parse with _ -> failwith "Invalid Client ID. This should be the Client ID of an application registered in Azure with permission to create resources in your subscription."
         let clientSecret = try Environment.environVar "clientSecret" with _ -> failwith "Invalid Client Secret. This should be the Client Secret of an application registered in Azure with permission to create resources in your subscription."
         let tenantId =
-            try Environment.environVarOrNone "tenantId" |> Option.map Guid.Parse
+            try Environment.environVar "tenantId" |> Guid.Parse
             with _ -> failwith "Invalid TenantId ID. This should be the Tenant ID of an application registered in Azure with permission to create resources in your subscription."
 
         let credentials = { ClientId = clientId; ClientSecret = clientSecret; TenantId = tenantId }
