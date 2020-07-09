@@ -138,21 +138,22 @@ Target.create "ArmTemplate" (fun _ ->
         // You can safely replace these with your own subscription and client IDs hard-coded into this script.
         let subscriptionId = try Environment.environVar "subscriptionId" |> Guid.Parse with _ -> failwith "Invalid Subscription ID. This should be your Azure Subscription ID."
         let clientId = try Environment.environVar "clientId" |> Guid.Parse with _ -> failwith "Invalid Client ID. This should be the Client ID of an application registered in Azure with permission to create resources in your subscription."
+        let clientSecret = try Environment.environVar "clientSecret" with _ -> failwith "Invalid Client Secret. This should be the Client Secret of an application registered in Azure with permission to create resources in your subscription."
         let tenantId =
             try Environment.environVarOrNone "tenantId" |> Option.map Guid.Parse
             with _ -> failwith "Invalid TenantId ID. This should be the Tenant ID of an application registered in Azure with permission to create resources in your subscription."
 
+        let credentials = { ClientId = clientId; ClientSecret = clientSecret; TenantId = tenantId }
         Trace.tracefn "Deploying template '%s' to resource group '%s' in subscription '%O'..." armTemplate resourceGroupName subscriptionId
         subscriptionId
-        |> authenticateDevice Trace.trace { ClientId = clientId; TenantId = tenantId }
-        |> Async.RunSynchronously
+        |> authenticate credentials
 
     let deployment =
         let location = Environment.environVarOrDefault "location" Region.EuropeWest.Name
         let pricingTier = Environment.environVarOrDefault "pricingTier" "F1"
         { DeploymentName = "SAFE-template-deploy"
           ResourceGroup = New(resourceGroupName, Region.Create location)
-          ArmTemplate = IO.File.ReadAllText armTemplate 
+          ArmTemplate = IO.File.ReadAllText armTemplate
           Parameters =
               Simple
                   [ "environment", ArmString environment

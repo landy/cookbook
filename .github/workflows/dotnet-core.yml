@@ -27,6 +27,8 @@ jobs:
           environment: coobkook
           subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
           clientId: ${{ secrets.AZURECLIENTID }}
+          clientSecret: ${{ secrets.AZURECLIENTSECRET }}
           tenantId: ${{ secrets.AZURETENANTID }}
+
 
 
