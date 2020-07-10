@@ -198,13 +198,6 @@ Target.create "AppService" (fun _ ->
     client.UploadData(destinationUri, IO.File.ReadAllBytes zipFile) |> ignore)
 
 
-Target.create "foo" (fun _ ->
-    let env = "dev"
-    env
-    |> Infrastructure.template
-    |> Farmer.Writer.quickWrite "test"
-)
-
 
 open Fake.Core.TargetOperators
 
