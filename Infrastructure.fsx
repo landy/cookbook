@@ -10,7 +10,7 @@ open Farmer.Builders
 let makeNameEnvSpecific (env:string) name =
     name + "-" + env
 
-let template env : Deployment =
+let deployment env : Deployment =
 
     let envSpecific = makeNameEnvSpecific env
 
@@ -34,9 +34,5 @@ let template env : Deployment =
     }
 
 
-let toDeployment location template =
-    {
-        Location = location
-        Template = template
-        PostDeployTasks = List.empty
-    } : Farmer.CoreTypes.Deployment
+let toTemplate deployment =
+    deployment.Template
