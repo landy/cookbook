@@ -5,7 +5,7 @@ group Server
 
     nuget FSharp.Core
     nuget Giraffe
-    nuget Fable.Remoting.Giraffe ~> 3
+    nuget Fable.Remoting.Giraffe
     nuget Microsoft.ApplicationInsights.AspNetCore
     nuget WindowsAzure.Storage
 
@@ -14,15 +14,15 @@ group Client
     framework: netstandard2.0
     storage: none
 
-    nuget Fable.Core ~> 3
-    nuget Fable.Elmish ~> 3
-    nuget Fable.Elmish.Debugger ~> 3
-    nuget Fable.Elmish.HMR ~> 4
-    nuget Fable.Elmish.React ~> 3
-    nuget Fable.React ~> 5
-    nuget Fable.Remoting.Client ~> 5
-    nuget Fulma ~> 2
-    nuget Fable.FontAwesome.Free ~> 2
+    nuget Fable.Core
+    nuget Fable.Elmish
+    nuget Fable.Elmish.Debugger
+    nuget Fable.Elmish.HMR
+    nuget Fable.Elmish.React
+    nuget Fable.React
+    nuget Fable.Remoting.Client
+    nuget Feliz.MaterialUI
+    nuget Feliz.UseElmish
 
 group Build
     source https://api.nuget.org/v3/index.json

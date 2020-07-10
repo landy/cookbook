@@ -24,7 +24,7 @@ let port =
     |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
 let counterApi = {
-    initialCounter = fun () -> async { return { Value = 42 } }
+    initialText = fun () -> async { return { Text = "too" } }
 }
 
 let webApp =
