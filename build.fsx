@@ -12,9 +12,11 @@ open Fake.Core
 open Fake.DotNet
 open Fake.IO
 #load @"paket-files/build/CompositionalIT/fshelpers/src/FsHelpers/ArmHelper/ArmHelper.fs"
+#load "Infrastructure.fsx"
 open Cit.Helpers.Arm
 open Cit.Helpers.Arm.Parameters
 open Microsoft.Azure.Management.ResourceManager.Fluent.Core
+
 
 Target.initEnvironment ()
 
@@ -131,6 +133,7 @@ let mutable deploymentOutputs : ArmOutput option = None
 
 Target.create "ArmTemplate" (fun _ ->
     let environment = Environment.environVarOrDefault "environment" (Guid.NewGuid().ToString().ToLower().Split '-' |> Array.head)
+//    let environment = "devenv"
     let armTemplate = @"arm-template.json"
     let resourceGroupName = "safe-" + environment
 
@@ -143,22 +146,27 @@ Target.create "ArmTemplate" (fun _ ->
             try Environment.environVar "tenantId" |> Guid.Parse
             with _ -> failwith "Invalid TenantId ID. This should be the Tenant ID of an application registered in Azure with permission to create resources in your subscription."
 
+//        let subscriptionId = "9bc185e8-89dc-4a43-b25c-db2e4fbf3ccf" |> Guid.Parse
+//        let clientId = "69aeda6a-6859-431d-b79d-c74cf7547fde" |> Guid.Parse
+//        let clientSecret = "5a22~i4Rgfk4Gm-NPPw-aYh~I-wc6CaPLl"
+//        let tenantId = "48a5a247-ba65-4fff-b0f8-c2f843f4766b" |> Guid.Parse
+
         let credentials = { ClientId = clientId; ClientSecret = clientSecret; TenantId = tenantId }
         Trace.tracefn "Deploying template '%s' to resource group '%s' in subscription '%O'..." armTemplate resourceGroupName subscriptionId
         subscriptionId
         |> authenticate credentials
 
+    let js = "dev" |> Infrastructure.template |> fun d -> d.Template |> Farmer.Writer.toJson
+    Fake.Core.Trace.log js
+    Infrastructure.template "dev" |> Farmer.Writer.quickWrite "foo"
+
+
     let deployment =
         let location = Environment.environVarOrDefault "location" Region.EuropeWest.Name
-        let pricingTier = Environment.environVarOrDefault "pricingTier" "F1"
         { DeploymentName = "SAFE-template-deploy"
           ResourceGroup = New(resourceGroupName, Region.Create location)
-          ArmTemplate = IO.File.ReadAllText armTemplate
-          Parameters =
-              Simple
-                  [ "environment", ArmString environment
-                    "location", ArmString location
-                    "pricingTier", ArmString pricingTier ]
+          ArmTemplate = js
+          Parameters = Simple List.empty
           DeploymentMode = Incremental }
 
     deployment
@@ -194,6 +202,13 @@ Target.create "AppService" (fun _ ->
     Trace.tracefn "Uploading %s to %s" zipFile destinationUri
     client.UploadData(destinationUri, IO.File.ReadAllBytes zipFile) |> ignore)
 
+
+Target.create "foo" (fun _ ->
+    let env = "dev"
+    env
+    |> Infrastructure.template
+    |> Farmer.Writer.quickWrite "test"
+)
 
 
 open Fake.Core.TargetOperators

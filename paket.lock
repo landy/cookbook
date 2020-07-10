@@ -1,3 +1,5 @@
+
+
 GROUP Build
 STORAGE: NONE
 RESTRICTION: == netstandard2.0
@@ -107,13 +109,16 @@ NUGET
       Fake.Core.Trace (>= 5.18.3)
       FSharp.Core (>= 4.7)
       System.Net.Http (>= 4.3.4)
+    Farmer (0.21)
+      FSharp.Core (>= 4.7.1)
+      Newtonsoft.Json (>= 12.0.2)
     FParsec (1.0.3)
       FSharp.Core (>= 4.2.3)
       NETStandard.Library (>= 1.6.1)
     FSharp.Control.Reactive (4.2)
       FSharp.Core (>= 4.2.3)
       System.Reactive (>= 4.0)
-    FSharp.Core (4.7)
+    FSharp.Core (4.7.2)
     Microsoft.Azure.Management.ResourceManager.Fluent (1.4.1)
       Microsoft.Rest.ClientRuntime.Azure (>= 3.3.10)
       Microsoft.Rest.ClientRuntime.Azure.Authentication (>= 2.3.1)
