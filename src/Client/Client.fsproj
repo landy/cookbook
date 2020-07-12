@@ -11,7 +11,7 @@
         <None Include="style.scss" />
         <Compile Include="Version.fs" />
         <Compile Include="State.fs" />
-        <Compile Include="Pages\Login.fs" />
+        <Compile Include="Pages\Login\View.fs" />
         <Compile Include="View.fs" />
         <Compile Include="Client.fs" />
     </ItemGroup>

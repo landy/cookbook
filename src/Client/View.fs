@@ -52,7 +52,13 @@ let Toolbar = React.functionComponent(fun (model, dispatch) ->
     Mui.typography [
       typography.variant.h6
       typography.color.inherit'
-      typography.children "Cookbook"
+      typography.children [
+          Mui.link [
+              prop.text "Cookbook"
+              link.color.inherit'
+              prop.onClick (fun _ -> PageChanged Page.Main |> dispatch)
+          ]
+      ]
       typography.classes.root c.appBarTitle
     ]
     Mui.button [
@@ -72,11 +78,46 @@ let private pageListItem (page:string) =
     ]
   ]
 
+let private drawer = React.functionComponent(fun (model,dispatch) ->
+    let appStyles = useRootViewStyles ()
+    Mui.drawer [
+        drawer.variant.permanent
+        drawer.classes.root appStyles.drawer
+        drawer.classes.paper appStyles.drawerPaper
+        drawer.children [
+            Html.div [ prop.className appStyles.toolbar ]
+            Mui.list [
+                list.component' "nav"
+                list.children (["test"] |> List.map pageListItem |> ofList)
+            ]
+        ]
+    ]
+)
+
+let mainView = React.functionComponent(fun (model,dispatch) ->
+    let appStyles = useRootViewStyles ()
+    Html.main [
+        prop.className appStyles.content
+        prop.children [
+            Html.div [ prop.className appStyles.toolbar ]
+            Html.div "main"
+        ]
+    ]
+)
+
+let loginView = React.functionComponent(fun (model,dispatch) ->
+    let appStyles = useRootViewStyles ()
+    Html.main [
+        prop.className appStyles.content
+        prop.children [
+            Html.div [ prop.className appStyles.toolbar ]
+            Pages.Login.View.render ()
+        ]
+    ]
+)
 
 let main = React.functionComponent(fun (model, dispatch) ->
     let appStyles = useRootViewStyles ()
-    Fable.Core.JS.console.log(appStyles.root)
-
     let lightTheme = Styles.createMuiTheme([
         theme.palette.type'.light
         theme.palette.primary Colors.indigo
@@ -89,37 +130,25 @@ let main = React.functionComponent(fun (model, dispatch) ->
             Html.div [
                 prop.className appStyles.root
                 prop.children [
-                    Mui.cssBaseline []
-                    Mui.appBar [
+                    yield Mui.cssBaseline []
+                    yield Mui.appBar [
                         appBar.classes.root appStyles.appBar
                         appBar.position.fixed'
                         appBar.children [
                             Toolbar(model, dispatch)
                         ]
                     ]
-                    Mui.drawer [
-                        drawer.variant.permanent
-                        drawer.classes.root appStyles.drawer
-                        drawer.classes.paper appStyles.drawerPaper
-                        drawer.children [
-                            Html.div [ prop.className appStyles.toolbar ]
-                            Mui.list [
-                                list.component' "nav"
-                                list.children (["test"] |> List.map pageListItem |> ofList)
-                            ]
-                        ]
-                    ]
-
-
-
+                    match model.CurrentPage with
+                    | Main ->
+                        yield drawer (model, dispatch)
+                        yield mainView (model, dispatch)
+                    | Login ->
+                        yield loginView (model, dispatch)
 
                 ]
             ]
         ]
     ]
-
-
-
 )
 
 let render (model:State.Model) (dispatch: Msg -> unit) =
