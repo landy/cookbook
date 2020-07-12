@@ -2,6 +2,7 @@ open System
 open System.IO
 open System.Threading.Tasks
 
+open Cookbook.Shared.Auth
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -9,7 +10,6 @@ open Microsoft.Extensions.DependencyInjection
 
 open FSharp.Control.Tasks.V2
 open Giraffe
-open Shared
 
 open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
@@ -23,14 +23,20 @@ let port =
     "SERVER_PORT"
     |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
-let counterApi = {
-    initialText = fun () -> async { return { Text = "too" } }
+
+let loginHandler (credentials:Request.Login) =
+    async {
+        return credentials.Username
+    }
+
+let authApi : AuthService = {
+    Login = loginHandler
 }
 
 let webApp =
     Remoting.createApi()
     |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue counterApi
+    |> Remoting.fromValue authApi
     |> Remoting.buildHttpHandler
 
 
