@@ -2,12 +2,11 @@ module Cookbook.Client.State
 
 open Elmish
 
-type Page =
-    | Main
-    | Login
+open Cookbook.Client.Router
+
 
 type Msg =
-    | PageChanged of Page
+    | UrlChanged of Page
 
 type Model = { CurrentPage: Page }
 
@@ -18,4 +17,4 @@ let init () : Model * Cmd<Msg> =
 
 let update (msg : Msg) (state : Model) : Model * Cmd<Msg> =
    match msg with
-   | PageChanged page -> {state with CurrentPage = page },Cmd.none
+   | UrlChanged page -> {state with CurrentPage = page },Cmd.none

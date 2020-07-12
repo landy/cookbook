@@ -4,8 +4,23 @@ open Cookbook.Client.State
 
 open Fable.React
 open Feliz
+open Feliz.Router
 open Feliz.MaterialUI
+open Cookbook.Client.Router
 
+module Html =
+    module Props =
+        let routed (p:Page) =
+            [
+                prop.href (p |> Page.toUrlSegments |> Router.formatPath)
+                prop.onClick (Router.goToUrl)
+            ]
+
+    let aRouted (text:string) (p:Page) =
+        Html.a [
+            yield! Props.routed p
+            prop.text text
+        ]
 
 let private useToolbarStyles = Styles.makeStyles(fun styles theme ->
   {|
@@ -54,17 +69,17 @@ let Toolbar = React.functionComponent(fun (model, dispatch) ->
       typography.color.inherit'
       typography.children [
           Mui.link [
-              prop.text "Cookbook"
-              link.color.inherit'
-              prop.onClick (fun _ -> PageChanged Page.Main |> dispatch)
+              yield prop.text "Cookbook"
+              yield link.color.inherit'
+              yield! (Html.Props.routed Main)
           ]
       ]
       typography.classes.root c.appBarTitle
     ]
-    Mui.button [
-        prop.text "Login"
-        prop.onClick (fun _ -> PageChanged Page.Login |> dispatch)
-        button.color.inherit'
+    Mui.link [
+        yield prop.text "Login"
+        yield! (Html.Props.routed Login)
+        yield button.color.inherit'
     ]
   ]
 )
@@ -152,4 +167,10 @@ let main = React.functionComponent(fun (model, dispatch) ->
 )
 
 let render (model:State.Model) (dispatch: Msg -> unit) =
-  main (model, dispatch)
+
+  let view = main (model, dispatch)
+  Router.router [
+      Router.pathMode
+      Router.onUrlChanged  (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
+      Router.application view
+  ]

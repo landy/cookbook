@@ -8,4 +8,5 @@ group Client
     Fable.React
     Feliz.MaterialUI
     Feliz.UseElmish
+    Feliz.Router
 
