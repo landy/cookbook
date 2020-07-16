@@ -1,19 +1,13 @@
 open System
 open System.IO
-open System.Threading.Tasks
-
-open Cookbook.Shared.Auth
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
-
-open FSharp.Control.Tasks.V2
 open Giraffe
-
-open Fable.Remoting.Server
-open Fable.Remoting.Giraffe
 open Microsoft.WindowsAzure.Storage
+
+open Cookbook.Server
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
 
@@ -24,20 +18,11 @@ let port =
     |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
 
-let loginHandler (credentials:Request.Login) =
-    async {
-        return credentials.Username
-    }
-
-let authApi : AuthService = {
-    Login = loginHandler
-}
 
 let webApp =
-    Remoting.createApi()
-    |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue authApi
-    |> Remoting.buildHttpHandler
+    choose [
+        Auth.HttpHandlers.authServiceHandler
+    ]
 
 
 let configureApp (app : IApplicationBuilder) =

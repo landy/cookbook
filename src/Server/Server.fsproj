@@ -7,7 +7,9 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="paket.references" />
-        <Compile Include="..\Shared\Shared.fs" />
+        <Compile Include="Auth\Domain.fs" />
+        <Compile Include="Auth\Jwt.fs" />
+        <Compile Include="Auth\HttpHandlers.fs" />
         <Compile Include="Server.fs" />
     </ItemGroup>
     <ItemGroup>
