@@ -28,6 +28,7 @@ let deployment env : Deployment =
         link_to_app_insights insights.Name
         setting "public_path" "./public"
         setting "cosmosDbConnection" db.Endpoint
+        setting "cosmosDbKey" db.PrimaryKey
     }
 
     arm {
