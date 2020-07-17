@@ -19,16 +19,22 @@ let deployment env : Deployment =
         name ("cookbook-ai" |> envSpecific)
     }
 
+    let db = cosmosDb {
+        name ("cookbook-db" |> envSpecific)
+    }
+
     let webApp = webApp {
         name ("cookbook-web" |> envSpecific)
         link_to_app_insights insights.Name
         setting "public_path" "./public"
+        setting "cosmosDbConnection" db.Endpoint
     }
 
     arm {
         location Location.WestEurope
         add_resource insights
         add_resource webApp
+        add_resource db
         output "WebAppName" webApp.Name
         output "WebAppPassword" webApp.PublishingPassword
     }
