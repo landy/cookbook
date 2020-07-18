@@ -1,19 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <RootNamespace>Cookbook.Server</RootNamespace>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-    </PropertyGroup>
-    <ItemGroup>
-        <None Include="paket.references" />
-        <Compile Include="Auth\Domain.fs" />
-        <Compile Include="Auth\Jwt.fs" />
-        <Compile Include="Auth\HttpHandlers.fs" />
-        <Compile Include="Server.fs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\Shared\Shared.fsproj" />
-    </ItemGroup>
-    <Import Project="..\..\.paket\Paket.Restore.targets" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Cookbook.Server</RootNamespace>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>391011ec-4151-4857-a1c9-5d82bd27b00e</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="paket.references" />
+    <Compile Include="Configuration.fs" />
+    <Compile Include="Auth\Domain.fs" />
+    <Compile Include="Auth\Jwt.fs" />
+    <Compile Include="Auth\Database.fs" />
+    <Compile Include="Auth\HttpHandlers.fs" />
+    <Compile Include="Server.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+      <None Include="appsettings.Development.json" Condition="Exists('appsettings.Development.json')">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+          <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+      </None>
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

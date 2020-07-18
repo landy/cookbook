@@ -3,6 +3,7 @@ group Server
     framework: netcoreapp3.1
     storage: none
 
+    nuget FSharp.Core
     nuget Giraffe
     nuget Fable.Remoting.Giraffe
     nuget Microsoft.ApplicationInsights.AspNetCore
@@ -31,6 +32,7 @@ group Build
     framework: netstandard2.0
     storage: none
 
+    nuget FSharp.Core
     nuget Fake.Core.ReleaseNotes
     nuget Fake.Core.Target
     nuget Fake.DotNet.Cli

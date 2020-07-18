@@ -9,9 +9,11 @@ open Giraffe
 
 open Cookbook.Shared.Auth
 
+open Cookbook.Server.Auth.Database
 open Cookbook.Server.Auth.Domain
+open Microsoft.AspNetCore.Http
 
-let private toClaims (user:User) =
+let private toClaims (user:CookbookUser) =
     [
         Claim(ClaimTypes.Sid, user.Username)
         Claim(ClaimTypes.Name, user.Name)
@@ -20,22 +22,30 @@ let private toClaims (user:User) =
 [<Literal>]
 let private Secret = "5CEFF3A9-949B-483C-B8FC-96F98D557102"
 
-let private login (r:Request.Login) =
+let private login (usersDb:UserStore) (r:Request.Login) =
     task {
+        let! user = usersDb.tryFindUser r.Username
         return
-            { Username = r.Username; Name = "Landy" }
-            |> toClaims
-            |> Jwt.createToken "testAudience" "cookbook.net" Secret (TimeSpan.FromDays(14.))
-            |> fun t -> t.Token
-
+            user
+            |> Option.map (fun u ->
+                { Username = u.Username; Name = u.Name }
+                |> toClaims
+                |> Jwt.createToken "testAudience" "cookbook.net" Secret (TimeSpan.FromDays(14.))
+                |> fun t -> t.Token
+            )
+            |> Option.defaultValue "unknown user"
     }
 
-let private authService = {
-    Login = login >> Async.AwaitTask
+let private authService usersDb = {
+    Login = login usersDb >> Async.AwaitTask
 }
+
+let private createAuthServiceFromContext (httpContext: HttpContext) =
+    let usersDb = httpContext.GetService<UserStore>()
+    authService usersDb
 
 let authServiceHandler : HttpHandler =
     Remoting.createApi()
     |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue authService
+    |> Remoting.fromContext createAuthServiceFromContext
     |> Remoting.buildHttpHandler

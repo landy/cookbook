@@ -1,6 +1,6 @@
 module Cookbook.Server.Auth.Domain
 
-type User = {
+type CookbookUser = {
     Username : string
     Name : string
 }

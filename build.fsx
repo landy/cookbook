@@ -114,6 +114,27 @@ Target.create "Run" (fun _ ->
     |> ignore
 )
 
+Target.create "RunClient" (fun _ ->
+
+    let client = async {
+        runTool yarnTool "webpack-dev-server" __SOURCE_DIRECTORY__
+    }
+    let browser = async {
+        do! Async.Sleep 5000
+        openBrowser "http://localhost:8080"
+    }
+
+    let vsCodeSession = Environment.hasEnvironVar "vsCodeSession"
+    let safeClientOnly = Environment.hasEnvironVar "safeClientOnly"
+
+    let tasks =
+        [ client; browser]
+
+    tasks
+    |> Async.Parallel
+    |> Async.RunSynchronously
+    |> ignore
+)
 
 
 Target.create "Bundle" (fun _ ->
@@ -212,5 +233,9 @@ open Fake.Core.TargetOperators
 "Clean"
     ==> "InstallClient"
     ==> "Run"
+
+"Clean"
+    ==> "InstallClient"
+    ==> "RunClient"
 
 Target.runOrDefaultWithArguments "Build"
