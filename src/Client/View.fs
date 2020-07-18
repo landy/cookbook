@@ -169,8 +169,8 @@ let main = React.functionComponent(fun (model, dispatch) ->
 let render (model:State.Model) (dispatch: Msg -> unit) =
 
   let view = main (model, dispatch)
-  Router.router [
-      Router.pathMode
-      Router.onUrlChanged  (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
-      Router.application view
+  React.router [
+      router.pathMode
+      router.onUrlChanged (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
+      router.children view
   ]

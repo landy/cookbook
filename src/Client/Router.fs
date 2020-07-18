@@ -35,6 +35,6 @@ module Router =
     let goToUrl (e:MouseEvent) =
         e.preventDefault()
         let href : string = !!e.currentTarget?attributes?href?value
-        Router.navigatePath href |> List.map (fun f -> f ignore) |> ignore
+        Router.navigatePath href
 
     let navigatePage (p:Page) = p |> Page.toUrlSegments |> Array.ofList |> Router.navigatePath

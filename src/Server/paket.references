@@ -1,7 +1,7 @@
 group Server
-    FSharp.Core
     Giraffe
     Microsoft.ApplicationInsights.AspNetCore
     WindowsAzure.Storage
     Fable.Remoting.Giraffe
     System.IdentityModel.Tokens.Jwt
+    Microsoft.Azure.Cosmos
