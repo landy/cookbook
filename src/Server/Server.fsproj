@@ -14,6 +14,7 @@
     <Compile Include="Auth\Database.fs" />
     <Compile Include="Auth\HttpHandlers.fs" />
     <Compile Include="Server.fs" />
+    <Content Include="public\favicon.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />

@@ -17,7 +17,8 @@ open Cookbook.Server.Configuration
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
 
-let publicPath = tryGetEnv "public_path" |> Option.defaultValue "../Client/public" |> Path.GetFullPath
+let contentRoot = tryGetEnv "public_path" |> Option.defaultValue "." |> Path.GetFullPath
+let wwwRoot = tryGetEnv "public_path" |> Option.defaultValue "./public" |> Path.GetFullPath
 let storageAccount = tryGetEnv "STORAGE_CONNECTIONSTRING" |> Option.defaultValue "UseDevelopmentStorage=true" |> CloudStorageAccount.Parse
 let port =
     "SERVER_PORT"
@@ -50,15 +51,16 @@ type Startup (cfg:IConfiguration) =
         tryGetEnv "APPINSIGHTS_INSTRUMENTATIONKEY" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
 
     member _.Configure(app:IApplicationBuilder, env:IWebHostEnvironment) =
-        printfn "env: %s" env.EnvironmentName
+
+
         app.UseDefaultFiles()
             .UseStaticFiles()
             .UseGiraffe webApp
 
 WebHost
     .CreateDefaultBuilder()
-    //.UseWebRoot(publicPath)
-    //.UseContentRoot(publicPath)
+    .UseWebRoot(wwwRoot)
+    .UseContentRoot(contentRoot)
     .UseStartup<Startup>()
     .UseUrls("http://0.0.0.0:" + port.ToString() + "/")
     .Build()
