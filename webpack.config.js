@@ -53,6 +53,7 @@ var CONFIG = {
 
 // If we're running the webpack-dev-server, assume we're in development mode
 var isProduction = !process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
+
 console.log('Bundling for ' + (isProduction ? 'production' : 'development') + '...');
 
 // The HtmlWebpackPlugin allows us to use a template for the index.html page
@@ -91,7 +92,7 @@ module.exports = {
     // Besides the HtmlPlugin, we use the following plugins:
     // PRODUCTION
     //      - MiniCssExtractPlugin: Extracts CSS from bundle to a different file
-    //          To minify CSS, see https://github.com/webpack-contrib/mini-css-extract-plugin#minimizing-for-production    
+    //          To minify CSS, see https://github.com/webpack-contrib/mini-css-extract-plugin#minimizing-for-production
     //      - CopyWebpackPlugin: Copies static assets to output directory
     // DEVELOPMENT
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
@@ -110,6 +111,7 @@ module.exports = {
     // Configuration for webpack-dev-server
     devServer: {
         publicPath: '/',
+        historyApiFallback: true,
         contentBase: resolve(CONFIG.assetsDir),
         host: '0.0.0.0',
         port: CONFIG.devServerPort,
