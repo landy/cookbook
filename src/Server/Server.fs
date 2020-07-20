@@ -10,6 +10,7 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 open Microsoft.WindowsAzure.Storage
 
+open Cookbook.Libraries.CosmosDb
 open Cookbook.Server
 open Cookbook.Server.Configuration
 
@@ -29,10 +30,6 @@ let webApp =
         Auth.HttpHandlers.authServiceHandler
     ]
 
-let private createCosmosClient endpoint authKey =
-    let opts = CosmosClientOptions()
-    opts.ConnectionMode <- ConnectionMode.Direct
-    new CosmosClient(endpoint, authKey, opts)
 
 type Startup (cfg:IConfiguration) =
 

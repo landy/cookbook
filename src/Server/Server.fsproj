@@ -17,6 +17,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />
+    <ProjectReference Include="..\Libraries\Libraries.fsproj" />
   </ItemGroup>
   <ItemGroup>
       <None Include="appsettings.Development.json" Condition="Exists('appsettings.Development.json')">

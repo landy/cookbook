@@ -5,6 +5,7 @@ open System.Threading.Tasks
 open FSharp.Control.Tasks.V2
 open Microsoft.Azure.Cosmos
 
+open Cookbook.Libraries.CosmosDb
 open Cookbook.Server.Configuration
 open Cookbook.Server.Auth.Domain
 
@@ -27,28 +28,11 @@ module private Schema =
     }
 
 
-let tryGetItem<'a> (container:Container) primaryKey (partitionKey:string) =
-    task {
-        try
-            let! item = container.ReadItemAsync<'a>(primaryKey, PartitionKey(partitionKey))
-            return item.Resource |> Some
-        with
-        | :? CosmosException as ex when ex.StatusCode = HttpStatusCode.NotFound ->
-            return None
-    }
-
-
 type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
 
     let getContainer () =
-        task {
-            let db = client.GetDatabase(config.DatabaseName)
-            let props = ContainerProperties(config.UsersContainerName,Schema.PartitionKey)
-            let! r = db.CreateContainerIfNotExistsAsync(props)
-            return r.Container
-        }
-
-
+        ContainerProperties(config.UsersContainerName,Schema.PartitionKey)
+        |> getContainer client config.DatabaseName
 
 
     interface UserStore with
