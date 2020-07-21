@@ -2,6 +2,7 @@ module Cookbook.Client.Pages.Login.State
 open System
 open Cookbook.Shared.Auth
 open Elmish
+open FsToolkit.ErrorHandling
 
 open Cookbook.Client.Server
 
@@ -30,11 +31,10 @@ let update msg state =
     | PasswordChanged password ->
         {state with Password = password}, Cmd.none
     | FormSubmitted ->
-        async {
-            let! retval = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
-            printfn "returned: %s" retval
+        asyncResult {
+            let! token = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
             return ()
         }
+        |> AsyncResult.ignoreError
         |> Async.StartImmediate
-//        |> printfn "result: %s"
         state,Cmd.none

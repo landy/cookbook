@@ -14,7 +14,7 @@ type UserStore =
     abstract tryFindUser : string -> Task<CookbookUser option>
 
 
-module private Schema =
+module Schema =
     [<Literal>]
     let PartitionKey = "/partitionKey"
     [<Literal>]

@@ -6,8 +6,14 @@ open FSharp.Control.Tasks.V2
 
 
 let createCosmosClient endpoint authKey =
+    let serializerOptions = CosmosSerializationOptions()
+    serializerOptions.Indented <- true
+    serializerOptions.PropertyNamingPolicy <- CosmosPropertyNamingPolicy.CamelCase
+
     let opts = CosmosClientOptions()
     opts.ConnectionMode <- ConnectionMode.Direct
+    opts.SerializerOptions <- serializerOptions
+
     new CosmosClient(endpoint, authKey, opts)
 
 let getContainer (client:CosmosClient) dbName containerProps =

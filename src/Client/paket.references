@@ -9,4 +9,5 @@ group Client
     Feliz.MaterialUI
     Feliz.UseElmish
     Feliz.Router
+    FsToolkit.ErrorHandling.TaskResult
 

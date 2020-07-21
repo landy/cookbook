@@ -5,5 +5,5 @@ WindowsAzure.Storage
 Fable.Remoting.Giraffe
 System.IdentityModel.Tokens.Jwt
 Microsoft.Azure.Cosmos
-nuget FsToolkit.ErrorHandling
-nuget FsToolkit.ErrorHandling.TaskResult
+FsToolkit.ErrorHandling
+FsToolkit.ErrorHandling.TaskResult
