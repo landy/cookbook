@@ -7,6 +7,7 @@ open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
 open Cookbook.Client.Router
+open Cookbook.Client.Pages
 
 module Html =
     module Props =
@@ -78,7 +79,7 @@ let Toolbar = React.functionComponent(fun (model, dispatch) ->
     ]
     Mui.link [
         yield prop.text "Login"
-        yield! (Html.Props.routed Login)
+        yield! (Html.Props.routed Page.Login)
         yield button.color.inherit'
     ]
   ]
@@ -120,18 +121,19 @@ let mainView = React.functionComponent(fun (model,dispatch) ->
     ]
 )
 
-let loginView = React.functionComponent(fun (model,dispatch) ->
+let loginView = React.functionComponent(fun (model,(dispatch:Msg -> unit)) ->
     let appStyles = useRootViewStyles ()
+    let loginProps :Login.State.LoginPageProps = { Login.State.handleNewToken = TokenChanged >> dispatch }
     Html.main [
         prop.className appStyles.content
         prop.children [
             Html.div [ prop.className appStyles.toolbar ]
-            Pages.Login.View.render ()
+            Pages.Login.View.render loginProps
         ]
     ]
 )
 
-let main = React.functionComponent(fun (model, dispatch) ->
+let main = React.functionComponent(fun (model, (dispatch:Msg -> unit)) ->
     let appStyles = useRootViewStyles ()
     let lightTheme = Styles.createMuiTheme([
         theme.palette.type'.light

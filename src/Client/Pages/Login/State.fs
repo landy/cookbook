@@ -1,40 +1,67 @@
 module Cookbook.Client.Pages.Login.State
 open System
-open Cookbook.Shared.Auth
 open Elmish
 open FsToolkit.ErrorHandling
 
+open Cookbook.Shared.Auth
+open Cookbook.Shared.Errors
+open Cookbook.Client.Router
 open Cookbook.Client.Server
 
+type LoginForm = {
+    Username : string
+    Password : string
+}
+type Model = {
+    Form : LoginForm
+    Errors : string list
+    IsLoading : bool
+}
 
-type Model =
-    {
-        Username : string
-        Password : string
-    }
+
 
 type Msg =
     | UsernameChanged of string
     | PasswordChanged of string
-    | FormSubmitted
+    | Login
+    | LoggedIn of Result<Response.Token, ApplicationError>
 
-
-
-
+let stateInit () =
+    {
+        Form = { Username = String.Empty; Password = String.Empty }
+        Errors = []
+        IsLoading = false
+    }
 let init () =
-    { Username = String.Empty; Password = String.Empty },Cmd.none
+     stateInit(), Cmd.none
 
-let update msg state =
+let private handleLogin state :Cmd<Msg> =
+    let fn (dispatch: Msg -> unit) : unit =
+        async {
+            let! res = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
+            dispatch (LoggedIn res)
+        }
+        |> Async.StartImmediate
+    Cmd.ofSub fn
+
+type LoginPageProps = {
+    handleNewToken:(Response.Token option -> unit)
+}
+
+let update (props:LoginPageProps) msg state =
     match msg with
     | UsernameChanged username ->
-        {state with Username = username}, Cmd.none
+        {state with Form = {state.Form with Username = username}}, Cmd.none
     | PasswordChanged password ->
-        {state with Password = password}, Cmd.none
-    | FormSubmitted ->
-        asyncResult {
-            let! token = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
-            return ()
-        }
-        |> AsyncResult.ignoreError
-        |> Async.StartImmediate
-        state,Cmd.none
+        {state with Form = {state.Form with Password = password}}, Cmd.none
+    | Login ->
+        let state' = { state with Errors = []; IsLoading = true }
+        state', handleLogin state.Form
+    | LoggedIn res ->
+        let state' = {state with IsLoading = false}
+        match res with
+        | Ok t ->
+
+            stateInit(), Cmd.ofSub (fun _ -> t |> Some |> props.handleNewToken)
+        | Error err ->
+            {state' with Errors =  (err |> ApplicationError.explain) :: state'.Errors}, Cmd.none

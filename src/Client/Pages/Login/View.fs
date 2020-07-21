@@ -1,5 +1,6 @@
 module Cookbook.Client.Pages.Login.View
 
+open Cookbook.Shared.Auth
 open Feliz
 open Feliz.MaterialUI
 open Feliz.UseElmish
@@ -28,12 +29,29 @@ let useStyles = Styles.makeStyles(fun styles theme ->
     submit = styles.create [
       style.margin (theme.spacing(3, 0, 2))
     ]
+    errors = styles.create [
+        style.width (length.perc 100)
+    ]
+    buttonProgress = styles.create [
+        style.position.absolute
+        style.top (length.perc 50)
+        style.right (length.perc 5)
+        style.marginTop -12
+        style.marginRight -12
+        style.color theme.palette.primary.light
+    ]
+    wrapper = styles.create [
+        style.margin  (theme.spacing(1))
+        style.position.relative
+    ]
   |}
 )
 
-let render = React.functionComponent(fun () ->
+
+
+let render = React.functionComponent("LoginPage", fun (props:LoginPageProps) ->
     let classes = useStyles()
-    let state, dispatch = React.useElmish (State.init, State.update, [|  |])
+    let state, dispatch = React.useElmish (State.init, State.update props, [|  |])
 
     Mui.container [
         container.component' "main"
@@ -47,10 +65,22 @@ let render = React.functionComponent(fun () ->
                         typography.variant.h5
                         typography.children "Sign in"
                     ]
+                    Html.div [
+                        prop.className classes.errors
+                        prop.children
+                            (state.Errors
+                            |> List.map (fun err ->
+                                Mui.alert [
+                                    alert.severity.error
+                                    alert.elevation 1
+                                    alert.children err
+                                ]
+                            ))
+                    ]
                     Html.form [
                         prop.onSubmit (fun e ->
                             e.preventDefault()
-                            FormSubmitted |> dispatch
+                            Login |> dispatch
                         )
                         prop.className classes.form
                         prop.type' ""
@@ -66,7 +96,7 @@ let render = React.functionComponent(fun () ->
                                 textField.name "username"
                                 textField.autoComplete "username"
                                 textField.autoFocus true
-                                textField.value state.Username
+                                textField.value state.Form.Username
                             ]
                             Mui.textField [
                                 textField.type' "password"
@@ -79,22 +109,32 @@ let render = React.functionComponent(fun () ->
                                 textField.id "password"
                                 textField.name "password"
                                 textField.autoComplete "current-password"
-                                textField.value state.Password
+                                textField.value state.Form.Password
                             ]
-                            Mui.button [
-                                button.type'.submit
-                                button.fullWidth true
-                                button.variant.contained
-                                button.color.primary
-                                button.classes.root classes.submit
-                                button.children "Sign In"
+                            Html.div [
+                                prop.className classes.wrapper
+                                prop.children [
+                                    yield Mui.button [
+                                        button.type'.submit
+                                        button.fullWidth true
+                                        button.disabled (state.IsLoading)
+                                        button.variant.contained
+                                        button.color.primary
+                                        button.children "Sign In"
+                                    ]
+                                    if state.IsLoading then
+                                        yield Mui.circularProgress [
+                                            circularProgress.classes.root classes.buttonProgress
+                                            circularProgress.size 24
+                                            circularProgress.variant.indeterminate
+                                        ]
+                                ]
                             ]
                         ]
                     ]
+
                 ]
             ]
         ]
     ]
-
-
 )

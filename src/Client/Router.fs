@@ -1,5 +1,6 @@
 module Cookbook.Client.Router
 
+open Elmish
 open Feliz.Router
 open Browser.Types
 open Fable.Core.JsInterop
@@ -37,4 +38,4 @@ module Router =
         let href : string = !!e.currentTarget?attributes?href?value
         Router.navigatePath href
 
-    let navigatePage (p:Page) = p |> Page.toUrlSegments |> Array.ofList |> Router.navigatePath
+    let navigatePage<'a> (p:Page) : Cmd<'a> = p |> Page.toUrlSegments |> Array.ofList |> Cmd.navigatePath
