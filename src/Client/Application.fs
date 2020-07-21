@@ -1,7 +1,9 @@
-module Cookbook.Client.App
+module Cookbook.Client.Application
 
 open Elmish
 open Elmish.React
+
+open Cookbook.Client.App
 
 
 #if DEBUG

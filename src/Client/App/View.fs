@@ -1,13 +1,14 @@
-module Cookbook.Client.View
-
-open Cookbook.Client.State
+module Cookbook.Client.App.View
 
 open Fable.React
 open Feliz
 open Feliz.Router
 open Feliz.MaterialUI
+
 open Cookbook.Client.Router
 open Cookbook.Client.Pages
+open Domain
+open Domain.Styles
 
 module Html =
     module Props =
@@ -33,7 +34,7 @@ let private useToolbarStyles = Styles.makeStyles(fun styles theme ->
 
 let private useRootViewStyles : unit -> _ = Styles.makeStyles(fun styles theme ->
   let drawerWidth = 240
-  {|
+  {
     root = styles.create (fun model -> [
       style.display.flex
       style.userSelect.none
@@ -59,7 +60,7 @@ let private useRootViewStyles : unit -> _ = Styles.makeStyles(fun styles theme -
     toolbar = styles.create [
       yield! theme.mixins.toolbar
     ]
-  |}
+  }
 )
 
 let Toolbar = React.functionComponent(fun (model, dispatch) ->
@@ -94,8 +95,7 @@ let private pageListItem (page:string) =
     ]
   ]
 
-let private drawer = React.functionComponent(fun (model,dispatch) ->
-    let appStyles = useRootViewStyles ()
+let private drawer appStyles =
     Mui.drawer [
         drawer.variant.permanent
         drawer.classes.root appStyles.drawer
@@ -108,9 +108,9 @@ let private drawer = React.functionComponent(fun (model,dispatch) ->
             ]
         ]
     ]
-)
 
-let mainView = React.functionComponent(fun (model,dispatch) ->
+
+let mainView = React.functionComponent("MainView", fun () ->
     let appStyles = useRootViewStyles ()
     Html.main [
         prop.className appStyles.content
@@ -121,14 +121,14 @@ let mainView = React.functionComponent(fun (model,dispatch) ->
     ]
 )
 
-let loginView = React.functionComponent(fun (model,(dispatch:Msg -> unit)) ->
+let loginView = React.functionComponent("LoginView", fun props ->
     let appStyles = useRootViewStyles ()
-    let loginProps :Login.State.LoginPageProps = { Login.State.handleNewToken = TokenChanged >> dispatch }
+
     Html.main [
         prop.className appStyles.content
         prop.children [
             Html.div [ prop.className appStyles.toolbar ]
-            Pages.Login.View.render loginProps
+            Login.View.render props
         ]
     ]
 )
@@ -157,10 +157,12 @@ let main = React.functionComponent(fun (model, (dispatch:Msg -> unit)) ->
                     ]
                     match model.CurrentPage with
                     | Main ->
-                        yield drawer (model, dispatch)
-                        yield mainView (model, dispatch)
+                        yield drawer appStyles
+                        yield mainView ()
                     | Login ->
-                        yield loginView (model, dispatch)
+                        let loginProps : Login.State.LoginPageProps =
+                            { Login.State.handleNewToken = TokenChanged >> dispatch }
+                        yield loginView loginProps
 
                 ]
             ]
@@ -168,11 +170,9 @@ let main = React.functionComponent(fun (model, (dispatch:Msg -> unit)) ->
     ]
 )
 
-let render (model:State.Model) (dispatch: Msg -> unit) =
-
-  let view = main (model, dispatch)
-  React.router [
-      router.pathMode
-      router.onUrlChanged (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
-      router.children view
-  ]
+let render (state:Domain.Model) (dispatch: Msg -> unit) =
+    React.router [
+        router.pathMode
+        router.onUrlChanged (Page.parseFromUrlSegments >> UrlChanged >> dispatch)
+        router.children (main (state,dispatch))
+    ]

@@ -5,7 +5,9 @@ open Feliz
 open Feliz.MaterialUI
 open Feliz.UseElmish
 
-open Cookbook.Client.Pages.Login.State
+open Domain
+open State
+
 
 let useStyles = Styles.makeStyles(fun styles theme ->
   {|

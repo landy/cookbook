@@ -25,6 +25,7 @@ module Page =
             |> List.tryFind (fun (p,_) -> p = path)
             |> Option.map snd
             |> Option.defaultValue (Main)
+
     let toUrlSegments = function
         | page ->
             basicMapping

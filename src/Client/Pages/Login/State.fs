@@ -7,24 +7,8 @@ open Cookbook.Shared.Auth
 open Cookbook.Shared.Errors
 open Cookbook.Client.Router
 open Cookbook.Client.Server
+open Cookbook.Client.Pages.Login.Domain
 
-type LoginForm = {
-    Username : string
-    Password : string
-}
-type Model = {
-    Form : LoginForm
-    Errors : string list
-    IsLoading : bool
-}
-
-
-
-type Msg =
-    | UsernameChanged of string
-    | PasswordChanged of string
-    | Login
-    | LoggedIn of Result<Response.Token, ApplicationError>
 
 let stateInit () =
     {

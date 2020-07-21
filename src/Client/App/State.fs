@@ -1,20 +1,12 @@
-module Cookbook.Client.State
+module Cookbook.Client.App.State
 
 open Elmish
 
 open Feliz.Router
 open Cookbook.Client.Router
-open Cookbook.Shared.Auth
 
-type Msg =
-    | UrlChanged of Page
-    | TokenChanged of Response.Token option
+open Domain
 
-
-type Model = {
-    CurrentPage: Page
-    Token : Response.Token option
-}
 
 let init () : Model * Cmd<Msg> =
     let initialModel = { CurrentPage = Main; Token = None }
@@ -27,4 +19,4 @@ let update (msg : Msg) (state : Model) : Model * Cmd<Msg> =
     match msg with
     | UrlChanged page -> {state with CurrentPage = page },Cmd.none
     | TokenChanged token ->
-        {state with Token = token}, Router.navigatePage Main
+        { state with Token = token }, Router.navigatePage Main
