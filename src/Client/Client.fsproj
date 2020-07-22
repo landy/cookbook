@@ -8,6 +8,7 @@
     <ItemGroup>
         <None Include="index.html" />
         <None Include="paket.references" />
+        <Content Include="public/favicon.png" />
         <None Include="style.scss" />
         <Compile Include="Version.fs" />
         <Compile Include="Server.fs" />
