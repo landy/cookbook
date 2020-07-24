@@ -13,6 +13,7 @@ open FsToolkit.ErrorHandling
 open Cookbook.Shared.Auth
 open Cookbook.Server.Auth.Database
 open Cookbook.Server.Auth.Domain
+open Cookbook.Shared.Auth.Response
 
 let private toClaims (user:CookbookUser) =
     [
@@ -26,14 +27,29 @@ let private Secret = "5CEFF3A9-949B-483C-B8FC-96F98D557102"
 let private login (usersDb:UserStore) (r:Request.Login) =
     task {
         let! user = usersDb.tryFindUser r.Username
-        return
+        return!
             user
             |> Option.map (fun u ->
-                { Username = u.Username; Name = u.Name }
-                |> toClaims
-                |> Jwt.createToken "testAudience" "cookbook.net" Secret (TimeSpan.FromDays(14.))
+
+                let token, expiresOn =
+                    { Username = u.Username; Name = u.Name }
+                    |> toClaims
+                    |> Jwt.createToken "testAudience" "cookbook.net" Secret (TimeSpan.FromHours(1.))
+                let (refreshToken,refreshExpiresOn) =
+                    Jwt.createRefreshToken Jwt.DefaultRefreshKeyLength (TimeSpan.FromDays(14.))
+                {
+                    Username = u.Username
+                    Name = u.Name
+                    Token = {Token = token; ExpiresUtc = expiresOn}
+                    RefreshToken = {Token = refreshToken; ExpiresUtc = refreshExpiresOn}
+                }
             )
             |> Result.requireSome (AuthenticationError.InvalidUsernameOrPassword |> ApplicationError.AuthenticationError)
+            |> Result.map (fun t ->
+                usersDb.setRefreshToken t.Username t.RefreshToken.Token t.RefreshToken.ExpiresUtc
+                |> Task.map (fun _ -> t)
+            )
+            |> Result.sequenceTask
     }
 
 let private authService usersDb = {

@@ -29,6 +29,9 @@ let deployment env : Deployment =
         setting "public_path" "./public"
         setting "cosmosDbConnection" db.Endpoint
         setting "cosmosDbKey" db.PrimaryKey
+        setting "cosmosDb:databaseName" db.DbName
+        setting "cosmosDb:containers:users" "Users"
+        setting "cosmosDb:containers:refreshTokens" "RefreshTokens"
     }
 
     arm {

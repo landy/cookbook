@@ -5,12 +5,12 @@ open Cookbook.Shared.Auth
 
 type Msg =
     | UrlChanged of Page
-    | TokenChanged of Response.Token option
+    | TokenChanged of Response.LoggedInUser option
 
 
 type Model = {
     CurrentPage: Page
-    Token : Response.Token option
+    Token : Response.LoggedInUser option
 }
 
 module Styles =

@@ -12,12 +12,17 @@ module Request =
         Password : string
     }
 
-[<RequireQualifiedAccess>]
 module Response =
 
     type Token = {
         Token : string
-        ExpiresOnUtc : DateTime
+        ExpiresUtc : DateTimeOffset
+    }
+    type LoggedInUser = {
+        Username : string
+        Name : string
+        Token : Token
+        RefreshToken : Token
     }
 
 [<RequireQualifiedAccess>]
@@ -26,5 +31,5 @@ module Route =
         sprintf "/api/auth/%s" m
 
 type AuthService = {
-    Login : Request.Login -> Async<Result<Response.Token, ApplicationError>>
+    Login : Request.Login -> Async<Result<Response.LoggedInUser, ApplicationError>>
 }

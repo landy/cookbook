@@ -40,8 +40,14 @@ type Startup (cfg:IConfiguration) =
 
         let dbName = cfg.["cosmosDb:databaseName"]
         let usersContainer = cfg.["cosmosDb:containers:users"]
+        let refreshTokensContainer = cfg.["cosmosDb:containers:refreshTokens"]
 
-        let dbConfig = {DatabaseName = dbName; UsersContainerName = usersContainer}
+        let dbConfig = {
+            DatabaseName = dbName
+            UsersContainerName = usersContainer
+            RefreshTokensContainerName = refreshTokensContainer
+
+        }
 
         let client = createCosmosClient dbServer dbKey
         sc.AddSingleton<CosmosClient>(client) |> ignore

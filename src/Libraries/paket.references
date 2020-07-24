@@ -1,3 +1,5 @@
 FSharp.Core
 Microsoft.Azure.Cosmos
 TaskBuilder.fs
+FsToolkit.ErrorHandling
+FsToolkit.ErrorHandling.TaskResult

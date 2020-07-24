@@ -1,6 +1,8 @@
 ﻿module Cookbook.Libraries.CosmosDb
 
+open System
 open System.Net
+open FsToolkit.ErrorHandling
 open Microsoft.Azure.Cosmos
 open FSharp.Control.Tasks.V2
 
@@ -32,3 +34,7 @@ let tryGetItem<'a> (container:Container) primaryKey (partitionKey:string) =
         | :? CosmosException as ex when ex.StatusCode = HttpStatusCode.NotFound ->
             return None
     }
+
+let upsertItem<'a> (container:Container) (partitionKey: string) item =
+    container.UpsertItemAsync(item, (PartitionKey(partitionKey) |> Nullable ))
+    |> Task.map ignore
