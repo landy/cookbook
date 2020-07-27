@@ -28,7 +28,7 @@ let private bytesAreEqual (a:byte []) (b:byte []) =
         areEqual
 
 
-let private writeNetworkByteOrder (buffer:byte []) (offset:int) (value:uint) =
+let private writeNetworkByteOrder (buffer:byte []) (offset:int) (value:uint32) =
     buffer.[(offset + 0)] <- (value >>> 24) |> byte
     buffer.[(offset + 1)] <- (value >>> 16) |> byte
     buffer.[(offset + 2)] <- (value >>> 8) |> byte
@@ -36,10 +36,10 @@ let private writeNetworkByteOrder (buffer:byte []) (offset:int) (value:uint) =
     ()
 
 let private readNetworkByteOrder (buffer:byte []) offset =
-    (buffer.[offset + 0] <<< 24 |> uint)
-    ||| (buffer.[offset + 1] <<< 16 |> uint)
-    ||| (buffer.[offset + 2] <<< 8 |> uint)
-    ||| (buffer.[offset + 3] |> uint)
+    (buffer.[offset + 0] <<< 24 |> uint32)
+    ||| (buffer.[offset + 1] <<< 16 |> uint32)
+    ||| (buffer.[offset + 2] <<< 8 |> uint32)
+    ||| (buffer.[offset + 3] |> uint32)
 
 let createHash password =
     let rng = RandomNumberGenerator.Create()
@@ -49,9 +49,9 @@ let createHash password =
 
     let outputBytes = Array.zeroCreate<Byte> (13 + salt.Length + subKey.Length)
     outputBytes.[0] <- 0x01 |> byte
-    writeNetworkByteOrder outputBytes 1 (KeyDerivationPrf.HMACSHA256 |> uint)
-    writeNetworkByteOrder outputBytes 5 (iterationCount |> uint)
-    writeNetworkByteOrder outputBytes 9 (saltSize |> uint)
+    writeNetworkByteOrder outputBytes 1 (KeyDerivationPrf.HMACSHA256 |> uint32)
+    writeNetworkByteOrder outputBytes 5 (iterationCount |> uint32)
+    writeNetworkByteOrder outputBytes 9 (saltSize |> uint32)
     Buffer.BlockCopy(salt, 0, outputBytes, 13, salt.Length)
     Buffer.BlockCopy(subKey, 0, outputBytes, 13 + salt.Length, subKey.Length)
 
