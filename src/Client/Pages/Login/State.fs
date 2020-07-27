@@ -21,6 +21,10 @@ let init () =
 
 let private handleLogin state :Cmd<Msg> =
     let fn (dispatch: Msg -> unit) : unit =
+        asyncResult {
+            let! res = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
+            return res
+        } |> ignore
         async {
             let! res = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
             dispatch (LoggedIn res)

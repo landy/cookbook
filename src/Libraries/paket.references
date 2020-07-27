@@ -3,3 +3,4 @@ Microsoft.Azure.Cosmos
 TaskBuilder.fs
 FsToolkit.ErrorHandling
 FsToolkit.ErrorHandling.TaskResult
+Microsoft.AspNetCore.Cryptography.KeyDerivation

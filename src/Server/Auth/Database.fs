@@ -66,7 +66,7 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
                     PartitionKey = Schema.PartitionKeyValue
                     Token = token
                     ExpiresOn = expires
-                    Ttl = expires.Subtract(DateTimeOffset.UtcNow).Seconds
+                    Ttl = expires.Subtract(DateTimeOffset.UtcNow).TotalSeconds |> int
                 }
                 let! container = getRefreshTokensContainer ()
                 let! _ = upsertItem<Schema.UserDocument> container Schema.PartitionKeyValue row

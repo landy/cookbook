@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CosmosDb.fs" />
+    <Compile Include="Password.fs" />
   </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

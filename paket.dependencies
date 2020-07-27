@@ -12,6 +12,7 @@ nuget Microsoft.Azure.Cosmos
 nuget TaskBuilder.fs
 nuget FsToolkit.ErrorHandling
 nuget FsToolkit.ErrorHandling.TaskResult
+nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
 
 group Client
     source https://api.nuget.org/v3/index.json
