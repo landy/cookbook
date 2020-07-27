@@ -14,7 +14,8 @@ let numBytesRequested = 32
 [<Literal>]
 let iterationCount = 10000
 
-[<MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)>]
+
+[<MethodImpl(MethodImplOptions.NoInlining ||| MethodImplOptions.NoOptimization)>]
 let private bytesAreEqual (a:byte []) (b:byte []) =
     if a = null && b = null then
         true
@@ -59,9 +60,9 @@ let createHash password =
 
 
 let verifyHashedPassword hashedPassword password =
-    let prf = readNetworkByteOrder hashedPassword 1 |> KeyDerivationPrf
-    let iterCount = readNetworkByteOrder hashedPassword 5
-    let saltLength = readNetworkByteOrder hashedPassword 9
+    let prf : KeyDerivationPrf = readNetworkByteOrder hashedPassword 1 |> int |> enum
+    let iterCount = readNetworkByteOrder hashedPassword 5 |> int
+    let saltLength = readNetworkByteOrder hashedPassword 9 |> int
 
     let salt = Array.zeroCreate<Byte> saltLength
     Buffer.BlockCopy(hashedPassword, 13, salt, 0, salt.Length)
