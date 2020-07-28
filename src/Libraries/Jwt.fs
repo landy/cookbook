@@ -1,11 +1,11 @@
-module Cookbook.Server.Auth.Jwt
+[<RequireQualifiedAccess>]
+module Cookbook.Libraries.Jwt
 
 open System
 open System.IdentityModel.Tokens.Jwt
 open System.Security.Cryptography
 open Microsoft.IdentityModel.Tokens
 
-open Cookbook.Shared.Auth
 
 [<Literal>]
 let DefaultRefreshKeyLength = 32

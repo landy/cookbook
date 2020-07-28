@@ -3,7 +3,7 @@ open System
 open Elmish
 open FsToolkit.ErrorHandling
 
-open Cookbook.Shared.Auth
+open Cookbook.Shared.Users
 open Cookbook.Shared.Errors
 open Cookbook.Client.Router
 open Cookbook.Client.Server
@@ -21,12 +21,8 @@ let init () =
 
 let private handleLogin state :Cmd<Msg> =
     let fn (dispatch: Msg -> unit) : unit =
-        asyncResult {
-            let! res = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
-            return res
-        } |> ignore
         async {
-            let! res = authService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
+            let! res = usersService.Login ({Username = state.Username; Password = state.Password}:Request.Login)
             dispatch (LoggedIn res)
         }
         |> Async.StartImmediate

@@ -1,18 +1,21 @@
-module Cookbook.Server.Auth.Database
+module Cookbook.Server.Users.Database
 
 open System
 open System.Threading.Tasks
-open FSharp.Control.Tasks.V2
 open Microsoft.Azure.Cosmos
+open Cookbook.Server.Users.Domain
+open FsToolkit.ErrorHandling
+open FSharp.Control.Tasks.V2
 
 open Cookbook.Libraries.CosmosDb
 open Cookbook.Server.Configuration
-open Cookbook.Server.Auth.Domain
+open Cookbook.Server.Users.Domain
 
 
-type UserStore =
-    abstract tryFindUser : string -> Task<CookbookUser option>
+type UsersStore =
+    abstract tryFindUser : string -> Task<Views.CookbookUser option>
     abstract setRefreshToken : string -> string -> DateTimeOffset -> Task<unit>
+    abstract getUsers : unit -> Task<Views.CookbookUser list>
 
 
 module Schema =
@@ -21,6 +24,7 @@ module Schema =
     [<Literal>]
     let PartitionKeyValue = "cookbook"
 
+    [<CLIMutable>]
     type UserDocument = {
         Id : string
         PartitionKey : string
@@ -28,7 +32,8 @@ module Schema =
         PasswordHash :string
     }
 
-    type RefreshToken = {
+    [<CLIMutable>]
+    type RefreshTokenDocument = {
         Id : string
         PartitionKey : string
         Token : string
@@ -51,7 +56,7 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
         |> getContainer client config.DatabaseName
 
 
-    interface UserStore with
+    interface UsersStore with
         member _.tryFindUser username =
             task {
                 let! container = getUsersContainer()
@@ -61,7 +66,7 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
 
         member _.setRefreshToken username token expires =
             task {
-                let row : Schema.RefreshToken = {
+                let row : Schema.RefreshTokenDocument = {
                     Id = username
                     PartitionKey = Schema.PartitionKeyValue
                     Token = token
@@ -69,6 +74,21 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
                     Ttl = expires.Subtract(DateTimeOffset.UtcNow).TotalSeconds |> int
                 }
                 let! container = getRefreshTokensContainer ()
-                let! _ = upsertItem<Schema.UserDocument> container Schema.PartitionKeyValue row
+                let! _ = upsertItem<Schema.RefreshTokenDocument> container Schema.PartitionKeyValue row
                 return ()
+            }
+
+        member _.getUsers () =
+            task {
+                let! container = getUsersContainer ()
+                let query = QueryDefinition("SELECT * FROM c")
+
+                return!
+                    getItems<Schema.UserDocument> container Schema.PartitionKeyValue query
+                    |> Task.map (fun rows ->
+                        rows
+                        |> List.map (fun row ->
+                            ({ Username = row.Id; Name = row.Name } : Views.CookbookUser)
+                        )
+                    )
             }

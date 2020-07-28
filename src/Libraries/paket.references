@@ -4,3 +4,5 @@ TaskBuilder.fs
 FsToolkit.ErrorHandling
 FsToolkit.ErrorHandling.TaskResult
 Microsoft.AspNetCore.Cryptography.KeyDerivation
+System.IdentityModel.Tokens.Jwt
+FSharp.Control.AsyncSeq

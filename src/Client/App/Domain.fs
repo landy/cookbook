@@ -1,7 +1,7 @@
 module Cookbook.Client.App.Domain
 
 open Cookbook.Client.Router
-open Cookbook.Shared.Auth
+open Cookbook.Shared.Users
 
 type Msg =
     | UrlChanged of Page

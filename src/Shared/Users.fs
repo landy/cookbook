@@ -1,4 +1,4 @@
-module Cookbook.Shared.Auth
+module Cookbook.Shared.Users
 
 open System
 
@@ -25,11 +25,17 @@ module Response =
         RefreshToken : Token
     }
 
+    type UserRow = {
+        Username : string
+        Name : string
+    }
+
 [<RequireQualifiedAccess>]
 module Route =
     let builder _ m =
-        sprintf "/api/auth/%s" m
+        sprintf "/api/users/%s" m
 
-type AuthService = {
+type UsersService = {
     Login : Request.Login -> Async<Result<Response.LoggedInUser, ApplicationError>>
+    GetUsers : unit -> Async<Result<Response.UserRow list, ApplicationError>>
 }

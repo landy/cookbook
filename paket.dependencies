@@ -1,22 +1,23 @@
 source https://api.nuget.org/v3/index.json
-framework: netcoreapp3.1,netstandard2.0
+framework: netcoreapp3.1,netstandard2.1
 storage: none
 
+nuget Microsoft.Azure.Cosmos
 nuget FSharp.Core
 nuget Giraffe
 nuget Fable.Remoting.Giraffe
 nuget Microsoft.ApplicationInsights.AspNetCore
 nuget WindowsAzure.Storage
 nuget System.IdentityModel.Tokens.Jwt
-nuget Microsoft.Azure.Cosmos
 nuget TaskBuilder.fs
 nuget FsToolkit.ErrorHandling
 nuget FsToolkit.ErrorHandling.TaskResult
 nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
+nuget FSharp.Control.AsyncSeq
 
 group Client
     source https://api.nuget.org/v3/index.json
-    framework: netstandard2.0
+    framework: netstandard2.1
     storage: none
 
     nuget Fable.Core
@@ -27,6 +28,7 @@ group Client
     nuget Fable.React
     nuget Fable.Remoting.Client
     nuget Feliz.MaterialUI
+    nuget Fable.MaterialUI.Icons
     nuget Feliz.UseElmish
     nuget Feliz.Router
     nuget FsToolkit.ErrorHandling.TaskResult
@@ -46,4 +48,3 @@ group Build
     nuget Fake.IO.Zip
     nuget Farmer ~> 0.21
     github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs
-

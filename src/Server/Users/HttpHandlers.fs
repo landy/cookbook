@@ -1,7 +1,6 @@
-module Cookbook.Server.Auth.HttpHandlers
+module Cookbook.Server.Users.HttpHandlers
 
 open System
-open Cookbook.Shared.Errors
 open Microsoft.AspNetCore.Http
 open System.Security.Claims
 open Fable.Remoting.Server
@@ -10,12 +9,14 @@ open FSharp.Control.Tasks.V2
 open Giraffe
 open FsToolkit.ErrorHandling
 
-open Cookbook.Shared.Auth
-open Cookbook.Server.Auth.Database
-open Cookbook.Server.Auth.Domain
-open Cookbook.Shared.Auth.Response
+open Cookbook.Libraries
+open Cookbook.Shared.Errors
+open Cookbook.Shared.Users
+open Cookbook.Server.Users.Database
+open Cookbook.Server.Users.Domain
+open Cookbook.Shared.Users.Response
 
-let private toClaims (user:CookbookUser) =
+let private toClaims (user:Views.CookbookUser) =
     [
         Claim(ClaimTypes.Sid, user.Username)
         Claim(ClaimTypes.Name, user.Name)
@@ -24,7 +25,7 @@ let private toClaims (user:CookbookUser) =
 [<Literal>]
 let private Secret = "5CEFF3A9-949B-483C-B8FC-96F98D557102"
 
-let private login (usersDb:UserStore) (r:Request.Login) =
+let private login (usersDb:UsersStore) (r:Request.Login) =
     task {
         let! user = usersDb.tryFindUser r.Username
         return!
@@ -32,7 +33,7 @@ let private login (usersDb:UserStore) (r:Request.Login) =
             |> Option.map (fun u ->
 
                 let token, expiresOn =
-                    { Username = u.Username; Name = u.Name }
+                    ({ Username = u.Username; Name = u.Name } : Views.CookbookUser)
                     |> toClaims
                     |> Jwt.createToken "testAudience" "cookbook.net" Secret (TimeSpan.FromHours(1.))
                 let (refreshToken,refreshExpiresOn) =
@@ -45,20 +46,30 @@ let private login (usersDb:UserStore) (r:Request.Login) =
                 }
             )
             |> Result.requireSome (AuthenticationError.InvalidUsernameOrPassword |> ApplicationError.AuthenticationError)
-            |> Result.map (fun t ->
+            |> Result.map (fun (t:LoggedInUser) ->
                 usersDb.setRefreshToken t.Username t.RefreshToken.Token t.RefreshToken.ExpiresUtc
                 |> Task.map (fun _ -> t)
             )
             |> Result.sequenceTask
     }
 
-let private authService usersDb = {
+let private getUsers (usersDb:UsersStore) () =
+    usersDb.getUsers ()
+    |> Task.map (
+        List.map (fun u ->
+            {Username = u.Username; Name = u.Name}
+        )
+        >> Ok
+    )
+
+let private usersService usersDb = {
     Login = login usersDb >> Async.AwaitTask
+    GetUsers = getUsers usersDb >> Async.AwaitTask
 }
 
 let private createAuthServiceFromContext (httpContext: HttpContext) =
-    let usersDb = httpContext.GetService<UserStore>()
-    authService usersDb
+    let usersDb = httpContext.GetService<UsersStore>()
+    usersService usersDb
 
 let authServiceHandler : HttpHandler =
     Remoting.createApi()

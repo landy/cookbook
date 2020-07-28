@@ -1,6 +1,6 @@
 open System
 open System.IO
-open Cookbook.Server.Auth.Database
+open Cookbook.Server.Users.Database
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -28,7 +28,7 @@ let port =
 
 let webApp =
     choose [
-        Auth.HttpHandlers.authServiceHandler
+        Users.HttpHandlers.authServiceHandler
     ]
 
 
@@ -52,7 +52,7 @@ type Startup (cfg:IConfiguration) =
         let client = createCosmosClient dbServer dbKey
         sc.AddSingleton<CosmosClient>(client) |> ignore
         sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
-        sc.AddSingleton<UserStore, CosmosDbUserStore>() |> ignore
+        sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
         sc.AddGiraffe() |> ignore
         tryGetEnv "APPINSIGHTS_INSTRUMENTATIONKEY" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
 

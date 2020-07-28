@@ -8,14 +8,24 @@ open Fable.Core.JsInterop
 type Page =
     | Main
     | Login
+    | UsersList
+    | UsersAdd
+    | UsersEdit
 
 module private Paths =
     let [<Literal>] Login = "login"
+    let [<Literal>] UsersPath = "users"
+
+    module Users =
+        let [<Literal>] Add = "add"
+        let [<Literal>] Edit = "edit"
 
 let private basicMapping =
     [
         [ Paths.Login ], Login
-
+        [ Paths.UsersPath ], UsersList
+        [ Paths.UsersPath; Paths.Users.Add ], UsersAdd
+        [ Paths.UsersPath; Paths.Users.Edit ], UsersEdit
     ]
 
 module Page =

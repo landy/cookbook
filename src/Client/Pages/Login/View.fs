@@ -1,6 +1,6 @@
 module Cookbook.Client.Pages.Login.View
 
-open Cookbook.Shared.Auth
+open Cookbook.Shared.Users
 open Feliz
 open Feliz.MaterialUI
 open Feliz.UseElmish
@@ -117,7 +117,7 @@ let render = React.functionComponent("LoginPage", fun (props:LoginPageProps) ->
                                 prop.className classes.wrapper
                                 prop.children [
                                     yield Mui.button [
-                                        button.type'.submit
+                                        prop.type'.submit
                                         button.fullWidth true
                                         button.disabled (state.IsLoading)
                                         button.variant.contained

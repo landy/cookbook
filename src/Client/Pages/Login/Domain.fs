@@ -1,6 +1,6 @@
 module Cookbook.Client.Pages.Login.Domain
 
-open Cookbook.Shared.Auth
+open Cookbook.Shared.Users
 open Cookbook.Shared.Errors
 
 

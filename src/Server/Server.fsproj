@@ -9,10 +9,9 @@
   <ItemGroup>
     <None Include="paket.references" />
     <Compile Include="Configuration.fs" />
-    <Compile Include="Auth\Domain.fs" />
-    <Compile Include="Auth\Jwt.fs" />
-    <Compile Include="Auth\Database.fs" />
-    <Compile Include="Auth\HttpHandlers.fs" />
+    <Compile Include="Users\Domain.fs" />
+    <Compile Include="Users\Database.fs" />
+    <Compile Include="Users\HttpHandlers.fs" />
     <Compile Include="Server.fs" />
     <Content Include="public\favicon.png" />
   </ItemGroup>
