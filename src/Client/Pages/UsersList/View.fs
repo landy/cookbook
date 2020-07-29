@@ -17,10 +17,14 @@ let useStyles = Styles.makeStyles (fun styles theme ->
         usersTable = styles.create [
             style.marginTop (theme.spacing 1)
         ]
-        loader = styles.create [
+        loaderContainer = styles.create [
             style.display.flex
             style.justifyContent.center
-            style.alignContent.center
+            style.alignItems.center
+            style.flexDirection.column
+            style.flexGrow 1
+            style.flexShrink 1
+            style.flexBasis (length.percent 0)
         ]
     |}
 )
@@ -41,8 +45,7 @@ let render = React.functionComponent (fun () ->
                 ]
             ]
         ]
-        printfn "loading: %b" state.IsLoading
-        if state.IsLoading |> not then
+        if true = false then
             Mui.paper [
                 prop.className s.usersTable
                 prop.children [
@@ -70,9 +73,9 @@ let render = React.functionComponent (fun () ->
             ]
         else
             Html.div [
-                prop.className s.loader
+                prop.className s.loaderContainer
                 prop.children [
-                    Mui.circularProgress []
+                    Mui.circularProgress [ ]
                 ]
             ]
     ]

@@ -7,25 +7,16 @@ open FsToolkit.ErrorHandling
 open Microsoft.Azure.Cosmos
 open FSharp.Control.Tasks.V2
 open FSharp.Control
-open System.Threading.Tasks
 
 
 let createCosmosClient endpoint authKey =
     let opts = CosmosSerializationOptions()
     opts.PropertyNamingPolicy <- CosmosPropertyNamingPolicy.CamelCase
+
     CosmosClientBuilder(endpoint, authKey)
         .WithConnectionModeDirect()
         .WithSerializerOptions(opts)
         .Build()
-//    let serializerOptions = CosmosSerializationOptions()
-//    serializerOptions.Indented <- true
-//    serializerOptions.PropertyNamingPolicy <- CosmosPropertyNamingPolicy.CamelCase
-//
-//    let opts = CosmosClientOptions()
-//    opts.ConnectionMode <- ConnectionMode.Direct
-//    opts.SerializerOptions <- serializerOptions
-
-//    new CosmosClient(endpoint, authKey)
 
 let getContainer (client:CosmosClient) dbName containerProps =
     task {
@@ -48,23 +39,6 @@ let upsertItem<'a> (container:Container) (partitionKey: string) item =
     container.UpsertItemAsync(item, (PartitionKey(partitionKey) |> Nullable ))
     |> Task.map ignore
 
-//let getItems<'a> (container:CosmosContainer) (partitionKey: string) (query:QueryDefinition) : Task<'a list> =
-//
-//    let opts = QueryRequestOptions()
-//    opts.PartitionKey <- partitionKey |> PartitionKey |> Nullable
-//    let foo =
-//        container.GetItemQueryIterator<'a>(query,requestOptions = opts)
-//        |> AsyncSeq.ofAsyncEnum
-//    let bar = foo
-//    bar |> AsyncSeq.
-//    |> AsyncSeq.iter (fun x ->
-//        let foo = ""
-//        let bar = foo
-//        ()
-//    ) |>ignore
-    //[] |> Task.FromResult
-//    |> AsyncSeq.toListAsync
-//    |> Async.StartAsTask
 
 let getItems<'a> (container:Container) (partitionKey: string) (query:QueryDefinition) =
     let opts = QueryRequestOptions()
