@@ -17,7 +17,6 @@ module Styles =
 
     type RootViewStyles = {
         root : string
-        shiftContent : string
         content : string
     }
 

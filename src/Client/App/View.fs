@@ -337,7 +337,7 @@ let MainView = React.functionComponent(fun (state, (dispatch : Msg -> unit)) ->
     Html.div "msssi"
 )
 
-let private useRootViewStyles : unit -> _ = Styles.makeStyles(fun styles theme ->
+let private useRootViewStyles (isDesktop : bool) : unit -> _ = Styles.makeStyles(fun styles theme ->
     let drawerWidth = 240
     {
         root = styles.create  [
@@ -346,9 +346,8 @@ let private useRootViewStyles : unit -> _ = Styles.makeStyles(fun styles theme -
             style.inner theme.breakpoints.upSm [
                 style.paddingTop 64
             ]
-        ]
-        shiftContent = styles.create [
-            style.paddingLeft 240
+            if isDesktop then
+                style.paddingLeft 240
         ]
         content = styles.create [
             style.height (length.percent 100)
@@ -359,8 +358,8 @@ let private useRootViewStyles : unit -> _ = Styles.makeStyles(fun styles theme -
 
 //https://github.com/devias-io/react-material-dashboard/blob/master/src/layouts/Main/Main.js
 let main = React.functionComponent(fun (state, (dispatch: Msg -> unit)) ->
-    let appStyles = useRootViewStyles ()
     let isDesktop = Hooks.useMediaQuery(fun theme -> theme.breakpoints.upLg)
+    let appStyles = useRootViewStyles isDesktop ()
     let sidebarOpened, setOpenSidebar = React.useState(false)
 
     let openSidebar = fun _ -> setOpenSidebar true
