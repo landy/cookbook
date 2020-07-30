@@ -9,7 +9,7 @@ open Domain
 
 
 let init () : Model * Cmd<Msg> =
-    let initialModel = { CurrentPage = Main; Token = None }
+    let initialModel = { CurrentPage = Main; Token = None}
     let page = Router.currentPath () |> Page.parseFromUrlSegments
     printfn "page: %A" page
     initialModel, (page |> UrlChanged |> Cmd.ofMsg)

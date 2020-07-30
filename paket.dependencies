@@ -20,6 +20,7 @@ group Client
     framework: netstandard2.1
     storage: none
 
+    nuget Feliz
     nuget Fable.Core
     nuget Fable.Elmish
     nuget Fable.Elmish.Debugger

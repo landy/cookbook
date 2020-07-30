@@ -4,12 +4,14 @@ open Elmish
 open Elmish.React
 
 open Cookbook.Client.App
+open Feliz
 
 
 #if DEBUG
 open Elmish.Debug
 open Elmish.HMR
 #endif
+
 
 Program.mkProgram State.init State.update View.render
 #if DEBUG
@@ -20,3 +22,4 @@ Program.mkProgram State.init State.update View.render
 |> Program.withDebugger
 #endif
 |> Program.run
+

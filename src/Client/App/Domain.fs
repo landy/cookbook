@@ -17,11 +17,8 @@ module Styles =
 
     type RootViewStyles = {
         root : string
-        appBar : string
-        drawer : string
-        drawerPaper : string
+        shiftContent : string
         content : string
-        toolbar : string
     }
 
 
