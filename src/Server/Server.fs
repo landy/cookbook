@@ -29,6 +29,7 @@ let port =
 let webApp =
     choose [
         Users.HttpHandlers.authServiceHandler
+        htmlFile <| Path.Combine(wwwRoot, "index.html")
     ]
 
 
@@ -62,6 +63,7 @@ type Startup (cfg:IConfiguration) =
         app.UseDefaultFiles()
             .UseStaticFiles()
             .UseGiraffe webApp
+
 
 WebHost
     .CreateDefaultBuilder()
