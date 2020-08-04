@@ -12,27 +12,9 @@ open Cookbook.Client.Router
 open Cookbook.Client.Pages
 open Domain
 open Domain.Styles
-open Feliz.Styles
+open Cookbook.Client.Components
+open Cookbook.Client.Components.Html
 
-module Html =
-    module Props =
-        let routed (p:Page) = [
-            prop.href (p |> Page.toUrlSegments |> Router.formatPath)
-            prop.onClick (Router.goToUrl)
-        ]
-
-    let aRouted (text:string) (p:Page) =
-        Html.a [
-            yield! Props.routed p
-            prop.text text
-        ]
-
-//let RoutedLink : ReactElement = React.functionComponent("RoutedLink", fun {|p:Page; text:string |} ->
-//    Html.a [
-//        yield! Html.Props.routed p
-//        prop.text text
-//    ]
-//)
 
 //let private useToolbarStyles = Styles.makeStyles(fun styles theme ->
 //    {|
@@ -104,24 +86,34 @@ module Html =
 //        ]
 //    ]
 //
-//let pageView page =
-//    match page with
-//    | Main ->
-//        Html.div "Main"
-//    | UsersList ->
-//        UsersList.View.render ()
-//    | _ -> Html.div "unknown page"
-//
-//let mainView = React.functionComponent("MainView", fun currentPage ->
-//    let appStyles = useRootViewStyles ()
-//    Html.main [
-//        prop.className appStyles.content
-//        prop.children [
-//            Html.div [ prop.className appStyles.toolbar ]
-//            pageView currentPage
-//        ]
-//    ]
-//)
+
+let private useRootViewStyles (isDesktop : bool) : unit -> _ = Styles.makeStyles(fun styles theme ->
+    {
+        root = styles.create  [
+            style.paddingTop 56
+            style.height (length.percent 100)
+            style.inner theme.breakpoints.upSm [
+                style.paddingTop 64
+            ]
+            if isDesktop then
+                style.paddingLeft 240
+        ]
+        content = styles.create [
+            style.height (length.percent 100)
+        ]
+    }
+)
+
+let pageView page =
+    match page with
+    | Main ->
+        Html.div "Main"
+    | UsersList ->
+        UsersList.View.render ()
+    | UsersAdd ->
+        UsersAdd.View.render ()
+    | _ -> Html.div "unknown page"
+
 //
 //let loginView = React.functionComponent("LoginView", fun props ->
 //    let appStyles = useRootViewStyles ()
@@ -171,6 +163,8 @@ module Html =
 //    ]
 //)
 
+
+
 let topbarStyles = Styles.makeStyles(fun styles theme ->
     {|
         root = styles.create [
@@ -198,7 +192,7 @@ let TopBar = React.functionComponent(fun props ->
                         Mui.link [
                             yield prop.text "Cookbook"
                             yield link.color.inherit'
-                            yield! (Html.Props.routed Main)
+                            yield! (prop.routed Main)
                         ]
                     ]
                 ]
@@ -278,7 +272,7 @@ let SideBarNav = React.functionComponent (fun state ->
                         prop.text p.Title
                         prop.className styles.button
                         button.startIcon p.Icon
-                        yield! Html.Props.routed UsersList
+                        yield! prop.routed UsersList
                     ]
                 ]
             ]
@@ -333,32 +327,30 @@ let SideBar = React.functionComponent (fun (props:SidebarProps) ->
     ]
 )
 
-let MainView = React.functionComponent(fun (state, (dispatch : Msg -> unit)) ->
-    Html.div "msssi"
+let useLoginStyles = Styles.makeStyles (fun styles theme ->
+    {|
+        content = styles.create []
+
+    |}
 )
 
-let private useRootViewStyles (isDesktop : bool) : unit -> _ = Styles.makeStyles(fun styles theme ->
-    let drawerWidth = 240
-    {
-        root = styles.create  [
-            style.paddingTop 56
-            style.height (length.percent 100)
-            style.inner theme.breakpoints.upSm [
-                style.paddingTop 64
-            ]
-            if isDesktop then
-                style.paddingLeft 240
-        ]
-        content = styles.create [
-            style.height (length.percent 100)
-        ]
+let loginView = React.functionComponent("LoginView", fun props ->
+    let styles = useLoginStyles ()
 
-    }
+    Html.main [
+        prop.className styles.content
+        prop.children [
+
+            Login.View.render props
+        ]
+    ]
 )
+
 
 //https://github.com/devias-io/react-material-dashboard/blob/master/src/layouts/Main/Main.js
 let main = React.functionComponent(fun (state, (dispatch: Msg -> unit)) ->
     let isDesktop = Hooks.useMediaQuery(fun theme -> theme.breakpoints.upLg)
+
     let appStyles = useRootViewStyles isDesktop ()
     let sidebarOpened, setOpenSidebar = React.useState(false)
 
@@ -369,22 +361,31 @@ let main = React.functionComponent(fun (state, (dispatch: Msg -> unit)) ->
 
     Html.div[
         prop.className appStyles.root
-        prop.children [
-            Mui.cssBaseline []
-            TopBar { OpenSidebar = openSidebar }
-            SideBar {
-                IsOpen = shouldOpenSidebar
-                CloseSidebar = closeSidebar
-                Variant = if isDesktop then drawer.variant.persistent else drawer.variant.temporary
-            }
-            Html.main [
-                prop.className appStyles.content
-                prop.children (MainView (state,dispatch))
+        prop.children
+            [
+                Mui.cssBaseline []
+                TopBar { OpenSidebar = openSidebar }
+                match state.CurrentPage with
+                | Login ->
+                    let loginProps : Login.State.LoginPageProps =
+                        { Login.State.handleNewToken = TokenChanged >> dispatch }
+                    loginView loginProps
+                | _ ->
+                    SideBar {
+                        IsOpen = shouldOpenSidebar
+                        CloseSidebar = closeSidebar
+                        Variant = if isDesktop then drawer.variant.persistent else drawer.variant.temporary
+                    }
+                    Html.main [
+                        prop.className appStyles.content
+                        prop.children (pageView state.CurrentPage)
+                    ]
             ]
-        ]
     ]
 
 )
+
+
 
 let mainWithTheme = React.functionComponent(fun (state, (dispatch: Msg -> unit)) ->
     let lightTheme = Styles.createMuiTheme([

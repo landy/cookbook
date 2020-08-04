@@ -6,25 +6,26 @@ open Feliz.MaterialUI
 open Fable.MaterialUI.Icons
 
 open Domain
+open Cookbook.Client.Router
+open Cookbook.Client.Components.FadedLoader
+open Cookbook.Client.Components.Html
 
 
 let useStyles = Styles.makeStyles (fun styles theme ->
     {|
+        root = styles.create [
+            style.display.flex
+            style.flexDirection.column
+        ]
         contextButtons = styles.create [
+            style.margin ((theme.spacing 2), 0, (theme.spacing 1), 0)
             style.display.flex
             style.justifyContent.flexEnd
         ]
-        usersTable = styles.create [
-            style.marginTop (theme.spacing 1)
-        ]
-        loaderContainer = styles.create [
+        loader = styles.create [
             style.display.flex
             style.justifyContent.center
             style.alignItems.center
-            style.flexDirection.column
-            style.flexGrow 1
-            style.flexShrink 1
-            style.flexBasis (length.percent 0)
         ]
     |}
 )
@@ -34,21 +35,22 @@ let render = React.functionComponent (fun () ->
 
     let s = useStyles ()
     Mui.container [
-        Html.div [
-            prop.className s.contextButtons
-            prop.children [
-                Mui.button [
-                    button.variant.contained
-                    button.color.primary
-                    prop.text "Add"
-                    button.startIcon (addIcon [])
+        prop.className s.root
+        prop.children [
+            Html.div [
+                prop.className s.contextButtons
+                prop.children [
+                    Mui.button [
+                        button.variant.contained
+                        button.color.primary
+                        prop.text "Add"
+                        button.startIcon (addIcon [])
+                        yield! prop.routed UsersAdd
+                    ]
                 ]
             ]
-        ]
-        if true = false then
-            Mui.paper [
-                prop.className s.usersTable
-                prop.children [
+            if state.IsLoading |> not || state.Users |> List.isEmpty |> not then
+                Mui.paper [
                     Mui.table [
                         Mui.tableHead [
                             Mui.tableRow [
@@ -70,13 +72,10 @@ let render = React.functionComponent (fun () ->
                         ]
                     ]
                 ]
-            ]
-        else
-            Html.div [
-                prop.className s.loaderContainer
-                prop.children [
-                    Mui.circularProgress [ ]
+            else
+                FadedLoader state.IsLoading 800. [
+                    prop.className s.loader
                 ]
-            ]
+        ]
     ]
 )

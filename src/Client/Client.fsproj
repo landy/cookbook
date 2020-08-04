@@ -14,12 +14,17 @@
         <Compile Include="Version.fs" />
         <Compile Include="Server.fs" />
         <Compile Include="Router.fs" />
+        <Compile Include="Components\FadedLoader.fs" />
+        <Compile Include="Components\Html.fs" />
         <Compile Include="Pages\Login\Domain.fs" />
         <Compile Include="Pages\Login\State.fs" />
         <Compile Include="Pages\Login\View.fs" />
         <Compile Include="Pages\UsersList\Domain.fs" />
         <Compile Include="Pages\UsersList\State.fs" />
         <Compile Include="Pages\UsersList\View.fs" />
+        <Compile Include="Pages\UsersAdd\Domain.fs" />
+        <Compile Include="Pages\UsersAdd\State.fs" />
+        <Compile Include="Pages\UsersAdd\View.fs" />
         <Compile Include="App\Domain.fs" />
         <Compile Include="App\State.fs" />
         <Compile Include="App\View.fs" />

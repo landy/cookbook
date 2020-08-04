@@ -12,7 +12,7 @@ let init () =
         IsLoading = false
     }, Cmd.ofMsg LoadUsers
 
-let update msg state =
+let update  msg state =
     match msg with
     | LoadUsers ->
         let loadUsers = async {
@@ -26,9 +26,9 @@ let update msg state =
                     )
                     |> UsersLoaded
                 | Error _ -> [] |> UsersLoaded
-
         }
+
+
         {state with IsLoading = true}, Cmd.OfAsync.result loadUsers
     | UsersLoaded users ->
-        printfn "loaded"
         {state with Users = users; IsLoading = false}, Cmd.none

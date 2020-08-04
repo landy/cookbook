@@ -9,6 +9,7 @@ open Domain
 
 
 let init () : Model * Cmd<Msg> =
+    System.Console.WriteLine("init")
     let initialModel = { CurrentPage = Main; Token = None}
     let page = Router.currentPath () |> Page.parseFromUrlSegments
     printfn "page: %A" page

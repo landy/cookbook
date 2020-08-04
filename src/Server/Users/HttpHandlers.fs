@@ -61,7 +61,11 @@ let private getUsers (usersDb:UsersStore) () =
         )
         >> Ok
     )
-
+let waitLonger a =
+    async {
+        do! Async.Sleep 2000
+        return! a
+    }
 let private usersService usersDb = {
     Login = login usersDb >> Async.AwaitTask
     GetUsers = getUsers usersDb >> Async.AwaitTask
