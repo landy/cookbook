@@ -1,21 +1,17 @@
 module Cookbook.Server.Users.Database
 
 open System
-open System.Threading.Tasks
 open Microsoft.Azure.Cosmos
-open Cookbook.Server.Users.Domain
 open FsToolkit.ErrorHandling
 open FSharp.Control.Tasks.V2
 
+open Cookbook.Shared.Errors
 open Cookbook.Libraries.CosmosDb
+open Cookbook.Server.Users.Domain
 open Cookbook.Server.Configuration
 open Cookbook.Server.Users.Domain
 
 
-type UsersStore =
-    abstract tryFindUser : string -> Task<Views.CookbookUser option>
-    abstract setRefreshToken : string -> string -> DateTimeOffset -> Task<unit>
-    abstract getUsers : unit -> Task<Views.CookbookUser list>
 
 
 module Schema =
@@ -91,4 +87,21 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
                             ({ Username = row.Id; Name = row.Name } : Views.CookbookUser)
                         )
                     )
+            }
+
+        member _.addUser (args:EventArgs.UserAdded) =
+            task {
+                try
+                    let! container = getUsersContainer()
+                    let row : Schema.UserDocument = {
+                        Id = args.Username
+                        PartitionKey = Schema.PartitionKeyValue
+                        Name = args.Name
+                        PasswordHash = args.PasswordHash
+
+                    }
+                    let! _ = upsertItem<Schema.UserDocument> container Schema.PartitionKeyValue row
+                    return () |> Ok
+                with
+                    | ex -> return Error Unspecified
             }

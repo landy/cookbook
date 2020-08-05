@@ -1,6 +1,5 @@
 open System
 open System.IO
-open Cookbook.Server.Users.Database
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -10,6 +9,8 @@ open Microsoft.Extensions.DependencyInjection
 open Giraffe
 open Microsoft.WindowsAzure.Storage
 
+open Cookbook.Server.Users.Domain
+open Cookbook.Server.Users.Database
 open Cookbook.Libraries.CosmosDb
 open Cookbook.Server
 open Cookbook.Server.Configuration

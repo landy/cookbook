@@ -1,6 +1,8 @@
 module Cookbook.Server.Users.HttpHandlers
 
 open System
+open System.Threading.Tasks
+open FsToolkit.ErrorHandling.Operator.TaskResult
 open Microsoft.AspNetCore.Http
 open System.Security.Claims
 open Fable.Remoting.Server
@@ -61,14 +63,29 @@ let private getUsers (usersDb:UsersStore) () =
         )
         >> Ok
     )
-let waitLonger a =
-    async {
-        do! Async.Sleep 2000
-        return! a
-    }
+
+let private saveUser (usersDb : UsersStore) (user:Request.AddUser) =
+    usersDb.tryFindUser user.Username
+    |> TaskResult.requireNone (UserError.UserAlreadyExists user.Username)
+    |> TaskResult.mapError ApplicationError.UserError
+    |> TaskResult.bind (fun _ ->
+        ({
+            Username = user.Username
+            Name = user.Name
+            Password = user.Password
+        } : CmdArgs.AddNewUser)
+        |> AddNewUser
+        |> execute
+        |> handle usersDb
+        |> TaskResult.mapError ApplicationError.DatabaseError
+    )
+
+    //Task.FromResult (UserError.UserAlreadyExists user.Username |> ApplicationError.UserError |> Error)
+
 let private usersService usersDb = {
     Login = login usersDb >> Async.AwaitTask
     GetUsers = getUsers usersDb >> Async.AwaitTask
+    SaveUser = saveUser usersDb >> Async.AwaitTask
 }
 
 let private createAuthServiceFromContext (httpContext: HttpContext) =

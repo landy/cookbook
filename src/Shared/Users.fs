@@ -12,6 +12,12 @@ module Request =
         Password : string
     }
 
+    type AddUser = {
+        Username : string
+        Name : string
+        Password : string
+    }
+
 module Response =
 
     type Token = {
@@ -38,4 +44,5 @@ module Route =
 type UsersService = {
     Login : Request.Login -> Async<Result<Response.LoggedInUser, ApplicationError>>
     GetUsers : unit -> Async<Result<Response.UserRow list, ApplicationError>>
+    SaveUser : Request.AddUser -> Async<Result<unit, ApplicationError>>
 }
