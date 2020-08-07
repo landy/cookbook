@@ -11,4 +11,4 @@ group Client
     Feliz.UseElmish
     Feliz.Router
     FsToolkit.ErrorHandling.TaskResult
-
+    Fable.Aether

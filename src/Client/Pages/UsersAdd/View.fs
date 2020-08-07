@@ -3,6 +3,7 @@ module Cookbook.Client.Pages.UsersAdd.View
 open Feliz
 open Feliz.MaterialUI
 open Feliz.UseElmish
+open Aether
 
 open Domain
 
@@ -81,7 +82,7 @@ let render = React.functionComponent(fun () ->
                                         textField.margin.dense
                                         textField.variant.outlined
                                         textField.name (nameof state.FormData.Username)
-                                        textField.onChange (fun v -> FormChanged (fun f -> {f with Username = v}) |> dispatch)
+                                        textField.onChange (Optic.set Optics.username >> FormChanged >> dispatch)
                                     ]
                                     Mui.textField [
                                         prop.className s.textField
@@ -90,7 +91,7 @@ let render = React.functionComponent(fun () ->
                                         textField.margin.dense
                                         textField.name (nameof state.FormData.Name)
                                         textField.variant.outlined
-                                        textField.onChange (fun v -> FormChanged (fun f -> {f with Name = v}) |> dispatch)
+                                        textField.onChange (Optic.set Optics.name >> FormChanged >> dispatch)
                                     ]
                                     Mui.textField [
                                         prop.className s.textField
@@ -100,7 +101,7 @@ let render = React.functionComponent(fun () ->
                                         textField.value state.FormData.Password
                                         textField.name (nameof state.FormData.Password)
                                         prop.type'.password
-                                        textField.onChange (fun v -> FormChanged (fun f -> {f with Password = v}) |> dispatch)
+                                        textField.onChange (Optic.set Optics.password >> FormChanged >> dispatch)
                                     ]
                                     Mui.textField [
                                         prop.className s.textField
@@ -110,7 +111,7 @@ let render = React.functionComponent(fun () ->
                                         textField.value state.FormData.ConfirmPassword
                                         textField.name (nameof state.FormData.ConfirmPassword)
                                         prop.type'.password
-                                        textField.onChange (fun v -> FormChanged (fun f -> {f with ConfirmPassword = v}) |> dispatch)
+                                        textField.onChange (Optic.set Optics.confirmPassword >> FormChanged >> dispatch)
                                     ]
                                 ]
                             ]

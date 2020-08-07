@@ -1,4 +1,6 @@
 source https://api.nuget.org/v3/index.json
+
+
 framework: netcoreapp3.1,netstandard2.1
 storage: none
 
@@ -14,6 +16,7 @@ nuget FsToolkit.ErrorHandling
 nuget FsToolkit.ErrorHandling.TaskResult
 nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
 nuget FSharp.Control.AsyncSeq
+
 
 group Client
     source https://api.nuget.org/v3/index.json
@@ -33,6 +36,8 @@ group Client
     nuget Feliz.UseElmish
     nuget Feliz.Router
     nuget FsToolkit.ErrorHandling.TaskResult
+    nuget Fable.Aether
+
 
 group Build
     source https://api.nuget.org/v3/index.json
