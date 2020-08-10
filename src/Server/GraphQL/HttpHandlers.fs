@@ -12,7 +12,7 @@ open Cookbook.Server.Users.Domain
 
 
 [<RequireQualifiedAccess>]
-module private GQLResponse =
+module GQLResponse =
     open FSharp.Data.GraphQL.Execution
 
     let toJson =

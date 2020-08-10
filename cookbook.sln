@@ -24,6 +24,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Shared", "src\Shared\Shared
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Libraries", "src\Libraries\Libraries.fsproj", "{15510356-A201-44B3-BE6E-1000B01AD37D}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "GraphQLSchemaGenerator", "src\GraphQLSchemaGenerator\GraphQLSchemaGenerator.fsproj", "{6E6BC4C5-81A3-4D2B-BB83-4CF78D008C23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{15510356-A201-44B3-BE6E-1000B01AD37D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15510356-A201-44B3-BE6E-1000B01AD37D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15510356-A201-44B3-BE6E-1000B01AD37D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E6BC4C5-81A3-4D2B-BB83-4CF78D008C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E6BC4C5-81A3-4D2B-BB83-4CF78D008C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E6BC4C5-81A3-4D2B-BB83-4CF78D008C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E6BC4C5-81A3-4D2B-BB83-4CF78D008C23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{73E8E820-C8AA-47CC-BB2B-152CA4D0B856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -60,5 +66,6 @@ Global
 		{15510356-A201-44B3-BE6E-1000B01AD37D} = {A55BA203-C145-4BDF-A896-3F6FBE6D695C}
 		{73E8E820-C8AA-47CC-BB2B-152CA4D0B855} = {A55BA203-C145-4BDF-A896-3F6FBE6D695C}
 		{73E8E820-C8AA-47CC-BB2B-152CA4D0B856} = {A55BA203-C145-4BDF-A896-3F6FBE6D695C}
+		{6E6BC4C5-81A3-4D2B-BB83-4CF78D008C23} = {A55BA203-C145-4BDF-A896-3F6FBE6D695C}
 	EndGlobalSection
 EndGlobal

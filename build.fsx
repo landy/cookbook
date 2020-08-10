@@ -21,9 +21,12 @@ open Microsoft.Azure.Management.ResourceManager.Fluent.Core
 Target.initEnvironment ()
 
 let serverPath = Path.getFullName "./src/Server"
+let graphQLGeneratorPath = Path.getFullName "./src/GraphQLSchemaGenerator"
 let clientPath = Path.getFullName "./src/Client"
 let clientDeployPath = Path.combine clientPath "deploy"
 let deployDir = Path.getFullName "./deploy"
+let gqlClientPath = Path.getFullName "./gql-output"
+let schemaFile = Path.getFullName "./cookbookSchema.json"
 
 let release = ReleaseNotes.load "RELEASE_NOTES.md"
 
@@ -55,6 +58,11 @@ let runDotNet cmd workingDir =
         DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd ""
     if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s" cmd workingDir
 
+let runDotNetWithArgs cmd workingDir args =
+    let result =
+        DotNet.exec (DotNet.Options.withWorkingDirectory workingDir) cmd args
+    if result.ExitCode <> 0 then failwithf "'dotnet %s' failed in %s with args %s" cmd workingDir args
+
 let openBrowser url =
     //https://github.com/dotnet/corefx/issues/10361
     Command.ShellCommand url
@@ -66,8 +74,11 @@ let openBrowser url =
 
 Target.create "Clean" (fun _ ->
     [ deployDir
-      clientDeployPath ]
-    |> Shell.cleanDirs
+      clientDeployPath
+      gqlClientPath ]
+    |> Shell.deleteDirs
+
+    File.delete schemaFile
 )
 
 Target.create "InstallClient" (fun _ ->
@@ -76,6 +87,12 @@ Target.create "InstallClient" (fun _ ->
     printfn "Yarn version:"
     runTool yarnTool "--version" __SOURCE_DIRECTORY__
     runTool yarnTool "install --frozen-lockfile" __SOURCE_DIRECTORY__
+)
+
+Target.create "GenerateGQLClient" (fun _ ->
+    printfn "generating GraphQL file in %s" schemaFile
+    runDotNetWithArgs "run" graphQLGeneratorPath schemaFile
+    runDotNetWithArgs "snowflaqe" "./" "--generate"
 )
 
 Target.create "Build" (fun _ ->
@@ -123,9 +140,6 @@ Target.create "RunClient" (fun _ ->
         do! Async.Sleep 5000
         openBrowser "http://localhost:8080"
     }
-
-    let vsCodeSession = Environment.hasEnvironVar "vsCodeSession"
-    let safeClientOnly = Environment.hasEnvironVar "safeClientOnly"
 
     let tasks =
         [ client; browser]
@@ -221,6 +235,9 @@ Target.create "AppService" (fun _ ->
 
 
 open Fake.Core.TargetOperators
+
+"Clean"
+    ==> "GenerateGQLClient"
 
 "Clean"
     ==> "InstallClient"

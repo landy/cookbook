@@ -22,8 +22,5 @@ let QueryRoot =
     )
 
 let schema = Schema(query = QueryRoot)
-let middlewares = [
-    Define.ObjectListFilterMiddleware<UserRow, ScalarDefinition<string>>(true)
-]
 
 let executor = Executor(schema)

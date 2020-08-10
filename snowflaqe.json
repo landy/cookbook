@@ -1,5 +1,5 @@
 {
-    "schema": "http://localhost:8085/graphql",
+    "schema": "./cookbookSchema.json",
     "queries": "./gql-queries",
     "project": "Cookbook.GraphQL.Client",
     "output": "./gql-output",

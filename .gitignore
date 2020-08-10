@@ -365,3 +365,4 @@ FodyWeavers.xsd
 appsettings.Development.json
 deploy/
 gql-output/
+cookbookSchema.json
