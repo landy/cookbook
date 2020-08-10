@@ -1,7 +1,7 @@
 {
     "schema": "./cookbookSchema.json",
     "queries": "./gql-queries",
-    "project": "Cookbook.GraphQL.Client",
+    "project": "CookbookGraphQLClient",
     "output": "./gql-output",
     "overrideClientName": "ClientGraphqlClient"
 }
