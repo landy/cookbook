@@ -16,13 +16,15 @@ let update  msg state =
     match msg with
     | LoadUsers ->
         let loadUsers = async {
-            let! users = usersService.GetUsers ()
+//            let! users = usersService.GetUsers ()
+            let! users2 = gqlClient.UserList ()
+
             return
-                match users with
+                match users2 with
                 | Ok u ->
-                    u
+                    u.users
                     |> List.map (fun u ->
-                        {Username = u.Username; Name = u.Name}
+                        {Username = u.username; Name = u.name}
                     )
                     |> UsersLoaded
                 | Error _ -> [] |> UsersLoaded

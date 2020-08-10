@@ -4,6 +4,7 @@ open Fable.Core
 open Fable.Remoting.Client
 
 open Cookbook.Shared
+open CookbookGraphQLClient
 
 [<Emit("config.baseUrl")>]
 let baseUrl : string = jsNative
@@ -14,3 +15,7 @@ let usersService : Users.UsersService =
     |> Remoting.withRouteBuilder Users.Route.builder
     |> Remoting.withBaseUrl baseUrl
     |> Remoting.buildProxy<Users.UsersService>
+
+
+let gqlClient =
+    ClientGraphqlClient(baseUrl + "graphql")

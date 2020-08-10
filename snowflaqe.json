@@ -1,0 +1,7 @@
+{
+    "schema": "http://localhost:8085/graphql",
+    "queries": "./gql-queries",
+    "project": "Cookbook.GraphQL.Client",
+    "output": "./gql-output",
+    "overrideClientName": "ClientGraphqlClient"
+}

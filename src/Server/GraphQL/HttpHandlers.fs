@@ -83,8 +83,10 @@ let graphQL (next : HttpFunc) (ctx : HttpContext) = task {
         let! result = CookbookSchema.executor.AsyncExecute(query, root, variables) |> Async.StartAsTask
         return! okWithStr (GQLResponse.toJson result) next ctx
     | Some query, None ->
+        let userDb = ctx.GetService<UsersStore>()
+        let root : CookbookSchema.Root = { UserDb = userDb }
         let query = removeWhitespacesAndLineBreaks query
-        let! result = CookbookSchema.executor.AsyncExecute(query) |> Async.StartAsTask
+        let! result = CookbookSchema.executor.AsyncExecute(query,data = root) |> Async.StartAsTask
         return! okWithStr (GQLResponse.toJson result) next ctx
     | None, _ ->
         let! result = CookbookSchema.executor.AsyncExecute(Introspection.IntrospectionQuery) |> Async.StartAsTask
