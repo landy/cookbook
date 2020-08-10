@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: dotnet tool restore
     - name: generate GrapQL client
-       run: dotnet tool Snowflaqe --generate
+      run: dotnet tool Snowflaqe --generate
     - name: restore dependencies
       run: dotnet restore
     - name: Build
