@@ -26,9 +26,9 @@ let port =
     |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
 
 
-
 let webApp =
     choose [
+        route "/graphql" >=> GraphQL.HttpHandlers.graphQLHandler
         Users.HttpHandlers.authServiceHandler
         htmlFile <| Path.Combine(wwwRoot, "index.html")
     ]

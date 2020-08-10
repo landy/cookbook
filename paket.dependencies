@@ -4,6 +4,8 @@ source https://api.nuget.org/v3/index.json
 framework: netcoreapp3.1,netstandard2.1
 storage: none
 
+nuget FSharp.Data.GraphQL.Server
+nuget FSharp.Data.GraphQL.Server.Middleware
 nuget Microsoft.Azure.Cosmos
 nuget FSharp.Core
 nuget Giraffe

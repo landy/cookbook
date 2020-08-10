@@ -7,3 +7,5 @@ System.IdentityModel.Tokens.Jwt
 Microsoft.Azure.Cosmos
 FsToolkit.ErrorHandling
 FsToolkit.ErrorHandling.TaskResult
+FSharp.Data.GraphQL.Server
+FSharp.Data.GraphQL.Server.Middleware
