@@ -238,8 +238,6 @@ open Fake.Core.TargetOperators
 
 "Clean"
     ==> "GenerateGQLClient"
-
-"Clean"
     ==> "InstallClient"
     ==> "Build"
     ==> "Bundle"
