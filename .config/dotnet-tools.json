@@ -13,12 +13,6 @@
       "commands": [
         "paket"
       ]
-    },
-    "snowflaqe": {
-      "version": "1.10.0",
-      "commands": [
-        "snowflaqe"
-      ]
     }
   }
 }
