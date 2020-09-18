@@ -64,29 +64,22 @@ let private getUsers (usersDb:UsersStore) () =
         >> Ok
     )
 
-let private saveUser (usersDb : UsersStore) (user:Request.AddUser) =
-    usersDb.tryFindUser user.Username
-    |> TaskResult.requireNone (UserError.UserAlreadyExists user.Username)
-    |> TaskResult.mapError ApplicationError.UserError
-    |> TaskResult.bind (fun _ ->
-        ({
-            Username = user.Username
-            Name = user.Name
-            Password = user.Password
-        } : CmdArgs.AddNewUser)
-        |> AddNewUser
-        |> execute
-        |> handle usersDb
-        |> TaskResult.mapError ApplicationError.DatabaseError
-    )
+let private createSaveUser (user:Request.AddUser) =
+    ({
+        Username = user.Username
+        Name = user.Name
+        Password = user.Password
+    } : CmdArgs.AddNewUser)
+    |> AddNewUser
 
-    //Task.FromResult (UserError.UserAlreadyExists user.Username |> ApplicationError.UserError |> Error)
 
-let private usersService usersDb = {
-    Login = login usersDb >> Async.AwaitTask
-    GetUsers = getUsers usersDb >> Async.AwaitTask
-    SaveUser = saveUser usersDb >> Async.AwaitTask
-}
+let private usersService usersDb =
+    let pipeline = CommandHandlers.pipeline usersDb
+    {
+        Login = login usersDb >> Async.AwaitTask
+        GetUsers = getUsers usersDb >> Async.AwaitTask
+        SaveUser = createSaveUser >> pipeline >> Async.AwaitTask
+    }
 
 let private createAuthServiceFromContext (httpContext: HttpContext) =
     let usersDb = httpContext.GetService<UsersStore>()

@@ -237,7 +237,6 @@ Target.create "AppService" (fun _ ->
 open Fake.Core.TargetOperators
 
 "Clean"
-    ==> "GenerateGQLClient"
     ==> "InstallClient"
     ==> "Build"
     ==> "Bundle"

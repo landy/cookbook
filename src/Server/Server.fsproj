@@ -11,11 +11,8 @@
     <Compile Include="Configuration.fs" />
     <Compile Include="Users\Domain.fs" />
     <Compile Include="Users\Database.fs" />
+    <Compile Include="Users\CommandHandlers.fs" />
     <Compile Include="Users\HttpHandlers.fs" />
-    <Compile Include="Users\Schema.fs" />
-    <Compile Include="GraphQL\Serialization.fs" />
-    <Compile Include="GraphQL\CookbookSchema.fs" />
-    <Compile Include="GraphQL\HttpHandlers.fs" />
     <Compile Include="Server.fs" />
     <Content Include="public\favicon.png" />
   </ItemGroup>

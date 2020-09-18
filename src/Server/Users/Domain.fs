@@ -62,3 +62,4 @@ let handle (usersDb : UsersStore) evnt =
     match evnt with
     | UserAdded args ->
         usersDb.addUser args
+        |> TaskResult.mapError ApplicationError.DatabaseError

@@ -3,19 +3,19 @@
   "isRoot": true,
   "tools": {
     "fake-cli": {
-      "version": "5.19.1",
+      "version": "5.20.3",
       "commands": [
         "fake"
       ]
     },
     "paket": {
-      "version": "5.242.2",
+      "version": "5.249.2",
       "commands": [
         "paket"
       ]
     },
     "snowflaqe": {
-      "version": "1.8.0",
+      "version": "1.10.0",
       "commands": [
         "snowflaqe"
       ]
