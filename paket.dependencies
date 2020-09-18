@@ -54,5 +54,5 @@ group Build
     nuget Fake.Core.Environment
     nuget Fake.Core.Trace
     nuget Fake.IO.Zip
-    nuget Farmer ~> 0.21
+    nuget Farmer
     github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs
