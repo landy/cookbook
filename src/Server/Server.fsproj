@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>Cookbook.Server</RootNamespace>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>391011ec-4151-4857-a1c9-5d82bd27b00e</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
