@@ -9,5 +9,12 @@
     <Compile Include="Password.fs" />
     <Compile Include="Jwt.fs" />
   </ItemGroup>
-    <Import Project="..\..\.paket\Paket.Restore.targets" />
+  <ItemGroup>
+    <PackageReference Include="FSharp.Control.AsyncSeq" Version="3.0.2" />
+    <PackageReference Include="FsToolkit.ErrorHandling" Version="2.0.0" />
+    <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.15.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+  </ItemGroup>
 </Project>

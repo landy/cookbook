@@ -5,9 +5,7 @@
         <RootNamespace>Cookbook.Shared</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="paket.references" />
         <Compile Include="Errors.fs" />
         <Compile Include="Users.fs" />
     </ItemGroup>
-    <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

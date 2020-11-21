@@ -23,7 +23,7 @@ let wwwRoot = tryGetEnv "public_path" |> Option.defaultValue "./public" |> Path.
 let storageAccount = tryGetEnv "STORAGE_CONNECTIONSTRING" |> Option.defaultValue "UseDevelopmentStorage=true" |> CloudStorageAccount.Parse
 let port =
     "SERVER_PORT"
-    |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 8085us
+    |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 5000us
 
 
 let webApp =

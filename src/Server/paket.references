@@ -1,8 +1,0 @@
-Giraffe
-Microsoft.ApplicationInsights.AspNetCore
-WindowsAzure.Storage
-Fable.Remoting.Giraffe
-System.IdentityModel.Tokens.Jwt
-Microsoft.Azure.Cosmos
-FsToolkit.ErrorHandling
-FsToolkit.ErrorHandling.TaskResult

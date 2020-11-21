@@ -2,7 +2,7 @@ module Cookbook.Server.Users.CommandHandlers
 
 open System.Threading.Tasks
 open FsToolkit.ErrorHandling
-open FSharp.Control.Tasks.V2
+open FSharp.Control.Tasks
 
 open Cookbook.Shared.Errors
 open Cookbook.Server.Users.Domain

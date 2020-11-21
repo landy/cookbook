@@ -1,64 +1,62 @@
 ﻿// Template for webpack.config.js in Fable projects
-// Find latest version in https://github.com/fable-compiler/webpack-config-template
-
 // In most cases, you'll only need to edit the CONFIG object (after dependencies)
 // See below if you need better fine-tuning of Webpack options
 
-// Dependencies. Also required: core-js, fable-loader, fable-compiler, @babel/core,
-// @babel/preset-env, babel-loader, sass, sass-loader, css-loader, style-loader, file-loader, resolve-url-loader
-var path = require('path');
-var webpack = require('webpack');
+// Dependencies. Also required: core-js, @babel/core,
+// @babel/preset-env, babel-loader, sass, sass-loader, css-loader, style-loader, file-loader
+var path = require("path");
+var webpack = require("webpack");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+const { patchGracefulFileSystem } = require("./webpack.common.js");
+patchGracefulFileSystem();
+
+// If we're running the webpack-dev-server, assume we're in development mode
+var isProduction = !process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
+
+const isDevelopment = !isProduction && process.env.NODE_ENV !== 'production';
 
 var CONFIG = {
     // The tags to include the generated JS and CSS will be automatically injected in the HTML template
     // See https://github.com/jantimon/html-webpack-plugin
-    indexHtmlTemplate: './src/Client/index.html',
-    fsharpEntry: './src/Client/Client.fsproj',
-    cssEntry: './src/Client/style.scss',
-    outputDir: './src/Client/deploy',
-    assetsDir: './src/Client/public',
+    indexHtmlTemplate: "./src/Client/index.html",
+    fsharpEntry: "./.fable-build/Application.js",
+    cssEntry: "./src/Client/style.scss",
+    outputDir: "./dist",
+    assetsDir: "./public",
     devServerPort: 8080,
     // When using webpack-dev-server, you may need to redirect some calls
     // to a external API server. See https://webpack.js.org/configuration/dev-server/#devserver-proxy
     devServerProxy: {
-        // redirect requests that start with /api/ to the server on port 8085
-        '/api/**': {
-            target: 'http://localhost:' + (process.env.SERVER_PROXY_PORT || "8085"),
-               changeOrigin: true
-           },
-        '/graphql': {
-            target: 'http://localhost:' + (process.env.SERVER_PROXY_PORT || "8085"),
+        '/**': {
+            // assuming the suave server is running on port 8083
+            target: "http://localhost:5000",
             changeOrigin: true
-        },
-        // redirect websocket requests that start with /socket/ to the server on the port 8085
-        '/socket/**': {
-            target: 'http://localhost:' + (process.env.SERVER_PROXY_PORT || "8085"),
-            ws: true
-           }
-       },
+        }
+    },
     // Use babel-preset-env to generate JS compatible with most-used browsers.
     // More info at https://babeljs.io/docs/en/next/babel-preset-env.html
     babel: {
+        plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
         presets: [
-            ['@babel/preset-env', {
-                modules: false,
+            ["@babel/preset-react"],
+            ["@babel/preset-env", {
+                "targets": "> 0.25%, not dead",
+                "modules": false,
                 // This adds polyfills when needed. Requires core-js dependency.
                 // See https://babeljs.io/docs/en/babel-preset-env#usebuiltins
-                // Note that you still need to add custom polyfills if necessary (e.g. whatwg-fetch)
-                useBuiltIns: 'usage',
-                corejs: 3
+                "useBuiltIns": "usage",
+                "corejs": 3
             }]
         ],
     }
 }
 
-// If we're running the webpack-dev-server, assume we're in development mode
-var isProduction = !process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
 
-console.log('Bundling for ' + (isProduction ? 'production' : 'development') + '...');
+console.log("Bundling for " + (isProduction ? "production" : "development") + "...");
 
 // The HtmlWebpackPlugin allows us to use a template for the index.html page
 // and automatically injects <script> or <link> tags for generated bundles.
@@ -66,31 +64,43 @@ var commonPlugins = [
     new HtmlWebpackPlugin({
         filename: 'index.html',
         template: resolve(CONFIG.indexHtmlTemplate)
+    }),
+
+    new Dotenv({
+        path: "./.env",
+        silent: false,
+        systemvars: true
     })
 ];
 
 module.exports = {
-    // In development, split the JavaScript and CSS files in order to
-    // have a faster HMR support. In production bundle styles together
-    // with the code because the MiniCssExtractPlugin will extract the
-    // CSS in a separate files.
+    // In development, bundle styles together with the code so they can also
+    // trigger hot reloads. In production, put them in a separate CSS file.
     entry: isProduction ? {
         app: [resolve(CONFIG.fsharpEntry), resolve(CONFIG.cssEntry)]
     } : {
-            app: [resolve(CONFIG.fsharpEntry)],
-            style: [resolve(CONFIG.cssEntry)]
-        },
+        app: [resolve(CONFIG.fsharpEntry)],
+        style: [resolve(CONFIG.cssEntry)]
+    },
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
     output: {
         path: resolve(CONFIG.outputDir),
         filename: isProduction ? '[name].[hash].js' : '[name].js'
     },
-    mode: isProduction ? 'production' : 'development',
-    devtool: isProduction ? 'source-map' : 'eval-source-map',
+    mode: isProduction ? "production" : "development",
+    devtool: isProduction ? "source-map" : "eval-source-map",
     optimization: {
+        // Split the code coming from npm packages into a different file.
+        // 3rd party dependencies change less often, let the browser cache them.
         splitChunks: {
-            chunks: 'all'
+            cacheGroups: {
+                commons: {
+                    test: /node_modules/,
+                    name: "vendors",
+                    chunks: "all"
+                }
+            }
         },
     },
     // Besides the HtmlPlugin, we use the following plugins:
@@ -102,42 +112,41 @@ module.exports = {
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ?
         commonPlugins.concat([
-            new MiniCssExtractPlugin({ filename: 'style.[hash].css' }),
-            new CopyWebpackPlugin({"patterns":[{ from: resolve(CONFIG.assetsDir) }]}),
+            new MiniCssExtractPlugin({ filename: 'style.css' }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    { from: resolve(CONFIG.assetsDir) }
+                ]
+            }),
         ])
         : commonPlugins.concat([
             new webpack.HotModuleReplacementPlugin(),
+            new ReactRefreshWebpackPlugin()
         ]),
     resolve: {
         // See https://github.com/fable-compiler/Fable/issues/1490
-        symlinks: false
+        symlinks: false,
+        modules: [resolve("./node_modules")],
+        alias: {
+            // Some old libraries still use an old specific version of core-js
+            // Redirect the imports of these libraries to the newer core-js
+            'core-js/es6': 'core-js/es'
+        }
     },
     // Configuration for webpack-dev-server
     devServer: {
-        publicPath: '/',
-        historyApiFallback: true,
+        publicPath: "/",
         contentBase: resolve(CONFIG.assetsDir),
-        host: '0.0.0.0',
         port: CONFIG.devServerPort,
         proxy: CONFIG.devServerProxy,
         hot: true,
         inline: true
     },
-    // - fable-loader: transforms F# into JS
     // - babel-loader: transforms JS to old syntax (compatible with old browsers)
     // - sass-loaders: transforms SASS/SCSS into JS
     // - file-loader: Moves files referenced in the code (fonts, images) into output folder
     module: {
         rules: [
-            {
-                test: /\.fs(x|proj)?$/,
-                use: {
-                    loader: 'fable-loader',
-                    options: {
-                        babel: CONFIG.babel
-                    }
-                }
-            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
@@ -152,19 +161,21 @@ module.exports = {
                     isProduction
                         ? MiniCssExtractPlugin.loader
                         : 'style-loader',
-                    'css-loader',
                     {
-                        loader: 'resolve-url-loader',
+                        loader: 'css-loader',
+                        options: {
+                            modules: true
+                        }
                     },
                     {
-                      loader: 'sass-loader',
-                      options: { implementation: require('sass') }
+                        loader: 'sass-loader',
+                        options: { implementation: require("sass") }
                     }
                 ],
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*)?$/,
-                use: ['file-loader']
+                use: ["file-loader"]
             }
         ]
     }

@@ -1,25 +1,10 @@
 module Cookbook.Client.Application
 
-open Elmish
-open Elmish.React
 
-open Cookbook.Client.App
+open Fable.Core.JsInterop
 open Feliz
+open Browser.Dom
 
-
-#if DEBUG
-open Elmish.Debug
-open Elmish.HMR
-#endif
-
-
-Program.mkProgram State.init State.update View.render
-#if DEBUG
-|> Program.withConsoleTrace
-#endif
-|> Program.withReactBatched "elmish-app"
-#if DEBUG
-|> Program.withDebugger
-#endif
-|> Program.run
+let elem = Html.div "test"
+ReactDOM.render(elem, document.getElementById("elmish-app"))
 

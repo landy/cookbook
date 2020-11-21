@@ -3,7 +3,7 @@ module Cookbook.Server.Users.Database
 open System
 open Microsoft.Azure.Cosmos
 open FsToolkit.ErrorHandling
-open FSharp.Control.Tasks.V2
+open FSharp.Control.Tasks
 
 open Cookbook.Shared.Errors
 open Cookbook.Libraries.CosmosDb
@@ -57,7 +57,7 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
             task {
                 let! container = getUsersContainer()
                 let! r = tryGetItem<Schema.UserDocument> container username Schema.PartitionKeyValue
-                return r |> Option.map (fun row ->{ Username = row.Id; Name = row.Name })
+                return r |> Option.map (fun row ->({ Username = row.Id; Name = row.Name }:Views.CookbookUser))
             }
 
         member _.setRefreshToken username token expires =

@@ -366,3 +366,4 @@ appsettings.Development.json
 deploy/
 gql-output/
 cookbookSchema.json
+.fable-build/

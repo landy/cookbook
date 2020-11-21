@@ -5,8 +5,7 @@ open System.Net
 open Microsoft.Azure.Cosmos.Fluent
 open FsToolkit.ErrorHandling
 open Microsoft.Azure.Cosmos
-open FSharp.Control.Tasks.V2
-open FSharp.Control
+open FSharp.Control.Tasks.NonAffine
 
 
 let createCosmosClient endpoint authKey =
