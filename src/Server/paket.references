@@ -1,0 +1,9 @@
+Fable.Remoting.Giraffe
+FsToolkit.ErrorHandling
+FsToolkit.ErrorHandling.TaskResult
+Giraffe
+Microsoft.ApplicationInsights.AspNetCore
+Microsoft.Azure.Cosmos
+System.IdentityModel.Tokens.Jwt
+WindowsAzure.Storage
+FSharp.Core

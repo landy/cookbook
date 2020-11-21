@@ -1,0 +1,7 @@
+FSharp.Control.AsyncSeq
+FsToolkit.ErrorHandling
+FsToolkit.ErrorHandling.TaskResult
+Microsoft.AspNetCore.Cryptography.KeyDerivation
+Microsoft.Azure.Cosmos
+System.IdentityModel.Tokens.Jwt
+FSharp.Core
