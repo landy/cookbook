@@ -77,10 +77,9 @@ module.exports = {
     // In development, bundle styles together with the code so they can also
     // trigger hot reloads. In production, put them in a separate CSS file.
     entry: isProduction ? {
-        app: [resolve(CONFIG.fsharpEntry), resolve(CONFIG.cssEntry)]
+        app: [resolve(CONFIG.fsharpEntry)]
     } : {
-        app: [resolve(CONFIG.fsharpEntry)],
-        style: [resolve(CONFIG.cssEntry)]
+        app: [resolve(CONFIG.fsharpEntry)]
     },
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
@@ -164,6 +163,25 @@ module.exports = {
                     {
                         loader: 'css-loader',
                         options: {
+                            modules: false
+                        }
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: { implementation: require("sass") }
+                    }
+                ],
+                exclude: /\.module\.(sass|scss|css)$/
+            },
+            {
+                test: /\.(sass|scss|css)$/,
+                use: [
+                    isProduction
+                        ? MiniCssExtractPlugin.loader
+                        : 'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
                             modules: true
                         }
                     },
@@ -172,6 +190,7 @@ module.exports = {
                         options: { implementation: require("sass") }
                     }
                 ],
+                include: /\.module\.(sass|scss|css)$/
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*)?$/,

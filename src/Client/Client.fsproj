@@ -5,17 +5,19 @@
     <RootNamespace>Cookbook.Client</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Pages\Login\styles.module.scss" />
     <None Include="index.html" />
     <Content Include="public/favicon.png" />
     <None Include="style.scss" />
-    <!--        <Compile Include="Version.fs" />-->
-    <!--        <Compile Include="Server.fs" />-->
-    <!--        <Compile Include="Router.fs" />-->
-    <!--        <Compile Include="Components\FadedLoader.fs" />-->
-    <!--        <Compile Include="Components\Html.fs" />-->
-    <!--        <Compile Include="Pages\Login\Domain.fs" />-->
-    <!--        <Compile Include="Pages\Login\State.fs" />-->
-    <!--        <Compile Include="Pages\Login\View.fs" />-->
+        <Compile Include="Stylesheet.fs" />
+            <Compile Include="Version.fs" />
+            <Compile Include="Server.fs" />
+            <Compile Include="Router.fs" />
+            <Folder Include="Components" />
+            <Compile Include="Components\Html.fs" />
+            <Compile Include="Pages\Login\Domain.fs" />
+            <Compile Include="Pages\Login\State.fs" />
+            <Compile Include="Pages\Login\View.fs" />
     <!--        <Compile Include="Pages\UsersList\Domain.fs" />-->
     <!--        <Compile Include="Pages\UsersList\State.fs" />-->
     <!--        <Compile Include="Pages\UsersList\View.fs" />-->
