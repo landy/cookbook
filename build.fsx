@@ -23,7 +23,7 @@ Target.initEnvironment ()
 let serverPath = Path.getFullName "./src/Server"
 let graphQLGeneratorPath = Path.getFullName "./src/GraphQLSchemaGenerator"
 let clientPath = Path.getFullName "./src/Client"
-let clientDeployPath = Path.combine clientPath "deploy"
+let clientDeployPath = Path.getFullName "./dist"
 let deployDir = Path.getFullName "./deploy"
 let gqlClientPath = Path.getFullName "./gql-output"
 let schemaFile = Path.getFullName "./cookbookSchema.json"
@@ -89,12 +89,6 @@ Target.create "InstallClient" (fun _ ->
     runTool npmTool "install --frozen-lockfile" __SOURCE_DIRECTORY__
 )
 
-Target.create "GenerateGQLClient" (fun _ ->
-    printfn "generating GraphQL file in %s" schemaFile
-    runDotNetWithArgs "run" graphQLGeneratorPath schemaFile
-    runDotNetWithArgs "snowflaqe" "./" "--generate"
-)
-
 Target.create "Build" (fun _ ->
     runDotNet "build" serverPath
     Shell.regexReplaceInFileWithEncoding
@@ -102,7 +96,7 @@ Target.create "Build" (fun _ ->
        ("let app = \"" + release.NugetVersion + "\"")
         System.Text.Encoding.UTF8
         (Path.combine clientPath "Version.fs")
-    runTool npmTool "webpack-cli -p" __SOURCE_DIRECTORY__
+    runTool npmTool "run build" __SOURCE_DIRECTORY__
 )
 
 Target.create "Run" (fun _ ->
