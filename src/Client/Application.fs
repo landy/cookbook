@@ -1,7 +1,7 @@
 module Cookbook.Client.Application
 
 open Cookbook.Client.AppStyles
-init()
+initStyles()
 
 open Feliz
 open Browser.Dom

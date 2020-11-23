@@ -2,7 +2,6 @@ module Cookbook.Client.AppStyles
 
 open Fable.Core.JsInterop
 
-
-let init () =
+let initStyles () =
     importSideEffects "./style.scss"
     ()
