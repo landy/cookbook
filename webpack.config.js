@@ -23,6 +23,7 @@ var CONFIG = {
     // The tags to include the generated JS and CSS will be automatically injected in the HTML template
     // See https://github.com/jantimon/html-webpack-plugin
     indexHtmlTemplate: "./src/Client/index.html",
+    cssEntry: "./src/Client/style.scss",
     fsharpEntry: "./.fable-build/Application.js",
     outputDir: "./dist",
     assetsDir: "./src/Client/public",
@@ -78,7 +79,13 @@ module.exports = {
     entry: isProduction ? {
         app: [resolve(CONFIG.fsharpEntry)]
     } : {
-        app: [resolve(CONFIG.fsharpEntry)]
+        style : {
+            import: resolve((CONFIG.cssEntry))
+        },
+        app: {
+            import: resolve(CONFIG.fsharpEntry),
+            dependOn: "style"
+        }
     },
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
