@@ -1,13 +1,11 @@
 module Cookbook.Client.Application
 
+open Cookbook.Client.AppStyles
+init()
 
-open Fable.Core.JsInterop
-let props : Pages.Login.State.LoginPageProps = { handleNewToken = ignore }
-let foo = Pages.Login.View.render props
-importSideEffects "./style.scss"
 open Feliz
 open Browser.Dom
 
 
-let elem = Html.div "test"
-ReactDOM.render(foo , document.getElementById("elmish-app"))
+let props : Pages.Login.State.LoginPageProps = { handleNewToken = ignore }
+ReactDOM.render(Pages.Login.View.render props , document.getElementById("elmish-app"))

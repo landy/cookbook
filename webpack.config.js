@@ -24,7 +24,6 @@ var CONFIG = {
     // See https://github.com/jantimon/html-webpack-plugin
     indexHtmlTemplate: "./src/Client/index.html",
     fsharpEntry: "./.fable-build/Application.js",
-    cssEntry: "./src/Client/style.scss",
     outputDir: "./dist",
     assetsDir: "./public",
     devServerPort: 8080,
