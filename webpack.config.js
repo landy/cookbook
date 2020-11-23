@@ -25,7 +25,7 @@ var CONFIG = {
     indexHtmlTemplate: "./src/Client/index.html",
     fsharpEntry: "./.fable-build/Application.js",
     outputDir: "./dist",
-    assetsDir: "./public",
+    assetsDir: "./src/Client/public",
     devServerPort: 8080,
     // When using webpack-dev-server, you may need to redirect some calls
     // to a external API server. See https://webpack.js.org/configuration/dev-server/#devserver-proxy
