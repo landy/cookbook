@@ -20,10 +20,10 @@
     <ProjectReference Include="..\Libraries\Libraries.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="appsettings.Development.json" Condition="Exists('appsettings.Development.json')">
+    <Content Update="appsettings.Development.json" Condition="Exists('appsettings.Development.json')">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
