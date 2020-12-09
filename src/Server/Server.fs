@@ -36,6 +36,8 @@ let webApp =
 type Startup (cfg:IConfiguration) =
 
     member _.ConfigureServices (sc:IServiceCollection) =
+        sc.AddApplicationInsightsTelemetry() |> ignore
+
         let dbServer = cfg.["cosmosDbConnection"]
         let dbKey = cfg.["cosmosDbKey"]
 

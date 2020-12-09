@@ -19,6 +19,7 @@ let deployment env : Deployment =
         name ("cookbook-ai" |> envSpecific)
     }
 
+
     let db = cosmosDb {
         name ("cookbook-db" |> envSpecific)
         account_name ("cookbook-db-account" |> envSpecific)
@@ -30,12 +31,15 @@ let deployment env : Deployment =
         link_to_app_insights insights.Name
         docker_image "landys/cookbook:latest" ""
         sku WebApp.Sku.B1
+
         setting "public_path" "./public"
         setting "cosmosDbConnection" db.Endpoint
         setting "cosmosDbKey" db.PrimaryKey
         setting "cosmosDb__databaseName" db.DbName
         setting "cosmosDb__containers__users" "Users"
         setting "cosmosDb__containers__refreshTokens" "RefreshTokens"
+        setting "SERVER_PORT" "8085"
+        setting "ApplicationInsights__InstrumentationKey" insights.InstrumentationKey
     }
 
     arm {
