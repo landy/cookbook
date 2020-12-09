@@ -161,16 +161,16 @@ type ArmOutput =
 let mutable deploymentOutputs : ArmOutput option = None
 
 Target.create "ArmTemplate" (fun _ ->
-    let environment = Environment.environVarOrDefault "environment" (Guid.NewGuid().ToString().ToLower().Split '-' |> Array.head)
+    let environment = Environment.environVarOrDefault "environment" "dev"
     let resourceGroupName = "cookbook-" + environment
 
     let authCtx =
         // You can safely replace these with your own subscription and client IDs hard-coded into this script.
-        let subscriptionId = try Environment.environVar "subscriptionId" |> Guid.Parse with _ -> failwith "Invalid Subscription ID. This should be your Azure Subscription ID."
-        let clientId = try Environment.environVar "clientId" |> Guid.Parse with _ -> failwith "Invalid Client ID. This should be the Client ID of an application registered in Azure with permission to create resources in your subscription."
-        let clientSecret = try Environment.environVar "clientSecret" with _ -> failwith "Invalid Client Secret. This should be the Client Secret of an application registered in Azure with permission to create resources in your subscription."
+        let subscriptionId = try (*Environment.environVar "subscriptionId"*) "9bc185e8-89dc-4a43-b25c-db2e4fbf3ccf" |> Guid.Parse with _ -> failwith "Invalid Subscription ID. This should be your Azure Subscription ID."
+        let clientId =  try (*Environment.environVar "clientId"*) "69aeda6a-6859-431d-b79d-c74cf7547fde" |> Guid.Parse with _ -> failwith "Invalid Client ID. This should be the Client ID of an application registered in Azure with permission to create resources in your subscription."
+        let clientSecret = "nQYBvq_U1Ve5fn9.uNzM3V88C9IaM-Sq.9" //try Environment.environVar "clientSecret" with _ -> failwith "Invalid Client Secret. This should be the Client Secret of an application registered in Azure with permission to create resources in your subscription."
         let tenantId =
-            try Environment.environVar "tenantId" |> Guid.Parse
+            try (*Environment.environVar "tenantId"*) "48a5a247-ba65-4fff-b0f8-c2f843f4766b" |> Guid.Parse
             with _ -> failwith "Invalid TenantId ID. This should be the Tenant ID of an application registered in Azure with permission to create resources in your subscription."
 
         let credentials = { ClientId = clientId; ClientSecret = clientSecret; TenantId = tenantId }
@@ -198,7 +198,7 @@ Target.create "ArmTemplate" (fun _ ->
     |> Seq.iter(function
         | DeploymentInProgress (state, operations) -> Trace.tracefn "State is %s, completed %d operations." state operations
         | DeploymentError (statusCode, message) -> Trace.traceError <| sprintf "DEPLOYMENT ERROR: %s - '%s'" statusCode message
-        | DeploymentCompleted d -> deploymentOutputs <- d)
+        | DeploymentCompleted d -> Trace.tracefn "ARM deployment finished")
 )
 
 Target.create "GenerateArm" (fun _ ->
