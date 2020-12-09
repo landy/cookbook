@@ -22,6 +22,7 @@ let deployment env : Deployment =
     let db = cosmosDb {
         name ("cookbook-db" |> envSpecific)
         account_name ("cookbook-db-account" |> envSpecific)
+        free_tier
     }
 
     let webApp = webApp {
