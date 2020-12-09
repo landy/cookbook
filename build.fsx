@@ -242,9 +242,8 @@ open Fake.Core.TargetOperators
     ==> "InstallClient"
     ==> "Build"
     ==> "Bundle"
-//    ==> "ArmTemplate"
-//    ==> "AppService"
 
+"ArmTemplate"
 
 "Clean"
     ==> "InstallClient"
