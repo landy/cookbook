@@ -42,8 +42,6 @@ let deployment env : Deployment =
         add_resource insights
         add_resource webApp
         add_resource db
-        output "WebAppName" webApp.Name
-        output "WebAppPassword" webApp.PublishingPassword
     }
 
 

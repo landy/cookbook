@@ -201,6 +201,14 @@ Target.create "ArmTemplate" (fun _ ->
         | DeploymentCompleted d -> deploymentOutputs <- d)
 )
 
+Target.create "GenerateArm" (fun _ ->
+    "dev"
+    |> Infrastructure.deployment
+    |> Infrastructure.toTemplate
+    |> Farmer.Writer.toJson
+    |> File.replaceContent "arm-template.json"
+)
+
 open Fake.IO.Globbing.Operators
 open System.Net
 
