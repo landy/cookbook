@@ -31,10 +31,13 @@ var CONFIG = {
     // When using webpack-dev-server, you may need to redirect some calls
     // to a external API server. See https://webpack.js.org/configuration/dev-server/#devserver-proxy
     devServerProxy: {
-        '/**': {
-            // assuming the suave server is running on port 8083
-            target: "http://localhost:5000",
+        '/api/**': {
+            target: 'http://localhost:' + (process.env.SERVER_PROXY_PORT || "5000"),
             changeOrigin: true
+        },
+        '/socket/**': {
+            target: 'http://localhost:' + (process.env.SERVER_PROXY_PORT || "5000"),
+            ws: true
         }
     },
     // Use babel-preset-env to generate JS compatible with most-used browsers.
@@ -79,13 +82,7 @@ module.exports = {
     entry: isProduction ? {
         app: [resolve(CONFIG.fsharpEntry)]
     } : {
-        style : {
-            import: resolve((CONFIG.cssEntry))
-        },
-        app: {
-            import: resolve(CONFIG.fsharpEntry),
-            dependOn: "style"
-        }
+        app: [resolve(CONFIG.fsharpEntry)]
     },
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
@@ -103,7 +100,8 @@ module.exports = {
                 commons: {
                     test: /node_modules/,
                     name: "vendors",
-                    chunks: "all"
+                    chunks: "all",
+                    enforce: true
                 }
             }
         },
@@ -141,7 +139,9 @@ module.exports = {
     // Configuration for webpack-dev-server
     devServer: {
         publicPath: "/",
+        historyApiFallback: true,
         contentBase: resolve(CONFIG.assetsDir),
+        host: '0.0.0.0',
         port: CONFIG.devServerPort,
         proxy: CONFIG.devServerProxy,
         hot: true,

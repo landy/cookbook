@@ -2,7 +2,9 @@ Fable.Aether
 Fable.Remoting.Client
 Feliz
 Feliz.Bulma
+Feliz.UseDeferred
 Feliz.Router
 Feliz.UseElmish
 FsToolkit.ErrorHandling.TaskResult
 FSharp.Core
+Thoth.Json

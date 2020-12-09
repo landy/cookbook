@@ -29,7 +29,7 @@ let private handleLogin state :Cmd<Msg> =
     Cmd.ofSub fn
 
 type LoginPageProps = {
-    handleNewToken:(Response.LoggedInUser option -> unit)
+    handleNewToken:(Response.UserSession option -> unit)
 }
 
 let update (props:LoginPageProps) msg state =

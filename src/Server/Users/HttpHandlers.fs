@@ -48,7 +48,7 @@ let private login (usersDb:UsersStore) (r:Request.Login) =
                 }
             )
             |> Result.requireSome (AuthenticationError.InvalidUsernameOrPassword |> ApplicationError.AuthenticationError)
-            |> Result.map (fun (t:LoggedInUser) ->
+            |> Result.map (fun (t:UserSession) ->
                 usersDb.setRefreshToken t.Username t.RefreshToken.Token t.RefreshToken.ExpiresUtc
                 |> Task.map (fun _ -> t)
             )

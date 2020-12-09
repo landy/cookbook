@@ -6,6 +6,8 @@ initStyles()
 open Feliz
 open Browser.Dom
 
+open Cookbook.Client.App.View
 
-let props : Pages.Login.State.LoginPageProps = { handleNewToken = ignore }
-ReactDOM.render(Pages.Login.View.render props , document.getElementById("elmish-app"))
+
+
+ReactDOM.render(MainApplication() , document.getElementById("elmish-app"))

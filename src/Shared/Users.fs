@@ -24,7 +24,7 @@ module Response =
         Token : string
         ExpiresUtc : DateTimeOffset
     }
-    type LoggedInUser = {
+    type UserSession = {
         Username : string
         Name : string
         Token : Token
@@ -42,7 +42,7 @@ module Route =
         sprintf "/api/users/%s" m
 
 type UsersService = {
-    Login : Request.Login -> Async<Result<Response.LoggedInUser, ApplicationError>>
+    Login : Request.Login -> Async<Result<Response.UserSession, ApplicationError>>
     GetUsers : unit -> Async<Result<Response.UserRow list, ApplicationError>>
     SaveUser : Request.AddUser -> Async<Result<unit, ApplicationError>>
 }

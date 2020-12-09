@@ -1,140 +1,80 @@
 module Cookbook.Client.Pages.UsersAdd.View
 
 open Feliz
-open Feliz.MaterialUI
+open Feliz.Bulma
 open Feliz.UseElmish
 open Aether
 
 open Domain
 
-let useStyles = Styles.makeStyles(fun styles theme ->
-    {|
-        root = styles.create [
-            style.margin (theme.spacing 2)
-        ]
-        paper = styles.create [
-            style.padding (theme.spacing 4)
-        ]
-        form = styles.create [
-            style.display.flex
-            style.flexDirection.column
-
-        ]
-        formGroup = styles.create [
-            style.marginBottom (theme.spacing 2)
-        ]
-        textField = styles.create [
-            style.marginRight (theme.spacing 1)
-            style.width (length.ch 25)
-        ]
-        wrapper = styles.create [
-            style.marginTop  (theme.spacing(1))
-            style.position.relative
-        ]
-        submitRow = styles.create [
-            style.display.flex
-            style.alignSelf.flexStart
-        ]
-        submitProgress = styles.create [
-            style.position.absolute
-            style.top (length.percent 50)
-            style.left (length.percent 50)
-            style.marginTop -12
-            style.marginLeft -12
-            style.color theme.palette.primary.light
-        ]
-    |}
-)
-
-let render = React.functionComponent(fun () ->
+[<ReactComponent>]
+let render () =
     let state,dispatch = React.useElmish(State.init, State.update, [||])
 
-    let s = useStyles()
 
     Html.div [
-        prop.className s.root
         prop.children [
-            Mui.paper [
-                prop.className s.paper
+            Bulma.box [
                 prop.children [
-                    Mui.typography [
-                        typography.variant.h6
-                        typography.color.inherit'
-                        typography.children [
-                            Html.div "Add user"
-                        ]
-                    ]
                     Html.form [
                         prop.autoComplete "off"
-                        prop.className s.form
                         prop.onSubmit (fun e ->
                             e.preventDefault()
                             Started |> SaveUser |> dispatch
                         )
                         prop.children [
-                            Mui.formGroup [
-                                prop.className s.formGroup
+                            Bulma.field.div [
+                                field.isGrouped
                                 prop.children [
-                                    Mui.textField [
-                                        prop.className s.textField
-                                        textField.value state.FormData.Username
-                                        textField.label "Username"
-                                        textField.margin.dense
-                                        textField.variant.outlined
-                                        textField.name (nameof state.FormData.Username)
-                                        textField.onChange (Optic.set Optics.username >> FormChanged >> dispatch)
+                                    Bulma.control.div [
+                                        Bulma.label "Username"
+                                        Bulma.input.text [
+                                            prop.value state.FormData.Username
+                                            prop.name (nameof state.FormData.Username)
+                                            prop.onChange (Optic.set Optics.username >> FormChanged >> dispatch)
+                                        ]
                                     ]
-                                    Mui.textField [
-                                        prop.className s.textField
-                                        textField.value state.FormData.Name
-                                        textField.label "Name"
-                                        textField.margin.dense
-                                        textField.name (nameof state.FormData.Name)
-                                        textField.variant.outlined
-                                        textField.onChange (Optic.set Optics.name >> FormChanged >> dispatch)
+                                    Bulma.control.div [
+                                        Bulma.label "Name"
+                                        Bulma.input.text [
+                                            prop.value state.FormData.Username
+                                            prop.name (nameof state.FormData.Name)
+                                            prop.onChange (Optic.set Optics.name >> FormChanged >> dispatch)
+                                        ]
                                     ]
-                                    Mui.textField [
-                                        prop.className s.textField
-                                        textField.label "Password"
-                                        textField.margin.dense
-                                        textField.variant.outlined
-                                        textField.value state.FormData.Password
-                                        textField.name (nameof state.FormData.Password)
-                                        prop.type'.password
-                                        textField.onChange (Optic.set Optics.password >> FormChanged >> dispatch)
-                                    ]
-                                    Mui.textField [
-                                        prop.className s.textField
-                                        textField.label "Confirm password"
-                                        textField.margin.dense
-                                        textField.variant.outlined
-                                        textField.value state.FormData.ConfirmPassword
-                                        textField.name (nameof state.FormData.ConfirmPassword)
-                                        prop.type'.password
-                                        textField.onChange (Optic.set Optics.confirmPassword >> FormChanged >> dispatch)
-                                    ]
+//                                    Mui.textField [
+//                                        prop.className s.textField
+//                                        textField.label "Password"
+//                                        textField.margin.dense
+//                                        textField.variant.outlined
+//                                        textField.value state.FormData.Password
+//                                        textField.name (nameof state.FormData.Password)
+//                                        prop.type'.password
+//                                        textField.onChange (Optic.set Optics.password >> FormChanged >> dispatch)
+//                                    ]
+//                                    Mui.textField [
+//                                        prop.className s.textField
+//                                        textField.label "Confirm password"
+//                                        textField.margin.dense
+//                                        textField.variant.outlined
+//                                        textField.value state.FormData.ConfirmPassword
+//                                        textField.name (nameof state.FormData.ConfirmPassword)
+//                                        prop.type'.password
+//                                        textField.onChange (Optic.set Optics.confirmPassword >> FormChanged >> dispatch)
+//                                    ]
                                 ]
                             ]
                             Html.div [
-                                prop.className s.submitRow
                                 prop.children [
                                     Html.div [
-                                        prop.className s.wrapper
                                         prop.children [
-                                            Mui.button [
-                                                prop.type'.submit
-                                                prop.text "Save"
-                                                button.fullWidth true
-                                                button.disabled state.IsSaving
-                                                button.variant.contained
-                                                button.color.primary
+                                            Bulma.button.submit [
+                                                prop.value "Save"
+                                                prop.disabled state.IsSaving
+                                                color.isPrimary
+                                                if state.IsSaving then
+                                                    button.isLoading
                                             ]
-                                            if state.IsSaving then
-                                                Mui.circularProgress [
-                                                    circularProgress.classes.root s.submitProgress
-                                                    circularProgress.size 24
-                                                    circularProgress.variant.indeterminate
-                                                ]
                                         ]
                                     ]
                                 ]
@@ -145,4 +85,3 @@ let render = React.functionComponent(fun () ->
             ]
         ]
     ]
-)

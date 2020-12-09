@@ -49,4 +49,7 @@ module Router =
         let href : string = !!e.currentTarget?attributes?href?value
         Router.navigatePath href
 
-    let navigatePage<'a> (p:Page) : Cmd<'a> = p |> Page.toUrlSegments |> Array.ofList |> Cmd.navigatePath
+    let navigatePageCmd<'a> (p:Page) : Cmd<'a> = p |> Page.toUrlSegments |> Array.ofList |> Cmd.navigatePath
+
+    let navigatePage (p:Page) =
+        p |> Page.toUrlSegments |> Array.ofList |> Router.navigatePath

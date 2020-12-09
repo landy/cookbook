@@ -21,11 +21,14 @@ let deployment env : Deployment =
 
     let db = cosmosDb {
         name ("cookbook-db" |> envSpecific)
+        account_name ("cookbook-db-account" |> envSpecific)
     }
 
     let webApp = webApp {
         name ("cookbook-web" |> envSpecific)
         link_to_app_insights insights.Name
+        docker_image "landys/cookbook:latest" ""
+        sku WebApp.Sku.B1
         setting "public_path" "./public"
         setting "cosmosDbConnection" db.Endpoint
         setting "cosmosDbKey" db.PrimaryKey
