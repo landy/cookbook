@@ -30,6 +30,7 @@ let deployment env : Deployment =
         name ("cookbook-web" |> envSpecific)
         link_to_app_insights insights.Name
         docker_image "landys/cookbook:latest" ""
+        docker_ci
         sku WebApp.Sku.B1
 
         setting "public_path" "./public"
