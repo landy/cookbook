@@ -14,7 +14,7 @@ let deployment env : Deployment =
 
     let envSpecific = makeNameEnvSpecific env
 
-    // appinsights
+    // appinsights 
     let insights = appInsights {
         name ("cookbook-ai" |> envSpecific)
     }
