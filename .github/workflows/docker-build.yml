@@ -6,7 +6,7 @@ on:
     push:
         branches: [ master ]
         paths-ignore:
-            - './Infrastructure,.fsx'
+            - './Infrastructure.fsx'
 
 jobs:
     build:
