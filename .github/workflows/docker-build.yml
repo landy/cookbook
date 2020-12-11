@@ -1,11 +1,10 @@
-name: .NET Core
+name: Build docker image
 
 on:
     workflow_dispatch:
 
     push:
         branches: [ master ]
-
 
 jobs:
     build:
@@ -43,22 +42,8 @@ jobs:
                     cache-from: type=local,src=/tmp/.buildx-cache
                     cache-to: type=local,dest=/tmp/.buildx-cache
 
-            -   name: Setup .NET Core
-                uses: actions/setup-dotnet@v1
-                with:
-                    dotnet-version: 5.0.100
 
-            -   name: Install dependencies
-                run: dotnet tool restore
 
-            -   name: Build
-                run: dotnet fake build -p -t ArmTemplate
-                env:
-                    environment: dev
-                    subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
-                    clientId: ${{ secrets.AZURECLIENTID }}
-                    clientSecret: ${{ secrets.AZURECLIENTSECRET }}
-                    tenantId: ${{ secrets.AZURETENANTID }}
 
 
 
