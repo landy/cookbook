@@ -485,7 +485,7 @@ let MainContent () =
                                     ]
                                 ]
                             ]
-            Bulma.container (sprintf "User: %A"  auth.CurrentUser)
+            Bulma.container (sprintf "Userr: %A"  auth.CurrentUser)
 
         ]
 
