@@ -4,6 +4,7 @@ open FsToolkit.ErrorHandling
 
 open Cookbook.Client.Router
 open Cookbook.Client.Server
+open Cookbook.Client.Auth.Context
 open Cookbook.Shared.Users
 open Cookbook.Shared.Errors
 open Cookbook.Shared.Users.Response
@@ -16,7 +17,8 @@ open Domain
 //let private stylesheet = Stylesheet.load "./styles.module.scss"
 
 [<ReactComponent>]
-let render (handleNewUser: UserSession -> unit) =
+let LoginForm () =
+    let auth = React.useContext(authContext)
     let username, setUsername = React.useState("")
     let password, setPassword = React.useState("")
     let (errors: string list), setErrors = React.useState([])
@@ -25,7 +27,7 @@ let render (handleNewUser: UserSession -> unit) =
         let! loginResult =
             ({Username = username; Password = password}: Request.Login)
             |> usersService.Login
-            |> AsyncResult.tee handleNewUser
+            |> AsyncResult.tee auth.SetUser
             |> AsyncResult.teeError (fun err -> setErrors ["Login error"])
         Router.navigatePage Page.Main
         return loginResult
@@ -61,7 +63,7 @@ let render (handleNewUser: UserSession -> unit) =
                                 prop.children [
                                     Bulma.label [
                                         text.hasTextLeft
-                                        prop.text "Username"
+                                        prop.text "Uživatelské jméno"
                                     ]
                                     Bulma.control.div [
                                         Bulma.input.text [
@@ -77,7 +79,7 @@ let render (handleNewUser: UserSession -> unit) =
                             Bulma.field.div [
                                 Bulma.label [
                                     text.hasTextLeft
-                                    prop.text "Password"
+                                    prop.text "Heslo"
                                 ]
                                 Bulma.input.password [
                                     prop.onChange setPassword
@@ -94,7 +96,7 @@ let render (handleNewUser: UserSession -> unit) =
                                         size.isSize5
 
                                         if Deferred.inProgress loginState then button.isLoading
-                                        prop.value "Login"
+                                        prop.value "Přihlásit"
                                     ]
                                 ]
                             ]

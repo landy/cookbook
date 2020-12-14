@@ -5,6 +5,7 @@
     <RootNamespace>Cookbook.Client</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Components\navbar.module.scss" />
     <Content Include="Pages\Login\styles.module.scss" />
     <None Include="index.html" />
     <Content Include="public/favicon.png" />
@@ -17,9 +18,11 @@
             <Compile Include="Auth\Context.fs" />
             <Compile Include="Auth\AuthStorage.fs" />
             <Compile Include="Components\Html.fs" />
+            <Compile Include="Components\NavBar.fs" />
             <Compile Include="Pages\Login\Domain.fs" />
             <Compile Include="Pages\Login\State.fs" />
             <Compile Include="Pages\Login\View.fs" />
+            <Compile Include="Pages\Recipes\Components.fs" />
             <Compile Include="Pages\UsersList\Domain.fs" />
             <Compile Include="Pages\UsersList\State.fs" />
             <Compile Include="Pages\UsersList\View.fs" />

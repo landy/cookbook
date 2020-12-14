@@ -1,0 +1,10 @@
+@use "~bulma/bulma";
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.user-name {
+    margin-right: 1rem;
+}

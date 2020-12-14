@@ -17,7 +17,8 @@
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-popover": "^0.5.10",
-        "remotedev": "^0.2.9"
+        "remotedev": "^0.2.9",
+        "@fortawesome/fontawesome-free": "^5.15.1"
     },
     "devDependencies": {
         "@babel/core": "^7.7.0",
