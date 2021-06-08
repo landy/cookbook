@@ -15,7 +15,7 @@ open Cookbook.Client.Components.NavBar
 [<ReactComponent>]
 let MainContent page =
     Bulma.section[
-        spacing.pt3
+        spacing.pt5
         prop.children [
             Bulma.container [
                 prop.children [

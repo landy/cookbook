@@ -1,8 +1,8 @@
 source https://api.nuget.org/v3/index.json
 storage: none
 
-nuget FSharp.Core 5.0
-nuget Fable.Aether 1.0.2
+nuget FSharp.Core
+nuget Fable.Aether
 nuget Fable.Remoting.Client
 nuget Fable.Remoting.Giraffe
 nuget Feliz
@@ -10,15 +10,15 @@ nuget Feliz.Router
 nuget Feliz.Bulma
 nuget Feliz.UseElmish
 nuget Feliz.UseDeferred
-nuget FSharp.Control.AsyncSeq 3.0.2
+nuget FSharp.Control.AsyncSeq
 nuget FsToolkit.ErrorHandling
 nuget FsToolkit.ErrorHandling.TaskResult
 nuget Giraffe
 nuget Microsoft.ApplicationInsights.AspNetCore
-nuget Microsoft.AspNetCore.Cryptography.KeyDerivation 5.0.0
-nuget Microsoft.Azure.Cosmos 3.15.0
-nuget System.IdentityModel.Tokens.Jwt 6.8.0
-nuget WindowsAzure.Storage 9.3.3
+nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
+nuget Microsoft.Azure.Cosmos
+nuget System.IdentityModel.Tokens.Jwt
+nuget WindowsAzure.Storage
 nuget Thoth.Json
 
 group Build

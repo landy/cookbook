@@ -109,19 +109,27 @@ let TopNavBar (page:Page) =
         prop.children [
             Bulma.container[
                 Bulma.navbarBrand.div [
-                    Bulma.navbarItem.a [
-                        size.isSize3
-                        yield! prop.routed Page.Main
-                        prop.text "HHM"
+                    prop.style [
+                        style.display.flex
+                        style.alignItems.stretch
                     ]
-                    Bulma.navbarBurger [
-                        if isActive then navbarBurger.isActive
-                        prop.onClick (fun e -> e.preventDefault(); isActive |> not |> setIsActive)
-                        prop.children [
-                            Html.span [ prop.ariaHidden true ]
-                            Html.span [ prop.ariaHidden true ]
-                            Html.span [ prop.ariaHidden true ]
+                    prop.children [
+                        Bulma.navbarItem.a [
+                            size.isSize3
+                            yield! prop.routed Page.Main
+                            prop.text "HHM"
                         ]
+                        Bulma.navbarBurger [
+                            prop.className navbarStyles.["burger-stretch"]
+                            if isActive then navbarBurger.isActive
+                            prop.onClick (fun e -> e.preventDefault(); isActive |> not |> setIsActive)
+                            prop.children [
+                                Html.span [ prop.ariaHidden true ]
+                                Html.span [ prop.ariaHidden true ]
+                                Html.span [ prop.ariaHidden true ]
+                            ]
+                        ]
+
                     ]
                 ]
                 Bulma.navbarMenu [
