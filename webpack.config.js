@@ -14,10 +14,11 @@ const Dotenv = require('dotenv-webpack');
 const { patchGracefulFileSystem } = require("./webpack.common.js");
 patchGracefulFileSystem();
 
+let mode = process.env.NODE_ENV
+mode = mode ? mode : "production"
 // If we're running the webpack-dev-server, assume we're in development mode
-var isProduction = !process.argv.find(v => v.indexOf('webpack-dev-server') !== -1);
-
-const isDevelopment = !isProduction && process.env.NODE_ENV !== 'production';
+const isProduction = mode === 'production'
+const isDevelopment = !isProduction
 
 var CONFIG = {
     // The tags to include the generated JS and CSS will be automatically injected in the HTML template
@@ -79,20 +80,21 @@ var commonPlugins = [
 module.exports = {
     // In development, bundle styles together with the code so they can also
     // trigger hot reloads. In production, put them in a separate CSS file.
-    entry: isProduction ? {
-        app: [resolve(CONFIG.fsharpEntry)]
-    } : {
+    entry:  {
         app: [resolve(CONFIG.fsharpEntry)]
     },
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
     output: {
-        path: resolve(CONFIG.outputDir),
-        filename: isProduction ? '[name].[hash].js' : '[name].js'
+        filename: '[name].[contenthash].js',
+        path: path.resolve(__dirname, 'dist'),
+        clean: true,
     },
-    mode: isProduction ? "production" : "development",
+    mode: mode,
     devtool: isProduction ? "source-map" : "eval-source-map",
     optimization: {
+        runtimeChunk: "single",
+        moduleIds: 'deterministic',
         // Split the code coming from npm packages into a different file.
         // 3rd party dependencies change less often, let the browser cache them.
         splitChunks: {
@@ -115,7 +117,7 @@ module.exports = {
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ?
         commonPlugins.concat([
-            new MiniCssExtractPlugin({ filename: 'style.css' }),
+            new MiniCssExtractPlugin(),
             new CopyWebpackPlugin({
                 patterns: [
                     { from: resolve(CONFIG.assetsDir) }
@@ -123,12 +125,12 @@ module.exports = {
             }),
         ])
         : commonPlugins.concat([
-            new webpack.HotModuleReplacementPlugin(),
+            // new webpack.HotModuleReplacementPlugin(),
             new ReactRefreshWebpackPlugin()
         ]),
     resolve: {
-        // See https://github.com/fable-compiler/Fable/issues/1490
-        symlinks: false,
+        // // See https://github.com/fable-compiler/Fable/issues/1490
+        // symlinks: false,
         modules: [resolve("./node_modules")],
         alias: {
             // Some old libraries still use an old specific version of core-js

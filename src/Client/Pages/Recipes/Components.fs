@@ -16,14 +16,14 @@ let RecipeCard () =
                 Html.img [
                     prop.style [
                         style.width (length.perc 100)
-                        style.height (length.auto)
+                        style.height length.auto
                     ]
                     prop.src "https://picsum.photos/id/292/600/400/?random"
                 ]
             ]
             Html.a [
                 prop.href "#"
-                prop.text "Guláš"
+                prop.text "Gulášš"
             ]
         ]
     ]

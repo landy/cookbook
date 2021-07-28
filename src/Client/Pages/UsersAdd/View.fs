@@ -8,7 +8,7 @@ open Aether
 open Domain
 
 [<ReactComponent>]
-let render () =
+let Render () =
     let state,dispatch = React.useElmish(State.init, State.update, [||])
 
 
