@@ -9,13 +9,13 @@
       ]
     },
     "fable": {
-      "version": "3.2.2",
+      "version": "3.2.9",
       "commands": [
         "fable"
       ]
     },
     "paket": {
-      "version": "5.257.0",
+      "version": "5.258.1",
       "commands": [
         "paket"
       ]

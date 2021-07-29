@@ -7,7 +7,6 @@ open Microsoft.Azure.Cosmos
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open Microsoft.WindowsAzure.Storage
 
 open Cookbook.Server.Users.Domain
 open Cookbook.Server.Users.Database
@@ -20,7 +19,6 @@ let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" 
 
 let contentRoot = tryGetEnv "public_path" |> Option.defaultValue "." |> Path.GetFullPath
 let wwwRoot = tryGetEnv "public_path" |> Option.defaultValue "./public" |> Path.GetFullPath
-let storageAccount = tryGetEnv "STORAGE_CONNECTIONSTRING" |> Option.defaultValue "UseDevelopmentStorage=true" |> CloudStorageAccount.Parse
 let port =
     "SERVER_PORT"
     |> tryGetEnv |> Option.map uint16 |> Option.defaultValue 5000us

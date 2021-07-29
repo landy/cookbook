@@ -5,5 +5,4 @@ Giraffe
 Microsoft.ApplicationInsights.AspNetCore
 Microsoft.Azure.Cosmos
 System.IdentityModel.Tokens.Jwt
-WindowsAzure.Storage
 FSharp.Core

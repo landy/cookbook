@@ -18,7 +18,6 @@ nuget Microsoft.ApplicationInsights.AspNetCore
 nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
 nuget Microsoft.Azure.Cosmos
 nuget System.IdentityModel.Tokens.Jwt
-nuget WindowsAzure.Storage
 nuget Thoth.Json
 
 group Build
