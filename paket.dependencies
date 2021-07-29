@@ -20,18 +20,6 @@ nuget Microsoft.Azure.Cosmos
 nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
 
-group Build
-    source https://api.nuget.org/v3/index.json
-    framework: netstandard2.0
-    storage: none
-
-    nuget FSharp.Core
-    nuget Fake.Core.ReleaseNotes
-    nuget Fake.Core.Target
-    nuget Fake.DotNet.Cli
-    nuget Fake.IO.FileSystem
-    nuget Fake.Core.Environment
-    nuget Fake.Core.Trace
-    nuget Fake.IO.Zip
-    nuget Farmer
-    github CompositionalIT/fshelpers src/FsHelpers/ArmHelper/ArmHelper.fs
+nuget Fake.Core.Target
+nuget Fake.IO.FileSystem
+nuget Farmer
