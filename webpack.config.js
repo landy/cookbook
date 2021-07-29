@@ -199,10 +199,6 @@ module.exports = {
                     }
                 ],
                 include: /\.module\.(sass|scss|css)$/
-            },
-            {
-                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*)?$/,
-                use: ["file-loader"]
             }
         ]
     }
