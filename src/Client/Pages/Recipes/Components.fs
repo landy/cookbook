@@ -23,7 +23,7 @@ let RecipeCard () =
             ]
             Html.a [
                 prop.href "#"
-                prop.text "Gulášš"
+                prop.text "Guláš"
             ]
         ]
     ]
