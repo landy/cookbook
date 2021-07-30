@@ -29,17 +29,11 @@ Target.create "Bundle" (fun _ ->
 )
 
 Target.create "Azure" (fun _ ->
-    let web = webApp {
-        name "saeftest"
-        zip_deploy "deploy"
-    }
-    let deployment = arm {
-        location Location.WestEurope
-        add_resource web
-    }
+    let environment = Environment.environVarOrDefault "environment" "dev"
+    let resourceGroupName = "cookbook-" + environment
 
-    deployment
-    |> Deploy.execute "saeftest" Deploy.NoParameters
+    Infrastructure.deployment environment
+    |> Deploy.execute resourceGroupName Deploy.NoParameters
     |> ignore
 )
 
@@ -67,7 +61,8 @@ let dependencies = [
     "Clean"
         ==> "InstallClient"
         ==> "Bundle"
-        ==> "Azure"
+
+    "Azure"
 
     "Clean"
         ==> "InstallClient"

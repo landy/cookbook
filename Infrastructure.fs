@@ -1,8 +1,5 @@
+module Infrastructure
 
-open Farmer.CoreTypes
-
-#r "paket: groupref build //"
-#load "./.fake/build.fsx/intellisense.fsx"
 
 open Farmer
 open Farmer.Builders
@@ -10,14 +7,13 @@ open Farmer.Builders
 let makeNameEnvSpecific (env:string) name =
     name + "-" + env
 
-let deployment env : Deployment =
+let deployment env =
 
     let envSpecific = makeNameEnvSpecific env
 
     let insights = appInsights {
         name ("cookbook-ai" |> envSpecific)
     }
-
 
     let db = cosmosDb {
         name ("cookbook-db" |> envSpecific)
