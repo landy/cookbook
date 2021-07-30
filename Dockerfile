@@ -8,7 +8,7 @@ WORKDIR /workspace
 COPY . .
 RUN dotnet tool restore
 
-RUN dotnet fake build -t Bundle
+RUN dotnet run Bundle
 
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
