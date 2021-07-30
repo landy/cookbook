@@ -26,7 +26,7 @@ var CONFIG = {
     indexHtmlTemplate: "./src/Client/index.html",
     cssEntry: "./src/Client/style.scss",
     fsharpEntry: "./.fable-build/Application.js",
-    outputDir: "./dist",
+    outputDir: './deploy/public',
     assetsDir: "./src/Client/public",
     devServerPort: 8080,
     // When using webpack-dev-server, you may need to redirect some calls
@@ -86,9 +86,8 @@ module.exports = {
     // Add a hash to the output file name in production
     // to prevent browser caching if code changes
     output: {
-        filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, 'dist'),
-        clean: true,
+        path: resolve(CONFIG.outputDir),
+        filename: isProduction ? '[name].[hash].js' : '[name].js'
     },
     mode: mode,
     devtool: isProduction ? "source-map" : "eval-source-map",
