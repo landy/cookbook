@@ -162,43 +162,68 @@ module.exports = {
                 },
             },
             {
-                test: /\.(sass|scss|css)$/,
+                // For pure CSS - /\.css$/i,
+                // For Sass/SCSS - /\.((c|sa|sc)ss)$/i,
+                // For Less - /\.((c|le)ss)$/i,
+                test: /\.((c|sa|sc)ss)$/i,
                 use: [
-                    isProduction
-                        ? MiniCssExtractPlugin.loader
-                        : 'style-loader',
+                    "style-loader",
                     {
-                        loader: 'css-loader',
+                        loader: "css-loader",
                         options: {
-                            modules: false
-                        }
+                            // Run `postcss-loader` on each CSS `@import` and CSS modules/ICSS imports, do not forget that `sass-loader` compile non CSS `@import`'s into a single file
+                            // If you need run `sass-loader` and `postcss-loader` on each CSS `@import` please set it to `2`
+                            importLoaders: 1,
+                        },
                     },
+                    // {
+                    //     loader: "postcss-loader",
+                    //     options: { plugins: () => [postcssPresetEnv({ stage: 0 })] },
+                    // },
+                    // Can be `less-loader`
                     {
-                        loader: 'sass-loader',
-                        options: { implementation: require("sass") }
-                    }
-                ],
-                exclude: /\.module\.(sass|scss|css)$/
-            },
-            {
-                test: /\.(sass|scss|css)$/,
-                use: [
-                    isProduction
-                        ? MiniCssExtractPlugin.loader
-                        : 'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true
-                        }
+                        loader: "sass-loader",
                     },
-                    {
-                        loader: 'sass-loader',
-                        options: { implementation: require("sass") }
-                    }
                 ],
-                include: /\.module\.(sass|scss|css)$/
             }
+            // {
+            //     test: /\.(sass|scss|css)$/,
+            //     use: [
+            //         isProduction
+            //             ? MiniCssExtractPlugin.loader
+            //             : 'style-loader',
+            //         {
+            //             loader: 'css-loader',
+            //             options: {
+            //                 modules: true
+            //             }
+            //         },
+            //         {
+            //             loader: 'sass-loader',
+            //             options: { implementation: require("sass") }
+            //         }
+            //     ],
+            //     include: /\.module\.(sass|scss|css)$/
+            // },
+            // {
+            //     test: /\.(sass|scss|css)$/,
+            //     use: [
+            //         isProduction
+            //             ? MiniCssExtractPlugin.loader
+            //             : 'style-loader',
+            //         {
+            //             loader: 'css-loader',
+            //             options: {
+            //                 modules: false
+            //             }
+            //         },
+            //         {
+            //             loader: 'sass-loader',
+            //             options: { implementation: require("sass") }
+            //         }
+            //     ],
+            //     exclude: /\.module\.(sass|scss|css)$/
+            // },
         ]
     }
 };

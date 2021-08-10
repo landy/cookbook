@@ -1,9 +1,0 @@
-@tailwind base;
-@tailwind components;
-
-/* custom tailwind components here */
-
-/* Add custom component classes above this line -- before tailwind utilities */
-/* See https://tailwindcss.com/docs/extracting-components/#extracting-css-components-with-apply */
-
-@tailwind utilities;

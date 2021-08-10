@@ -1,3 +1,4 @@
+[<AutoOpen>]
 module Cookbook.Client.Components.Html
 
 open Feliz

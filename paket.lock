@@ -115,7 +115,7 @@ NUGET
     Fake.IO.FileSystem (5.20.4)
       Fake.Core.String (>= 5.20.4) - restriction: >= netstandard2.0
       FSharp.Core (>= 4.7.2) - restriction: >= netstandard2.0
-    Farmer (1.6.7)
+    Farmer (1.6.8)
       FSharp.Core (>= 5.0) - restriction: >= netstandard2.0
       System.Text.Json (>= 5.0.1) - restriction: && (< net50) (>= netstandard2.0)
     Feliz (1.49)

@@ -12,16 +12,20 @@ type Page =
     | UsersAdd
     | UsersEdit
     | RecipesList
+    | RecipesAdd
 
 
 module private Paths =
     let [<Literal>] Login = "login"
     let [<Literal>] UsersPath = "users"
-    let [<Literal>] Recipes = "recipes"
+    let [<Literal>] RecipesList = "recipes"
 
     module Users =
         let [<Literal>] Add = "add"
         let [<Literal>] Edit = "edit"
+
+    module Recipes =
+        let [<Literal>] Add = "add"
 
 let private basicMapping =
     [
@@ -29,7 +33,8 @@ let private basicMapping =
         [ Paths.UsersPath ], UsersList
         [ Paths.UsersPath; Paths.Users.Add ], UsersAdd
         [ Paths.UsersPath; Paths.Users.Edit ], UsersEdit
-        [ Paths.Recipes ], RecipesList
+        [ Paths.RecipesList ], RecipesList
+        [ Paths.RecipesList; Paths.Recipes.Add ], RecipesAdd
     ]
 
 module Page =

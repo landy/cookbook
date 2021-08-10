@@ -22,6 +22,8 @@ let MainContent page =
                     match page with
                     | RecipesList ->
                         Cookbook.Client.Pages.Recipes.Components.RecipesList ()
+                    | RecipesAdd ->
+                        Cookbook.Client.Pages.RecipesAdd.Components.RecipeForm ()
                     | _ -> Html.div "main"
                 ]
             ]

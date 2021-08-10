@@ -29,6 +29,8 @@
             <Compile Include="Pages\UsersAdd\Domain.fs" />
             <Compile Include="Pages\UsersAdd\State.fs" />
             <Compile Include="Pages\UsersAdd\View.fs" />
+            <Compile Include="Pages\RecipesAdd\Components.fs" />
+            <Content Include="Pages\RecipesAdd\recipesadd.module.scss" />
     <!--        <Compile Include="App\Domain.fs" />-->
     <!--        <Compile Include="App\State.fs" />-->
             <Compile Include="App\View.fs" />

@@ -2,6 +2,7 @@
 module Cookbook.Client.Stylesheet
 
 open Fable.Core
+open Fable.Core.JS
 open Fable.Core.JsInterop
 
 type IStylesheet =
@@ -10,5 +11,6 @@ type IStylesheet =
 
 /// Loads a CSS module and makes the classes within available
 let inline load (path: string) =
+    console.log(path)
     importSideEffects path
     importDefault<IStylesheet> path

@@ -8,6 +8,8 @@ open Browser.Dom
 
 open Cookbook.Client.App.View
 
+open Cookbook.Client
+
 
 
 ReactDOM.render(MainApplication() , document.getElementById("elmish-app"))

@@ -1,8 +1,10 @@
 module Cookbook.Client.Pages.Recipes.Components
 
+open Cookbook.Client.Router
 open Feliz
 open Feliz.Bulma
 
+open Cookbook.Client.Components.Html
 open Cookbook.Client
 
 let styles = Stylesheet.load "./recipeslist.module.scss"
@@ -47,9 +49,10 @@ let RecipesList () =
         Bulma.column [
             column.is2
             prop.children [
-                Bulma.button.button [
+                Bulma.button.a [
                     color.isPrimary
                     button.isFullWidth
+                    yield! prop.routed Page.RecipesAdd
                     prop.style [
                         style.marginBottom (length.rem 1 )
                         style.marginTop (length.rem 0.5 )
