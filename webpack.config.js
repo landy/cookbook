@@ -116,7 +116,7 @@ module.exports = {
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ?
         commonPlugins.concat([
-            new MiniCssExtractPlugin(),
+            new MiniCssExtractPlugin({ filename: 'style.[hash].css' }),
             new CopyWebpackPlugin({
                 patterns: [
                     { from: resolve(CONFIG.assetsDir) }
@@ -167,7 +167,9 @@ module.exports = {
                 // For Less - /\.((c|le)ss)$/i,
                 test: /\.((c|sa|sc)ss)$/i,
                 use: [
-                    "style-loader",
+                    isProduction
+                                 ? MiniCssExtractPlugin.loader
+                                 : 'style-loader',
                     {
                         loader: "css-loader",
                         options: {
