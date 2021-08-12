@@ -116,7 +116,7 @@ module.exports = {
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ?
         commonPlugins.concat([
-            new MiniCssExtractPlugin({ filename: '[name].[hash].css' }),
+            new MiniCssExtractPlugin({ filename: '[name].[chunkhash].css' }),
             new CopyWebpackPlugin({
                 patterns: [
                     { from: resolve(CONFIG.assetsDir) }
