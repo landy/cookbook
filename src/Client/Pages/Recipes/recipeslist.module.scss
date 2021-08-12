@@ -1,4 +1,4 @@
-@use "~bulma/bulma";
+@use "~bulma/sass/utilities/mixins" as bulma;
 .recipes-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

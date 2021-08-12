@@ -9,7 +9,6 @@
     <Content Include="Pages\Login\styles.module.scss" />
     <None Include="index.html" />
     <Content Include="public/favicon.png" />
-    <None Include="style.scss" />
         <Compile Include="Stylesheet.fs" />
             <Compile Include="Version.fs" />
             <Compile Include="Server.fs" />
