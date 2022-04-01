@@ -12,7 +12,7 @@ let createCosmosClient endpoint authKey =
     let opts = CosmosSerializationOptions()
     opts.PropertyNamingPolicy <- CosmosPropertyNamingPolicy.CamelCase
 
-    CosmosClientBuilder(endpoint, authKey)
+    CosmosClientBuilder(accountEndpoint = endpoint, authKeyOrResourceToken = authKey)
         .WithConnectionModeDirect()
         .WithSerializerOptions(opts)
         .Build()

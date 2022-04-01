@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+    web:
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+        volumes:
+            - $HOME/.microsoft/usersecrets/${USER_SECRETS_ID}:/root/.microsoft/usersecrets/$USER_SECRETS_ID

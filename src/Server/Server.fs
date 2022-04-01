@@ -36,8 +36,8 @@ type Startup (cfg:IConfiguration) =
     member _.ConfigureServices (sc:IServiceCollection) =
         sc.AddApplicationInsightsTelemetry() |> ignore
 
-        let dbServer = cfg.["cosmosDbConnection"]
-        let dbKey = cfg.["cosmosDbKey"]
+        let dbServer = cfg.["cosmosDb:connectionString"]
+        let dbKey = cfg.["cosmosDb:key"]
 
         let dbName = cfg.["cosmosDb:databaseName"]
         let usersContainer = cfg.["cosmosDb:containers:users"]
@@ -70,6 +70,5 @@ WebHost
     .UseWebRoot(wwwRoot)
     .UseContentRoot(contentRoot)
     .UseStartup<Startup>()
-    .UseUrls("http://0.0.0.0:" + port.ToString() + "/")
     .Build()
     .Run()

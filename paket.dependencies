@@ -19,6 +19,7 @@ nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
 nuget Microsoft.Azure.Cosmos
 nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
+nuget Fable.MarkdownToJsx
 
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem

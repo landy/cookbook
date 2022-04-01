@@ -9,12 +9,13 @@ var webpack = require("webpack");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
-const { patchGracefulFileSystem } = require("./webpack.common.js");
-patchGracefulFileSystem();
+var Dotenv = require('dotenv-webpack');
+var realFs = require('fs');
+var gracefulFs = require('graceful-fs');
 
-let mode = process.env.NODE_ENV
+gracefulFs.gracefulify(realFs);
+
+var mode = process.env.NODE_ENV
 mode = mode ? mode : "production"
 // If we're running the webpack-dev-server, assume we're in development mode
 const isProduction = mode === 'production'
@@ -44,16 +45,17 @@ var CONFIG = {
     // Use babel-preset-env to generate JS compatible with most-used browsers.
     // More info at https://babeljs.io/docs/en/next/babel-preset-env.html
     babel: {
-        plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
+        // plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
+        plugins: [].filter(Boolean),
         presets: [
             ["@babel/preset-react"],
             ["@babel/preset-env", {
                 "targets": "> 0.25%, not dead",
-                "modules": false,
+                //"modules": false,
                 // This adds polyfills when needed. Requires core-js dependency.
                 // See https://babeljs.io/docs/en/babel-preset-env#usebuiltins
-                "useBuiltIns": "usage",
-                "corejs": 3
+                //"useBuiltIns": "usage",
+                //"corejs": 3
             }]
         ],
     }
@@ -87,7 +89,7 @@ module.exports = {
     // to prevent browser caching if code changes
     output: {
         path: resolve(CONFIG.outputDir),
-        filename: isProduction ? '[name].[hash].js' : '[name].js'
+        filename: isProduction ? '[name].[fullhash].js' : '[name].js'
     },
     mode: mode,
     devtool: isProduction ? "source-map" : "eval-source-map",
@@ -124,29 +126,29 @@ module.exports = {
             }),
         ])
         : commonPlugins.concat([
-            // new webpack.HotModuleReplacementPlugin(),
-            new ReactRefreshWebpackPlugin()
+            new webpack.HotModuleReplacementPlugin(),
         ]),
-    resolve: {
-        // // See https://github.com/fable-compiler/Fable/issues/1490
-        // symlinks: false,
-        modules: [resolve("./node_modules")],
-        alias: {
-            // Some old libraries still use an old specific version of core-js
-            // Redirect the imports of these libraries to the newer core-js
-            'core-js/es6': 'core-js/es'
-        }
-    },
+    // resolve: {
+    //     // // See https://github.com/fable-compiler/Fable/issues/1490
+    //     // symlinks: false,
+    //     modules: [resolve("./node_modules")],
+    //     alias: {
+    //         // Some old libraries still use an old specific version of core-js
+    //         // Redirect the imports of these libraries to the newer core-js
+    //         'core-js/es6': 'core-js/es'
+    //     }
+    // },
     // Configuration for webpack-dev-server
     devServer: {
-        publicPath: "/",
-        historyApiFallback: true,
-        contentBase: resolve(CONFIG.assetsDir),
+        static: {
+            directory: resolve(CONFIG.assetsDir),
+            publicPath: '/'
+        },
         host: '0.0.0.0',
         port: CONFIG.devServerPort,
         proxy: CONFIG.devServerProxy,
         hot: true,
-        inline: true
+        historyApiFallback: true
     },
     // - babel-loader: transforms JS to old syntax (compatible with old browsers)
     // - sass-loaders: transforms SASS/SCSS into JS

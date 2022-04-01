@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.302 as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
@@ -11,7 +11,7 @@ RUN dotnet tool restore
 RUN dotnet run Bundle
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine3.15
 COPY --from=build /workspace/deploy /app
 WORKDIR /app
 EXPOSE 8085
