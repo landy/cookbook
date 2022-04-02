@@ -55,7 +55,7 @@ type Startup (cfg:IConfiguration) =
         sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
         sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
         sc.AddGiraffe() |> ignore
-        tryGetEnv "APPINSIGHTS_INSTRUMENTATIONKEY" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
+        tryGetEnv "appinsightsinstrumentationkey" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
 
     member _.Configure(app:IApplicationBuilder, env:IWebHostEnvironment) =
 

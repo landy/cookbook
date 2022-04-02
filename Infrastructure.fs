@@ -45,12 +45,12 @@ let deployment env =
                 add_containers [
                     webContainer
                 ]
-                add_secret_expression "cosmosDb__connectionString" db.Endpoint
-                add_secret_expression "cosmosDb__key" db.PrimaryKey
-                add_env_variable "cosmosDb__databaseName" databaseName
-                add_env_variable "cosmosDb__containers__users" "Users"
-                add_env_variable "cosmosDb__containers__refreshTokens" "RefreshTokens"
-                add_secret_expression "APPINSIGHTS_INSTRUMENTATIONKEY" insights.InstrumentationKey
+                add_secret_expression "cosmosdb.connectionstring" db.Endpoint
+                add_secret_expression "cosmosdb.key" db.PrimaryKey
+                add_env_variable "cosmosdb.databasename" databaseName
+                add_env_variable "cosmosdb.containers.users" "Users"
+                add_env_variable "cosmosdb.containers.refreshTokens" "RefreshTokens"
+                add_secret_expression "appinsightsinstrumentationkey" insights.InstrumentationKey
 //                add_env_variable "SERVER_PORT" "8085"
                 ingress_target_port 80us
                 ingress_transport Auto
