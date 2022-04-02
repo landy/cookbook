@@ -45,8 +45,9 @@ let deployment env =
                 add_containers [
                     webContainer
                 ]
-                add_secret_expression "cosmosdb.connectionstring" db.Endpoint
-                add_secret_expression "cosmosdb.key" db.PrimaryKey
+                
+                add_secret_expression "cosmosdb-connectionstring" db.Endpoint
+                add_secret_expression "cosmosdb-key" db.PrimaryKey
                 add_env_variable "cosmosdb.databasename" databaseName
                 add_env_variable "cosmosdb.containers.users" "Users"
                 add_env_variable "cosmosdb.containers.refreshTokens" "RefreshTokens"
