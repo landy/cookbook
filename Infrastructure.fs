@@ -32,7 +32,7 @@ let deployment env =
 
     let webContainer = container {
         name ("cookbook-web" |> envSpecific)
-        public_docker_image "landys/cookbook" ""
+        public_docker_image "landys/cookbook" "latest"
     }
 
     let containerEnv = containerEnvironment {
