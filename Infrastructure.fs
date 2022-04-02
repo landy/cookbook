@@ -44,8 +44,8 @@ let deployment env =
                 add_containers [
                     webContainer
                 ]
-                add_env_variable "cosmosDb__Connection" db.Endpoint.Value
-                add_env_variable "cosmosDb__Key" db.PrimaryKey.Value
+                add_env_variable "cosmosDb__connectionString" db.Endpoint.Value
+                add_env_variable "cosmosDb__key" db.PrimaryKey.Value
                 add_env_variable "cosmosDb__databaseName" db.DbName.Value
                 add_env_variable "cosmosDb__containers__users" "Users"
                 add_env_variable "cosmosDb__containers__refreshTokens" "RefreshTokens"
