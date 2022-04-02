@@ -14,5 +14,5 @@ RUN dotnet run Bundle
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine3.15
 COPY --from=build /workspace/deploy /app
 WORKDIR /app
-EXPOSE 8085
+EXPOSE 80
 ENTRYPOINT [ "dotnet", "Server.dll" ]
