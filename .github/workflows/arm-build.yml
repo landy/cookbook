@@ -6,7 +6,7 @@ on:
         branches: [ master ]
         paths:
             - 'Infrastructure.fs'
-
+            - '.github/workflows/arm-build.yml'
 jobs:
     build:
         runs-on: ubuntu-latest
