@@ -24,8 +24,9 @@ let deployment env =
         log_analytics_workspace logAnalytics
     }
 
+    let databaseName = ("cookbook-db" |> envSpecific)
     let db = cosmosDb {
-        name ("cookbook-db" |> envSpecific)
+        name databaseName
         account_name ("cookbook-db-account" |> envSpecific)
         free_tier
     }
@@ -44,12 +45,12 @@ let deployment env =
                 add_containers [
                     webContainer
                 ]
-                add_env_variable "cosmosDb__connectionString" db.Endpoint.Value
-                add_env_variable "cosmosDb__key" db.PrimaryKey.Value
-                add_env_variable "cosmosDb__databaseName" db.DbName.Value
+                add_secret_expression "cosmosDb__connectionString" db.Endpoint
+                add_secret_expression "cosmosDb__key" db.PrimaryKey
+                add_env_variable "cosmosDb__databaseName" databaseName
                 add_env_variable "cosmosDb__containers__users" "Users"
                 add_env_variable "cosmosDb__containers__refreshTokens" "RefreshTokens"
-                add_env_variable "ApplicationInsights__InstrumentationKey" insights.InstrumentationKey.Value
+                add_secret_expression "APPINSIGHTS_INSTRUMENTATIONKEY" insights.InstrumentationKey
 //                add_env_variable "SERVER_PORT" "8085"
                 ingress_target_port 80us
                 ingress_transport Auto
