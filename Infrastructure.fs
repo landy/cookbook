@@ -49,6 +49,7 @@ let deployment env =
                 add_env_variable "cosmosDb__databaseName" db.DbName.Value
                 add_env_variable "cosmosDb__containers__users" "Users"
                 add_env_variable "cosmosDb__containers__refreshTokens" "RefreshTokens"
+                add_env_variable "ApplicationInsights__InstrumentationKey" insights.InstrumentationKey.Value
 //                add_env_variable "SERVER_PORT" "8085"
                 ingress_target_port 80us
                 ingress_transport Auto
@@ -83,9 +84,6 @@ let deployment env =
             db
             containerEnv
         ]
-        add_resource insights
-//        add_resource webApp
-        add_resource db
     }
 
 
