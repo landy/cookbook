@@ -37,6 +37,12 @@ Target.create "Azure" (fun _ ->
     |> ignore
 )
 
+Target.create "farmer" (fun _ ->
+
+    Infrastructure.deployment "dev"
+    |> Writer.quickWrite "my-template"
+)
+
 Target.create "Run" (fun _ ->
     run dotnet "build" sharedPath
     [ "server", dotnet "watch run" serverPath

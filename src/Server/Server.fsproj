@@ -12,8 +12,12 @@
     <Compile Include="Users\Database.fs" />
     <Compile Include="Users\CommandHandlers.fs" />
     <Compile Include="Users\HttpHandlers.fs" />
-    <Compile Include="Server.fs" />
+    <Compile Include="Recipes\Domain.fs" />
+    <Compile Include="Recipes\Database.fs" />
+    <Compile Include="Recipes\CommandHandlers.fs" />
+    <Compile Include="Recipes\HttpHandlers.fs" />
     <Content Include="public\favicon.png" />
+    <Compile Include="Server.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />

@@ -2,7 +2,7 @@ module Cookbook.Libraries.Password
 
 //https://github.com/dotnet/AspNetCore/blob/master/src/Identity/Extensions.Core/src/PasswordHasher.cs
 
-//#load "/Users/landsman/projects/private/cookbook/.paket/load/net50/main.group.fsx"
+//#load "/Users/landsman/projects/private/cookbook/.paket/load/main.group.fsx"
 
 open System
 open System.Runtime.CompilerServices

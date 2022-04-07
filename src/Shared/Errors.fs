@@ -2,6 +2,7 @@ module Cookbook.Shared.Errors
 
 type DatabaseError =
     | Unspecified
+    | Exception of exn
 
 [<RequireQualifiedAccess>]
 module DatabaseError =
@@ -10,6 +11,9 @@ module DatabaseError =
 
 type UserError =
     | UserAlreadyExists of username : string
+
+type RecipeError =
+    | Foo
 
 [<RequireQualifiedAccess>]
 module UserError =
@@ -29,6 +33,7 @@ module AuthenticationError =
 type ApplicationError =
     | AuthenticationError of AuthenticationError
     | UserError of UserError
+    | RecipeError of RecipeError
     | DatabaseError of DatabaseError
 
 [<RequireQualifiedAccess>]

@@ -1,11 +1,14 @@
 module Cookbook.Client.Pages.RecipesAdd.Components
 
+open System
 open Fable.Core
 open Feliz
+open Feliz.UseDeferred
 open Feliz.Bulma
 open Fable.MarkdownToJsx
 
 open Cookbook.Client
+open Cookbook.Shared.Recipes
 
 [<ReactComponent>]
 let MarkdownDiv str =
@@ -14,7 +17,24 @@ let MarkdownDiv str =
 [<ReactComponent>]
 let RecipeForm () =
     let styles = Stylesheet.load "./recipesadd.module.scss"
-    let recipe,setRecipe = React.useState("")
+
+    let recipeName,setRecipeName = React.useState("")
+    let recipeDescription,setRecipeDescription = React.useState("")
+    let formSaveState,setFormSaveState = React.useState(Deferred.HasNotStartedYet)
+
+    let saveFormAction = async {
+        let data : Request.SaveRecipe = {
+            Id = Guid.NewGuid()
+            Name = recipeName
+            Description = recipeDescription
+        }
+        let! res = Server.onRecipesService (fun s -> s.SaveRecipe data)
+        return res
+    }
+    let saveForm = React.useDeferredCallback((fun () -> saveFormAction), setFormSaveState)
+
+
+
     Html.div [
         prop.className styles.["recipe-add-page"]
         prop.children [
@@ -22,6 +42,11 @@ let RecipeForm () =
                 prop.className styles.["recipe-form"]
                 prop.children [
                     Html.form [
+                        prop.onSubmit (fun evnt ->
+                            evnt.preventDefault()
+                            JS.console.log("save")
+                            saveForm()
+                        )
                         prop.children [
                             Bulma.field.div [
                                 field.isHorizontal
@@ -34,6 +59,8 @@ let RecipeForm () =
                                             Bulma.control.div [
                                                 Bulma.input.text [
                                                     prop.placeholder "Název"
+                                                    prop.onChange setRecipeName
+                                                    prop.value recipeName
                                                 ]
                                             ]
                                         ]
@@ -41,15 +68,23 @@ let RecipeForm () =
                                 ]
                             ]
                             Bulma.textarea [
-                                prop.value recipe
-                                prop.onChange setRecipe
+                                prop.placeholder "Popis"
+                                prop.value recipeDescription
+                                prop.onChange setRecipeDescription
 
                             ]
-                            MarkdownDiv recipe
+                            Bulma.button.submit [
+                                prop.value "Přidat recept"
+                            ]
                         ]
                     ]
                 ]
             ]
-
+            Html.div [
+                prop.className styles["recipe-description-formatted"]
+                prop.children [
+                    MarkdownDiv recipeDescription
+                ]
+            ]
         ]
     ]

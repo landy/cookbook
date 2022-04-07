@@ -14,3 +14,12 @@ let usersService : Users.UsersService =
     |> Remoting.withRouteBuilder Users.Route.builder
     |> Remoting.withBaseUrl baseUrl
     |> Remoting.buildProxy<Users.UsersService>
+
+
+let onRecipesService (fn: Recipes.RecipesService -> Async<'a>) =
+    let builder =
+        Remoting.createApi()
+        |> Remoting.withRouteBuilder Recipes.Route.builder
+        |> Remoting.withBaseUrl baseUrl
+        |> Remoting.buildProxy<Recipes.RecipesService>
+    fn builder

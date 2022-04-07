@@ -367,3 +367,5 @@ deploy/
 gql-output/
 cookbookSchema.json
 .fable-build/
+.docker-env
+.paket/load

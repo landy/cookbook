@@ -30,8 +30,6 @@
             <Compile Include="Pages\UsersAdd\View.fs" />
             <Compile Include="Pages\RecipesAdd\Components.fs" />
             <Content Include="Pages\RecipesAdd\recipesadd.module.scss" />
-    <!--        <Compile Include="App\Domain.fs" />-->
-    <!--        <Compile Include="App\State.fs" />-->
             <Compile Include="App\View.fs" />
     <Compile Include="AppStyles.fs" />
     <Compile Include="Application.fs" />

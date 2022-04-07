@@ -1,5 +1,7 @@
 open System
 open System.IO
+open Cookbook.Server.Recipes.Database
+open Cookbook.Server.Recipes.Domain
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -27,6 +29,7 @@ let port =
 let webApp =
     choose [
         Users.HttpHandlers.authServiceHandler
+        Recipes.HttpHandlers.recipesHandler
         htmlFile <| Path.Combine(wwwRoot, "index.html")
     ]
 
@@ -40,20 +43,22 @@ type Startup (cfg:IConfiguration) =
         let dbKey = cfg.["cosmosDb:key"]
 
         let dbName = cfg.["cosmosDb:databaseName"]
-        let usersContainer = cfg.["cosmosDb:containers:users"]
         let refreshTokensContainer = cfg.["cosmosDb:containers:refreshTokens"]
+        let usersContainer = cfg.["cosmosDb:containers:users"]
+        let recipesContainer = cfg.["cosmosDb:containers:recipes"]
 
         let dbConfig = {
             DatabaseName = dbName
-            UsersContainerName = usersContainer
             RefreshTokensContainerName = refreshTokensContainer
-
+            UsersContainerName = usersContainer
+            RecipesContainerName = recipesContainer
         }
 
         let client = createCosmosClient dbServer dbKey
         sc.AddSingleton<CosmosClient>(client) |> ignore
         sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
         sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
+        sc.AddSingleton<RecipesStore, CosmosDbRecipeStore>() |> ignore
         sc.AddGiraffe() |> ignore
         tryGetEnv "appinsightsinstrumentationkey" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
 
