@@ -31,6 +31,6 @@ jobs:
                 uses: azure/arm-deploy@v1
                 with:
                     subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
-                    resourceGroupNam: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
+                    resourceGroupName: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
                     template: ../../bicep/infra.bicep
                     parameters: appEnv=dev
