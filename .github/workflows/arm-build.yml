@@ -5,7 +5,7 @@ on:
     push:
         branches: [ master ]
         paths:
-            - 'Infrastructure.fs'
+            - '../../bicep/infra.bicep'
             - '.github/workflows/arm-build.yml'
 jobs:
     build:
@@ -27,5 +27,10 @@ jobs:
                 with:
                     creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-            -   name: Build
-                run: dotnet run azure
+            -   name: Deploy infrastructure
+                uses: azure/adm-deploy@v1
+                with:
+                    subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
+                    resourceGroupNam: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
+                    template: ../../bicep/infra.bicep
+                    parameters: appEnv=dev
