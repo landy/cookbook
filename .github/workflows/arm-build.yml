@@ -5,7 +5,7 @@ on:
     push:
         branches: [ master ]
         paths:
-            - '../../bicep/infra.bicep'
+            - './bicep/infra.bicep'
             - '.github/workflows/arm-build.yml'
 jobs:
     build:
@@ -32,5 +32,5 @@ jobs:
                 with:
                     subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
                     resourceGroupName: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
-                    template: ../../bicep/infra.bicep
+                    template: ./bicep/infra.bicep
                     parameters: appEnv=dev
