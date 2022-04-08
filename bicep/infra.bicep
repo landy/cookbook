@@ -1,7 +1,7 @@
 @description('application environment (dev/prod/etc)')
 param appEnv string = 'dev'
 @description('docker image tag')
-param imageTag string = latest'
+param imageTag string = 'latest'
 param location string = resourceGroup().location
 
 
