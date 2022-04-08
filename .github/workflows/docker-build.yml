@@ -39,7 +39,7 @@ jobs:
                     context: ./
                     file: ./Dockerfile
                     push: true
-                    tags: landys/cookbook:latest
+                    tags: landys/cookbook:${{ github.sha }}
                     cache-from: type=local,src=/tmp/.buildx-cache
                     cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
             - # Temp fix
@@ -50,6 +50,25 @@ jobs:
                     rm -rf /tmp/.buildx-cache
                     mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
+        outputs:
+            imageTag: ${{ github.sha }}
 
+    deploy:
+        runs-on: ubuntu-latest
+        needs: build
 
+        steps:
+            -   uses: actions/checkout@v2
 
+            -   name: Azure Login
+                uses: Azure/login@v1.1
+                with:
+                    creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            -   name: Deploy infrastructure
+                uses: azure/arm-deploy@v1
+                with:
+                    subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
+                    resourceGroupName: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
+                    template: ./bicep/infra.bicep
+                    parameters: appEnv=dev imageTag=${{ needs.build.outputs.imageTag }}

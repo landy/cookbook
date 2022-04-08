@@ -1,5 +1,7 @@
 @description('application environment (dev/prod/etc)')
 param appEnv string = 'dev'
+@description('docker image tag')
+param imageTag string = latest'
 param location string = resourceGroup().location
 
 
@@ -65,7 +67,7 @@ resource appEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-preview' =
       }
     }
   }
-} 
+}
 
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'cookbook-app-${appEnv}'
@@ -96,7 +98,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
     template: {
       containers: [
         {
-          image: 'landys/cookbook:latest'
+          image: 'landys/cookbook:${imageTag}'
           name: 'cookbook-web'
           env:[
             {
