@@ -1,34 +1,44 @@
-module Cookbook.Client.Pages.RecipesAdd.Components
+module Cookbook.Client.Pages.RecipeEdit.Components
 
 open System
+open Cookbook.Shared.Recipes.Contracts
 open Fable.Core
 open Feliz
 open Feliz.UseDeferred
+open Feliz.UseElmish
 open Feliz.Bulma
 open Fable.MarkdownToJsx
+open Fable.FormValidation
 
 open Cookbook.Client
 open Cookbook.Shared.Recipes
+open Cookbook.Client.Components.Forms
+open Cookbook.Client.Pages.RecipeEdit.Domain
 
 [<ReactComponent>]
 let MarkdownDiv str =
     Markdown.render str
 
 [<ReactComponent>]
-let RecipeForm () =
+let RecipeForm (recipeId: Guid option) =
     let styles = Stylesheet.load "./recipesadd.module.scss"
 
-    let recipeName,setRecipeName = React.useState("")
+    let state,dispatch = React.useElmish(State.init recipeId, State.update, [|  |])
+
+    let recipeName,setRecipeName = React.useState(state.FormData.Data.Name)
     let recipeDescription,setRecipeDescription = React.useState("")
     let formSaveState,setFormSaveState = React.useState(Deferred.HasNotStartedYet)
 
+    let rulesFor, validate, resetValidation, errors = useValidation()
+
     let saveFormAction = async {
-        let data : Request.SaveRecipe = {
+        let data : Contracts.EditRecipe = {
             Id = Guid.NewGuid()
             Name = recipeName
             Description = recipeDescription
         }
         let! res = Server.onRecipesService (fun s -> s.SaveRecipe data)
+
         return res
     }
     let saveForm = React.useDeferredCallback((fun () -> saveFormAction), setFormSaveState)
@@ -44,29 +54,15 @@ let RecipeForm () =
                     Html.form [
                         prop.onSubmit (fun evnt ->
                             evnt.preventDefault()
-                            JS.console.log("save")
-                            saveForm()
+                            let valid = validate()
+                            if valid then
+                                JS.console.log("save")
+                                saveForm()
+                            else
+                                JS.console.log("invalid")
                         )
                         prop.children [
-                            Bulma.field.div [
-                                field.isHorizontal
-                                prop.children [
-                                    Bulma.fieldLabel [
-                                        Bulma.label "Název"
-                                    ]
-                                    Bulma.fieldBody [
-                                        Bulma.field.div [
-                                            Bulma.control.div [
-                                                Bulma.input.text [
-                                                    prop.placeholder "Název"
-                                                    prop.onChange setRecipeName
-                                                    prop.value recipeName
-                                                ]
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ]
+                            ValidatedTextInput state.FormData (FormChanged >> dispatch) EditRecipe.name []
                             Bulma.textarea [
                                 prop.placeholder "Popis"
                                 prop.value recipeDescription
@@ -75,6 +71,11 @@ let RecipeForm () =
                             ]
                             Bulma.button.submit [
                                 prop.value "Přidat recept"
+                            ]
+                            Html.div [
+                                prop.children [
+                                    errorSummary errors
+                                ]
                             ]
                         ]
                     ]

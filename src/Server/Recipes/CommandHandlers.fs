@@ -4,9 +4,8 @@ open System.Threading.Tasks
 open FsToolkit.ErrorHandling
 
 open Cookbook.Server.Recipes.Domain
-open Cookbook.Shared.Errors
 
-let validate (recipesDb :RecipesStore) cmd : Task<Result<Command, UserError>> =
+let validate (recipesDb :RecipesStore) cmd : Task<Command> =
     match cmd with
     | SaveRecipe args ->
         task {
@@ -14,13 +13,12 @@ let validate (recipesDb :RecipesStore) cmd : Task<Result<Command, UserError>> =
         }
     |> Task.map (function
         | None ->
-            cmd |> Ok
+            cmd
         | Some err ->
-            err |> Error)
+            err |> failwith)
 
 
 let pipeline (recipesDb: RecipesStore) =
     validate recipesDb
-    >> TaskResult.mapError ApplicationError.UserError
-    >> TaskResult.map execute
-    >> TaskResult.bind (handle recipesDb)
+    >> Task.map execute
+    >> Task.bind (handle recipesDb)

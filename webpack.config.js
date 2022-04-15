@@ -126,7 +126,7 @@ module.exports = {
             }),
         ])
         : commonPlugins.concat([
-            new webpack.HotModuleReplacementPlugin(),
+            // new webpack.HotModuleReplacementPlugin(),
         ]),
     // resolve: {
     //     // // See https://github.com/fable-compiler/Fable/issues/1490

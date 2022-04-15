@@ -34,11 +34,6 @@ let update (msg:Msg) (state:Model) =
         {state with IsSaving = true}, Cmd.OfAsync.result op
     | SaveUser (Finished res) ->
         let state' = {state with IsSaving = false}
-        match res with
-        | Ok _ -> state', Cmd.none
-        | Error err ->
-            System.Console.WriteLine(err |> ApplicationError.explain)
-            state', Cmd.none
-
+        state', Cmd.none
     | FormChanged update ->
         {state with FormData = state.FormData |> update}, Cmd.none

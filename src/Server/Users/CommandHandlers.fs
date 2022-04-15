@@ -7,24 +7,26 @@ open FSharp.Control.Tasks
 open Cookbook.Shared.Errors
 open Cookbook.Server.Users.Domain
 
-let validate (usersDb :UsersStore) cmd : Task<Result<Command, UserError>> =
+
+//TODO: fix validation
+let validate (usersDb :UsersStore) cmd : Task<Command> =
     match cmd with
     | AddNewUser args ->
         task {
             let! existing = usersDb.tryFindUser args.Username
-            return
-                existing
-                |> Option.map (fun _ -> UserAlreadyExists args.Username)
+            return None
+//            return
+//                existing
+//                |> Option.map (fun _ -> UserAlreadyExists args.Username)
         }
     |> Task.map (function
         | None ->
-            cmd |> Ok
+            cmd
         | Some err ->
-            err |> Error)
+            cmd)
 
 
 let pipeline (usersDb: UsersStore) =
     validate usersDb
-    >> TaskResult.mapError ApplicationError.UserError
-    >> TaskResult.map execute
-    >> TaskResult.bind (handle usersDb)
+    >> Task.map execute
+    >> Task.bind (handle usersDb)

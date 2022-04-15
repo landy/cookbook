@@ -48,5 +48,5 @@ module Optics =
 
 
 type Msg =
-    | SaveUser of AsyncOperationStatus<Result<unit,ApplicationError>>
+    | SaveUser of AsyncOperationStatus<unit>
     | FormChanged of (FormData -> FormData)

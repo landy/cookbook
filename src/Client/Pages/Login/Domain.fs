@@ -18,4 +18,4 @@ type Msg =
     | UsernameChanged of string
     | PasswordChanged of string
     | Login
-    | LoggedIn of Result<Response.UserSession, ApplicationError>
+    | LoggedIn of Response.UserSession

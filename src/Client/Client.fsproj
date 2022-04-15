@@ -17,10 +17,13 @@
             <Compile Include="Auth\Context.fs" />
             <Compile Include="Auth\AuthStorage.fs" />
             <Compile Include="Components\Html.fs" />
+            <Compile Include="Components\Forms.fs" />
             <Compile Include="Components\NavBar.fs" />
             <Compile Include="Pages\Login\Domain.fs" />
             <Compile Include="Pages\Login\State.fs" />
             <Compile Include="Pages\Login\View.fs" />
+            <Compile Include="Pages\Recipes\Domain.fs" />
+            <Compile Include="Pages\Recipes\State.fs" />
             <Compile Include="Pages\Recipes\Components.fs" />
             <Compile Include="Pages\UsersList\Domain.fs" />
             <Compile Include="Pages\UsersList\State.fs" />
@@ -28,8 +31,10 @@
             <Compile Include="Pages\UsersAdd\Domain.fs" />
             <Compile Include="Pages\UsersAdd\State.fs" />
             <Compile Include="Pages\UsersAdd\View.fs" />
-            <Compile Include="Pages\RecipesAdd\Components.fs" />
-            <Content Include="Pages\RecipesAdd\recipesadd.module.scss" />
+            <Compile Include="Pages\RecipesEdit\Domain.fs" />
+            <Compile Include="Pages\RecipesEdit\State.fs" />
+            <Compile Include="Pages\RecipesEdit\Components.fs" />
+            <Content Include="Pages\RecipesEdit\recipesadd.module.scss" />
             <Compile Include="App\View.fs" />
     <Compile Include="AppStyles.fs" />
     <Compile Include="Application.fs" />

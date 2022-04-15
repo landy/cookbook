@@ -2,6 +2,7 @@ source https://api.nuget.org/v3/index.json
 storage: none
 framework: net60
 
+nuget Fable.FormValidation
 nuget FSharp.Core
 nuget Fable.Aether
 nuget Fable.Remoting.Client
@@ -21,6 +22,8 @@ nuget Microsoft.Azure.Cosmos
 nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
 nuget Fable.MarkdownToJsx
+nuget Giraffe.GoodRead
+nuget Fable.Aether
 
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem

@@ -1,44 +1,22 @@
 module Cookbook.Shared.Errors
 
-type DatabaseError =
-    | Unspecified
-    | Exception of exn
+open Cookbook.Shared.Validation
 
-[<RequireQualifiedAccess>]
-module DatabaseError =
-    let explain = function
-        | Unspecified -> "Unspecified Database error occured"
+type ServerError =
+    | Exception of string
+    | Validation of ValidationError list
 
-type UserError =
-    | UserAlreadyExists of username : string
+exception ServerException of ServerError
 
-type RecipeError =
-    | Foo
+module ServerError =
+    let failwith (er:ServerError) = raise (ServerException er)
 
-[<RequireQualifiedAccess>]
-module UserError =
-    let explain = function
-        | UserAlreadyExists username -> sprintf "User with username '%s' already exists" username
+    let ofResult<'a> (v:Result<'a,ServerError>) =
+        match v with
+        | Ok v -> v
+        | Error e -> e |> failwith
 
-type AuthenticationError =
-    | InvalidUsernameOrPassword
-
-[<RequireQualifiedAccess>]
-module AuthenticationError =
-    let explain = function
-        | InvalidUsernameOrPassword -> "Invalid username or password"
-
-
-
-type ApplicationError =
-    | AuthenticationError of AuthenticationError
-    | UserError of UserError
-    | RecipeError of RecipeError
-    | DatabaseError of DatabaseError
-
-[<RequireQualifiedAccess>]
-module ApplicationError =
-    let explain = function
-        | AuthenticationError err -> AuthenticationError.explain err
-        | UserError err -> UserError.explain err
-        | DatabaseError err -> DatabaseError.explain err
+    let validate (validationFn:'a -> ValidationError list) (value:'a) =
+        match value |> validationFn with
+        | [] -> value
+        | errs -> errs |> Validation |> failwith

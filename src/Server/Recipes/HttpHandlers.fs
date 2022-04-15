@@ -2,13 +2,18 @@ module Cookbook.Server.Recipes.HttpHandlers
 
 open Microsoft.AspNetCore.Http
 open Giraffe
+open Giraffe.GoodRead
 open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
+open FsToolkit.ErrorHandling
 
+open Cookbook.Server.Remoting
 open Cookbook.Shared.Recipes
+open Cookbook.Shared.Recipes.Contracts
 open Cookbook.Server.Recipes.Domain
+open Microsoft.Extensions.Logging
 
-let private createSaveRecipe (rq:Request.SaveRecipe) =
+let private createSaveRecipe (rq:Contracts.EditRecipe) =
     ({
         Id = rq.Id
         Name = rq.Name
@@ -16,19 +21,47 @@ let private createSaveRecipe (rq:Request.SaveRecipe) =
     } : CmdArgs.SaveRecipe)
     |> SaveRecipe
 
-let private recipesService recipesDb =
+let private createLoadRecipesList (recipesDb: RecipesStore) ()=
+    recipesDb.getRecipesList()
+    |> Task.map (fun rx ->
+        rx
+        |> List.map (fun r ->
+            ({
+                Id = r.Id
+                Name = r.Name
+            }: RecipeListItem)
+        )
+    )
+
+let private createGetRecipe (recipesDb: RecipesStore) recipeId =
+    recipesDb.tryGetRecipe recipeId
+    |> Task.map (fun recipeOpt ->
+        recipeOpt
+        |> Option.map (fun r ->
+            ({
+                Id = r.Id
+                Name = r.Name
+                Description = r.Description
+            }: Contracts.EditRecipe)
+        )
+        |> Option.defaultWith (fun _ -> "Recept nenalezen" |> failwith)
+    )
+
+let private recipesService recipesDb (httpContext: HttpContext) =
     let pipeline = CommandHandlers.pipeline recipesDb
     {
         SaveRecipe = createSaveRecipe >> pipeline >> Async.AwaitTask
+        GetRecipesList = createLoadRecipesList recipesDb >> Async.AwaitTask
+        GetRecipe = createGetRecipe recipesDb >> Async.AwaitTask
     }
 
-let private createRecipesServiceFromContext (httpContext: HttpContext) =
-    let recipesStore = httpContext.GetService<RecipesStore>()
-    recipesService recipesStore
 
 let recipesHandler : HttpHandler =
-    Remoting.createApi ()
-    |> Remoting.withErrorHandler (fun ex _  -> Propagate ex)
-    |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromContext createRecipesServiceFromContext
-    |> Remoting.buildHttpHandler
+    Require.services<ILogger<_>, RecipesStore> (fun logger recipesStore ->
+        Remoting.createApi ()
+        |> Remoting.withErrorHandler (Remoting.errorHandler logger)
+        |> Remoting.withRouteBuilder Route.builder
+        |> Remoting.withBinarySerialization
+        |> Remoting.fromContext (recipesService recipesStore)
+        |> Remoting.buildHttpHandler
+    )

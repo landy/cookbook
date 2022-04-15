@@ -1,5 +1,6 @@
 module Cookbook.Client.Pages.Login.State
 open System
+open Cookbook.Shared.Users.Response
 open Elmish
 open FsToolkit.ErrorHandling
 
@@ -41,11 +42,5 @@ let update (props:LoginPageProps) msg state =
     | Login ->
         let state' = { state with Errors = []; IsLoading = true }
         state', handleLogin state.Form
-    | LoggedIn res ->
-        let state' = {state with IsLoading = false}
-        match res with
-        | Ok t ->
-
-            stateInit(), Cmd.ofSub (fun _ -> t |> Some |> props.handleNewToken)
-        | Error err ->
-            {state' with Errors =  (err |> ApplicationError.explain) :: state'.Errors}, Cmd.none
+    | LoggedIn userSession ->
+        stateInit(), Cmd.ofSub (fun _ -> userSession |> Some |> props.handleNewToken)

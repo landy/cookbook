@@ -21,9 +21,9 @@ let MainContent page =
                 prop.children [
                     match page with
                     | RecipesList ->
-                        Cookbook.Client.Pages.Recipes.Components.RecipesList ()
-                    | RecipesAdd ->
-                        Cookbook.Client.Pages.RecipesAdd.Components.RecipeForm ()
+                        Cookbook.Client.Pages.Recipes.Components.RecipesPage ()
+                    | RecipesEdit recipeId ->
+                        Cookbook.Client.Pages.RecipeEdit.Components.RecipeForm recipeId
                     | _ -> Html.div "main"
                 ]
             ]
@@ -94,10 +94,12 @@ let MainApplication () =
         )
     }
 
-    React.router [
-        router.pathMode
-        router.onUrlChanged (Page.parseFromUrlSegments >> setPage)
-        router.children [
-            (AuthContext ctx (TemplateSelector page))
+    React.strictMode [
+        React.router [
+            router.pathMode
+            router.onUrlChanged (Page.parseFromUrlSegments >> setPage)
+            router.children [
+                (AuthContext ctx (TemplateSelector page))
+            ]
         ]
     ]

@@ -37,7 +37,7 @@ type UsersStore =
     abstract tryFindUser : string -> Task<Views.CookbookUser option>
     abstract setRefreshToken : string -> string -> DateTimeOffset -> Task<unit>
     abstract getUsers : unit -> Task<Views.CookbookUser list>
-    abstract addUser : EventArgs.UserAdded -> Task<Result<unit,DatabaseError>>
+    abstract addUser : EventArgs.UserAdded -> Task<unit>
 
 
 type Command =
@@ -62,4 +62,3 @@ let handle (usersDb : UsersStore) evnt =
     match evnt with
     | UserAdded args ->
         usersDb.addUser args
-        |> TaskResult.mapError ApplicationError.DatabaseError

@@ -91,17 +91,14 @@ type CosmosDbUserStore (config: DatabaseConfiguration, client:CosmosClient) =
 
         member _.addUser (args:EventArgs.UserAdded) =
             task {
-                try
-                    let! container = getUsersContainer()
-                    let row : Schema.UserDocument = {
-                        Id = args.Username
-                        PartitionKey = Schema.PartitionKeyValue
-                        Name = args.Name
-                        PasswordHash = args.PasswordHash
+                let! container = getUsersContainer()
+                let row : Schema.UserDocument = {
+                    Id = args.Username
+                    PartitionKey = Schema.PartitionKeyValue
+                    Name = args.Name
+                    PasswordHash = args.PasswordHash
 
-                    }
-                    let! _ = upsertItem<Schema.UserDocument> container Schema.PartitionKeyValue row
-                    return () |> Ok
-                with
-                    | ex -> return Error Unspecified
+                }
+                let! _ = upsertItem<Schema.UserDocument> container Schema.PartitionKeyValue row
+                return ()
             }

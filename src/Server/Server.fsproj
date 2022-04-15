@@ -8,6 +8,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Configuration.fs" />
+    <Compile Include="Errors.fs" />
+    <Compile Include="Remoting.fs" />
     <Compile Include="Users\Domain.fs" />
     <Compile Include="Users\Database.fs" />
     <Compile Include="Users\CommandHandlers.fs" />

@@ -27,8 +27,8 @@ let LoginForm () =
         let! loginResult =
             ({Username = username; Password = password}: Request.Login)
             |> usersService.Login
-            |> AsyncResult.tee auth.SetUser
-            |> AsyncResult.teeError (fun err -> setErrors ["Login error"])
+        auth.SetUser loginResult
+
         Router.navigatePage Page.Main
         return loginResult
     }

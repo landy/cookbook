@@ -19,14 +19,11 @@ let update  msg state =
             let! users = usersService.GetUsers ()
 
             return
-                match users with
-                | Ok u ->
-                    u
-                    |> List.map (fun u ->
-                        {Username = u.Username; Name = u.Name}
-                    )
-                    |> UsersLoaded
-                | Error _ -> [] |> UsersLoaded
+                users
+                |> List.map (fun u ->
+                    {Username = u.Username; Name = u.Name}
+                )
+                |> UsersLoaded
         }
 
 

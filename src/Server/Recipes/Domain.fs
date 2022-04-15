@@ -30,7 +30,9 @@ module EventArgs =
 
 type RecipesStore =
 //    abstract tryFindRecipe: Guid -> Task<Result<Views.Recipe,DatabaseError>>
-    abstract saveRecipe: EventArgs.RecipeSaved -> Task<Result<unit,DatabaseError>>
+    abstract saveRecipe: EventArgs.RecipeSaved -> Task<unit>
+    abstract getRecipesList: unit -> Task<Views.Recipe list>
+    abstract tryGetRecipe : Guid -> Task<Views.Recipe option>
 
 type Command =
     | SaveRecipe of CmdArgs.SaveRecipe
@@ -54,4 +56,3 @@ let handle (recipesDb : RecipesStore) evnt =
     match evnt with
     | RecipeSaved args ->
         recipesDb.saveRecipe args
-        |> TaskResult.mapError ApplicationError.DatabaseError

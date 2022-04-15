@@ -48,12 +48,11 @@ let private login (usersDb:UsersStore) (r:Request.Login) =
                     RefreshToken = {Token = refreshToken; ExpiresUtc = refreshExpiresOn}
                 }
             )
-            |> Result.requireSome (AuthenticationError.InvalidUsernameOrPassword |> ApplicationError.AuthenticationError)
-            |> Result.map (fun (t:UserSession) ->
+            |> Option.defaultWith ("Invalid username or password" |> failwith)
+            |> (fun (t:UserSession) ->
                 usersDb.setRefreshToken t.Username t.RefreshToken.Token t.RefreshToken.ExpiresUtc
                 |> Task.map (fun _ -> t)
             )
-            |> Result.sequenceTask
     }
 
 let private getUsers (usersDb:UsersStore) () =
@@ -62,7 +61,6 @@ let private getUsers (usersDb:UsersStore) () =
         List.map (fun u ->
             {Username = u.Username; Name = u.Name}
         )
-        >> Ok
     )
 
 let private createSaveUser (user:Request.AddUser) =

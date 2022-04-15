@@ -9,3 +9,4 @@ FsToolkit.ErrorHandling.TaskResult
 FSharp.Core
 Thoth.Json
 Fable.MarkdownToJsx
+Fable.FormValidation

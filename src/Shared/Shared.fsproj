@@ -5,6 +5,8 @@
     <RootNamespace>Cookbook.Shared</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Aether.fs" />
+    <Compile Include="Validation.fs" />
     <Compile Include="Errors.fs" />
     <Compile Include="Users.fs" />
     <Compile Include="Recipes.fs" />
