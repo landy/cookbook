@@ -16,7 +16,7 @@ module Views =
 [<RequireQualifiedAccess>]
 module CmdArgs =
     type SaveRecipe = {
-        Id : Guid
+        Id : Guid option
         Name : string
         Description :string
     }
@@ -46,7 +46,7 @@ let execute cmd =
     match cmd with
     | SaveRecipe args ->
         {
-            Id = args.Id
+            Id = args.Id |> Option.defaultWith (fun _ -> Guid.NewGuid())
             Name = args.Name
             Description = args.Description
         }
@@ -56,3 +56,5 @@ let handle (recipesDb : RecipesStore) evnt =
     match evnt with
     | RecipeSaved args ->
         recipesDb.saveRecipe args
+
+    |> Task.map (fun _ -> evnt)

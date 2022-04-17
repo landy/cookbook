@@ -1,91 +1,56 @@
 module Cookbook.Client.Pages.RecipeEdit.Components
 
 open System
+open Cookbook.Client.Server
 open Cookbook.Shared.Recipes.Contracts
 open Fable.Core
 open Feliz
-open Feliz.UseDeferred
 open Feliz.UseElmish
-open Feliz.Bulma
+open Feliz.DaisyUI
 open Fable.MarkdownToJsx
-open Fable.FormValidation
 
 open Cookbook.Client
-open Cookbook.Shared.Recipes
+open Cookbook.Client.Components.Html
 open Cookbook.Client.Components.Forms
 open Cookbook.Client.Pages.RecipeEdit.Domain
 
 [<ReactComponent>]
-let MarkdownDiv str =
-    Markdown.render str
+let RecipePreview (recipe: EditRecipe) =
+    Html.divClassed "prose prose-sm" [
+        Html.h1 recipe.Name
+        Markdown.render recipe.Description
+    ]
+
 
 [<ReactComponent>]
 let RecipeForm (recipeId: Guid option) =
-    let styles = Stylesheet.load "./recipesadd.module.scss"
 
     let state,dispatch = React.useElmish(State.init recipeId, State.update, [|  |])
 
-    let recipeName,setRecipeName = React.useState(state.FormData.Data.Name)
-    let recipeDescription,setRecipeDescription = React.useState("")
-    let formSaveState,setFormSaveState = React.useState(Deferred.HasNotStartedYet)
-
-    let rulesFor, validate, resetValidation, errors = useValidation()
-
-    let saveFormAction = async {
-        let data : Contracts.EditRecipe = {
-            Id = Guid.NewGuid()
-            Name = recipeName
-            Description = recipeDescription
-        }
-        let! res = Server.onRecipesService (fun s -> s.SaveRecipe data)
-
-        return res
-    }
-    let saveForm = React.useDeferredCallback((fun () -> saveFormAction), setFormSaveState)
-
-
-
-    Html.div [
-        prop.className styles.["recipe-add-page"]
-        prop.children [
-            Html.div [
-                prop.className styles.["recipe-form"]
+    Html.divClassed "flex flex-col lg:flex-row gap-8" [
+        Html.divClassed "lg:w-1/2" [
+            Html.form [
+                prop.onSubmit (fun evnt ->
+                    evnt.preventDefault()
+                    SaveRecipe |> dispatch
+                )
                 prop.children [
-                    Html.form [
-                        prop.onSubmit (fun evnt ->
-                            evnt.preventDefault()
-                            let valid = validate()
-                            if valid then
-                                JS.console.log("save")
-                                saveForm()
-                            else
-                                JS.console.log("invalid")
-                        )
-                        prop.children [
-                            ValidatedTextInput state.FormData (FormChanged >> dispatch) EditRecipe.name []
-                            Bulma.textarea [
-                                prop.placeholder "Popis"
-                                prop.value recipeDescription
-                                prop.onChange setRecipeDescription
-
-                            ]
-                            Bulma.button.submit [
-                                prop.value "Přidat recept"
-                            ]
-                            Html.div [
-                                prop.children [
-                                    errorSummary errors
-                                ]
-                            ]
+                    ValidatedTextInput state.FormData (FormChanged >> dispatch) EditRecipe.name []
+                    ValidatedTextArea state.FormData (FormChanged >> dispatch) EditRecipe.description
+                    Daisy.formControl [
+                        Daisy.button.submit [
+                            button.primary
+                            prop.className "mt-3"
+                            state.FormData.Data.Id |> Option.map (fun _ -> prop.value "Uložit") |> Option.defaultValue (prop.value "Vytvořit")
+                            prop.disabled (state.FormData |> RemoteData.isNotValid)
+//                            if state.FormData.InProgress then button.loading
+//                            button.loading
                         ]
                     ]
                 ]
             ]
-            Html.div [
-                prop.className styles["recipe-description-formatted"]
-                prop.children [
-                    MarkdownDiv recipeDescription
-                ]
-            ]
+        ]
+        Html.divClassed "lg:w-1/2 mt-10" [
+            RecipePreview state.FormData.Data
         ]
     ]

@@ -25,7 +25,7 @@ var CONFIG = {
     // The tags to include the generated JS and CSS will be automatically injected in the HTML template
     // See https://github.com/jantimon/html-webpack-plugin
     indexHtmlTemplate: "./src/Client/index.html",
-    cssEntry: "./src/Client/style.scss",
+    cssEntry: "./src/Client/style.css",
     fsharpEntry: "./.fable-build/Application.js",
     outputDir: './deploy/public',
     assetsDir: "./src/Client/public",
@@ -150,9 +150,6 @@ module.exports = {
         hot: true,
         historyApiFallback: true
     },
-    // - babel-loader: transforms JS to old syntax (compatible with old browsers)
-    // - sass-loaders: transforms SASS/SCSS into JS
-    // - file-loader: Moves files referenced in the code (fonts, images) into output folder
     module: {
         rules: [
             {
@@ -164,70 +161,16 @@ module.exports = {
                 },
             },
             {
-                // For pure CSS - /\.css$/i,
-                // For Sass/SCSS - /\.((c|sa|sc)ss)$/i,
-                // For Less - /\.((c|le)ss)$/i,
-                test: /\.((c|sa|sc)ss)$/i,
+                test: /\.(sass|scss|css)$/,
                 use: [
                     isProduction
-                                 ? MiniCssExtractPlugin.loader
-                                 : 'style-loader',
-                    {
-                        loader: "css-loader",
-                        options: {
-                            // Run `postcss-loader` on each CSS `@import` and CSS modules/ICSS imports, do not forget that `sass-loader` compile non CSS `@import`'s into a single file
-                            // If you need run `sass-loader` and `postcss-loader` on each CSS `@import` please set it to `2`
-                            importLoaders: 1,
-                        },
-                    },
-                    // {
-                    //     loader: "postcss-loader",
-                    //     options: { plugins: () => [postcssPresetEnv({ stage: 0 })] },
-                    // },
-                    // Can be `less-loader`
-                    {
-                        loader: "sass-loader",
-                    },
+                        ? MiniCssExtractPlugin.loader
+                        : 'style-loader',
+                    'css-loader',
+                    'resolve-url-loader',
+                    'postcss-loader'
                 ],
             }
-            // {
-            //     test: /\.(sass|scss|css)$/,
-            //     use: [
-            //         isProduction
-            //             ? MiniCssExtractPlugin.loader
-            //             : 'style-loader',
-            //         {
-            //             loader: 'css-loader',
-            //             options: {
-            //                 modules: true
-            //             }
-            //         },
-            //         {
-            //             loader: 'sass-loader',
-            //             options: { implementation: require("sass") }
-            //         }
-            //     ],
-            //     include: /\.module\.(sass|scss|css)$/
-            // },
-            // {
-            //     test: /\.(sass|scss|css)$/,
-            //     use: [
-            //         isProduction
-            //             ? MiniCssExtractPlugin.loader
-            //             : 'style-loader',
-            //         {
-            //             loader: 'css-loader',
-            //             options: {
-            //                 modules: false
-            //             }
-            //         },
-            //         {
-            //             loader: 'sass-loader',
-            //             options: { implementation: require("sass") }
-            //         }
-            //     ],
-            //     exclude: /\.module\.(sass|scss|css)$/
-            // },
         ]
     }
 };

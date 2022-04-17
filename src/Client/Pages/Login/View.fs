@@ -1,18 +1,15 @@
 module Cookbook.Client.Pages.Login.View
 
-open FsToolkit.ErrorHandling
+open Fable.Core
+open Feliz.DaisyUI
 
+open Cookbook.Client.Components.Html
 open Cookbook.Client.Router
 open Cookbook.Client.Server
 open Cookbook.Client.Auth.Context
 open Cookbook.Shared.Users
-open Cookbook.Shared.Errors
-open Cookbook.Shared.Users.Response
-open Fable.Core.JsInterop
 open Feliz
 open Feliz.UseDeferred
-open Feliz.Bulma
-open Domain
 
 //let private stylesheet = Stylesheet.load "./styles.module.scss"
 
@@ -21,12 +18,12 @@ let LoginForm () =
     let auth = React.useContext(authContext)
     let username, setUsername = React.useState("")
     let password, setPassword = React.useState("")
-    let (errors: string list), setErrors = React.useState([])
 
     let handleLogin = async {
         let! loginResult =
             ({Username = username; Password = password}: Request.Login)
             |> usersService.Login
+        JS.console.log(loginResult)
         auth.SetUser loginResult
 
         Router.navigatePage Page.Main
@@ -37,72 +34,48 @@ let LoginForm () =
     let startLogin = React.useDeferredCallback((fun () -> handleLogin), setLoginState)
 
 
-    Bulma.container [
-        prop.children [
-            Bulma.box [
+    Html.divClassed "flex items-center justify-center bg-cyan-200 min-h-screen" [
+        Html.divClassed "shadow-xl px-8 py-6 w-1/4 bg-white rounded-lg" [
+            Html.div [
+                prop.className "text-2xl font-bold mb-4 text-center"
+                prop.text "Přihlášení"
+            ]
+            Html.form [
+                prop.onSubmit (fun e ->
+                    e.preventDefault()
+                    startLogin()
+                )
+                prop.className "space-y-4"
                 prop.children [
-                    Html.div [
-                        prop.children
-                            (errors
-                            |> List.map (fun err ->
-                                Bulma.message [
-                                    color.isDanger
-                                    prop.children [
-                                        Bulma.messageBody err
-                                    ]
-                                ]
-                            ))
-                    ]
-                    Html.form [
-                        prop.onSubmit (fun e ->
-                            e.preventDefault()
-                            startLogin()
-                        )
-                        prop.children [
-                            Bulma.field.div [
-                                prop.children [
-                                    Bulma.label [
-                                        text.hasTextLeft
-                                        prop.text "Uživatelské jméno"
-                                    ]
-                                    Bulma.control.div [
-                                        Bulma.input.text [
-                                            prop.onChange (setUsername)
-                                            prop.value username
-                                            prop.autoFocus true
-                                            prop.name "username"
-                                            prop.required true
-                                        ]
-                                    ]
-                                ]
-                            ]
-                            Bulma.field.div [
-                                Bulma.label [
-                                    text.hasTextLeft
-                                    prop.text "Heslo"
-                                ]
-                                Bulma.input.password [
-                                    prop.onChange setPassword
-                                    prop.name "password"
-                                    prop.required true
-                                    prop.value password
-                                ]
-                            ]
-                            Bulma.field.div [
-                                prop.children [
-                                    Bulma.button.submit [
-                                        color.isSuccess
-                                        spacing.px6
-                                        size.isSize5
-
-                                        if Deferred.inProgress loginState then button.isLoading
-                                        prop.value "Přihlásit"
-                                    ]
-                                ]
-                            ]
+                    Daisy.formControl [
+                        Daisy.label [ Daisy.labelText "Uživatelské jméno" ]
+                        Daisy.input [
+                            prop.className "w-full px-4 py-2 mt-2 border rounded-md"
+                            prop.onChange setUsername
+                            input.bordered
+                            prop.value username
+                            prop.autoFocus true
+                            prop.name "username"
+                            prop.required true
                         ]
                     ]
-
+                    Daisy.formControl [
+                        Daisy.label [ Daisy.labelText "Heslo" ]
+                        Daisy.input [
+                            prop.onChange setPassword
+                            input.bordered
+                            prop.type'.password
+                            prop.value password
+                            prop.name "password"
+                            prop.required true
+                        ]
+                    ]
+                    Daisy.formControl [
+                        Daisy.button.submit [
+                            button.primary
+                            prop.value "Přihlásit"
+                        ]
+                    ]
                 ]
             ]
         ]

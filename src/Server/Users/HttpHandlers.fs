@@ -48,7 +48,7 @@ let private login (usersDb:UsersStore) (r:Request.Login) =
                     RefreshToken = {Token = refreshToken; ExpiresUtc = refreshExpiresOn}
                 }
             )
-            |> Option.defaultWith ("Invalid username or password" |> failwith)
+            |> Option.defaultWith (fun _ ->"Invalid username or password" |> failwith)
             |> (fun (t:UserSession) ->
                 usersDb.setRefreshToken t.Username t.RefreshToken.Token t.RefreshToken.ExpiresUtc
                 |> Task.map (fun _ -> t)
@@ -88,5 +88,6 @@ let authServiceHandler : HttpHandler =
     Remoting.createApi()
     |> Remoting.withErrorHandler (fun ex _  -> Propagate ex)
     |> Remoting.withRouteBuilder Route.builder
+    |> Remoting.withBinarySerialization
     |> Remoting.fromContext createAuthServiceFromContext
     |> Remoting.buildHttpHandler

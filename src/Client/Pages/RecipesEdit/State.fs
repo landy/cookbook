@@ -27,7 +27,6 @@ let update (msg:Msg) (state: Model) =
     | RecipeLoaded res ->
         match res with
         | Ok recipe ->
-            JS.console.log(recipe)
             let state' =
                 { state with
                     Recipe = RemoteReadData.setResponse recipe
@@ -36,3 +35,15 @@ let update (msg:Msg) (state: Model) =
             JS.console.log(state')
             state', Cmd.none
     | FormChanged form -> { state with FormData = state.FormData |> RemoteData.setData form EditRecipe.validate }, Cmd.none
+    | SaveRecipe ->
+        let cmd = Cmd.OfAsync.eitherAsResult (fun _ -> onRecipesService(fun s -> s.SaveRecipe state.FormData.Data)) RecipeSaved
+        {state with FormData = state.FormData |> RemoteData.setInProgress },cmd
+    | RecipeSaved res ->
+        match res with
+        | Ok recipe ->
+            let state' =
+                { state with
+                    Recipe = RemoteReadData.setResponse recipe
+                    FormData = state.FormData |> RemoteData.setData recipe EditRecipe.validate
+                }
+            state', Cmd.none

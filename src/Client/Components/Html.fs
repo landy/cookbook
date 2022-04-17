@@ -22,3 +22,9 @@ type Html =
             yield! prop.routed page
             prop.text text
         ]
+
+    static member inline divClassed (cn:string) (elms:ReactElement list) =
+        Html.div [
+            prop.className cn
+            prop.children elms
+        ]

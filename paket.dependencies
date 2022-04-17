@@ -9,6 +9,7 @@ nuget Fable.Remoting.Client
 nuget Fable.Remoting.Giraffe
 nuget Feliz
 nuget Feliz.Router
+nuget Feliz.DaisyUI
 nuget Feliz.Bulma
 nuget Feliz.UseElmish
 nuget Feliz.UseDeferred
@@ -23,7 +24,6 @@ nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
 nuget Fable.MarkdownToJsx
 nuget Giraffe.GoodRead
-nuget Fable.Aether
 
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem

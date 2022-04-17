@@ -34,6 +34,8 @@ type CosmosDbRecipeStore (config: DatabaseConfiguration, client: CosmosClient) =
             task {
                 let! container = getRecipeContainer ()
 
+                let! _ = Task.Delay (TimeSpan.FromSeconds(2))
+
                 let row : Schema.RecipeDocument = {
                     Id = recipe.Id
                     PartitionKey = Schema.PartitionKeyValue

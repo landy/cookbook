@@ -39,7 +39,7 @@ let private createGetRecipe (recipesDb: RecipesStore) recipeId =
         recipeOpt
         |> Option.map (fun r ->
             ({
-                Id = r.Id
+                Id = r.Id |> Some
                 Name = r.Name
                 Description = r.Description
             }: Contracts.EditRecipe)
@@ -47,10 +47,17 @@ let private createGetRecipe (recipesDb: RecipesStore) recipeId =
         |> Option.defaultWith (fun _ -> "Recept nenalezen" |> failwith)
     )
 
+let private mapRecipeSaved (RecipeSaved recipe) =
+    {
+        Id = recipe.Id |> Some
+        Name = recipe.Name
+        Description = recipe.Description
+    } : Contracts.EditRecipe
+
 let private recipesService recipesDb (httpContext: HttpContext) =
     let pipeline = CommandHandlers.pipeline recipesDb
     {
-        SaveRecipe = createSaveRecipe >> pipeline >> Async.AwaitTask
+        SaveRecipe = createSaveRecipe >> pipeline >> Task.map mapRecipeSaved >> Async.AwaitTask
         GetRecipesList = createLoadRecipesList recipesDb >> Async.AwaitTask
         GetRecipe = createGetRecipe recipesDb >> Async.AwaitTask
     }

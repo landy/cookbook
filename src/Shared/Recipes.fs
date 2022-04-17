@@ -2,7 +2,6 @@ module Cookbook.Shared.Recipes
 
 open System
 open Aether
-open Cookbook.Shared.Errors
 open Cookbook.Shared.Validation
 
 [<RequireQualifiedAccess>]
@@ -12,7 +11,7 @@ module Route =
 
 module Contracts =
     type EditRecipe = {
-        Id: Guid
+        Id: Guid option
         Name: string
         Description: string
     }
@@ -20,12 +19,13 @@ module Contracts =
     module EditRecipe =
         let init =
             {
-                Id = Guid.NewGuid()
+                Id = None
                 Name = ""
                 Description = ""
             }
 
         let name = NamedLens.create "Název" (fun x -> x.Name) (fun x v -> { v with Name = x })
+        let description = NamedLens.create "Postup" (fun x -> x.Description) (fun x v -> { v with Description = x })
 
         let validate =
             rules [
@@ -38,8 +38,9 @@ module Contracts =
     }
 
 
+open Contracts
 type RecipesService = {
-    SaveRecipe: Contracts.EditRecipe -> Async<unit>
-    GetRecipe: Guid -> Async<Contracts.EditRecipe>
-    GetRecipesList: unit -> Async<Contracts.RecipeListItem list>
+    SaveRecipe: Contracts.EditRecipe -> Async<EditRecipe>
+    GetRecipe: Guid -> Async<EditRecipe>
+    GetRecipesList: unit -> Async<RecipeListItem list>
 }
