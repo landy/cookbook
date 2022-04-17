@@ -118,6 +118,10 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
               value: 'Users'
             }
             {
+              name: 'cosmosDb__containers__recipes'
+              value: 'Recipes'
+            }
+            {
               name: 'cosmosDb__containers__refreshTokens'
               value: 'RefreshTokens'
             }
