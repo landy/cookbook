@@ -1,5 +1,6 @@
 module Cookbook.Server.Recipes.HttpHandlers
 
+open System
 open Microsoft.AspNetCore.Http
 open Giraffe
 open Giraffe.GoodRead
@@ -13,13 +14,19 @@ open Cookbook.Shared.Recipes.Contracts
 open Cookbook.Server.Recipes.Domain
 open Microsoft.Extensions.Logging
 
-let private createSaveRecipe (rq:Contracts.EditRecipe) =
-    ({
-        Id = rq.Id
-        Name = rq.Name
-        Description = rq.Description
-    } : CmdArgs.SaveRecipe)
-    |> SaveRecipe
+let private saveRecipeHandler pipeline (rq:Contracts.EditRecipe) = task {
+    let recipeId = rq.Id |> Option.defaultWith (fun _ -> Guid.NewGuid())
+    return!
+        ({
+            Id = recipeId
+            Name = rq.Name
+            Description = rq.Description
+        } : CmdArgs.SaveRecipe)
+        |> SaveRecipe
+        |> pipeline
+        |> Task.map (fun _ -> recipeId)
+}
+
 
 let private createLoadRecipesList (recipesDb: RecipesStore) ()=
     recipesDb.getRecipesList()
@@ -57,7 +64,7 @@ let private mapRecipeSaved (RecipeSaved recipe) =
 let private recipesService recipesDb (httpContext: HttpContext) =
     let pipeline = CommandHandlers.pipeline recipesDb
     {
-        SaveRecipe = createSaveRecipe >> pipeline >> Task.map mapRecipeSaved >> Async.AwaitTask
+        SaveRecipe = saveRecipeHandler pipeline >> Async.AwaitTask
         GetRecipesList = createLoadRecipesList recipesDb >> Async.AwaitTask
         GetRecipe = createGetRecipe recipesDb >> Async.AwaitTask
     }

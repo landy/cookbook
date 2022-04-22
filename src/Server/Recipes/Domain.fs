@@ -2,7 +2,6 @@ module Cookbook.Server.Recipes.Domain
 
 open System
 open System.Threading.Tasks
-open Cookbook.Shared.Errors
 open FsToolkit.ErrorHandling
 
 [<RequireQualifiedAccess>]
@@ -16,7 +15,7 @@ module Views =
 [<RequireQualifiedAccess>]
 module CmdArgs =
     type SaveRecipe = {
-        Id : Guid option
+        Id : Guid
         Name : string
         Description :string
     }
@@ -46,7 +45,7 @@ let execute cmd =
     match cmd with
     | SaveRecipe args ->
         {
-            Id = args.Id |> Option.defaultWith (fun _ -> Guid.NewGuid())
+            Id = args.Id
             Name = args.Name
             Description = args.Description
         }
@@ -56,5 +55,3 @@ let handle (recipesDb : RecipesStore) evnt =
     match evnt with
     | RecipeSaved args ->
         recipesDb.saveRecipe args
-
-    |> Task.map (fun _ -> evnt)

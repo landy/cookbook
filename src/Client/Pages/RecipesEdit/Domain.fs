@@ -16,4 +16,4 @@ type Msg =
     | RecipeLoaded of ServerResult<EditRecipe>
     | FormChanged of EditRecipe
     | SaveRecipe
-    | RecipeSaved of ServerResult<EditRecipe>
+    | RecipeSaved of ServerResult<Guid>

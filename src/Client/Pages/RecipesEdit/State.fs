@@ -1,5 +1,6 @@
 module Cookbook.Client.Pages.RecipeEdit.State
 
+open Cookbook.Client.Router
 open Elmish
 open Domain
 
@@ -43,7 +44,6 @@ let update (msg:Msg) (state: Model) =
         | Ok recipe ->
             let state' =
                 { state with
-                    Recipe = RemoteReadData.setResponse recipe
-                    FormData = state.FormData |> RemoteData.setData recipe EditRecipe.validate
+                    FormData = state.FormData |> RemoteData.setResponse ()
                 }
-            state', Cmd.none
+            state', Router.navigatePageCmd (Page.RecipesEdit (Some recipe))
