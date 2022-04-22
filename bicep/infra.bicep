@@ -98,7 +98,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
     template: {
       containers: [
         {
-          image: 'landys/cookbook:${imageTag}'
+          image: 'landys/cookbook-api:${imageTag}'
           name: 'cookbook-web'
           env:[
             {
