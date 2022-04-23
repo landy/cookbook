@@ -1,4 +1,4 @@
-module Cookbook.Server.Configuration
+module Household.Api.Server.Configuration
 
 type DatabaseConfiguration = {
     DatabaseName : string

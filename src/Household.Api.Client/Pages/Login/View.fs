@@ -1,13 +1,13 @@
-module Cookbook.Client.Pages.Login.View
+module Household.Api.Client.Pages.Login.View
 
 open Fable.Core
 open Feliz.DaisyUI
 
-open Cookbook.Client.Components.Html
-open Cookbook.Client.Router
-open Cookbook.Client.Server
-open Cookbook.Client.Auth.Context
-open Cookbook.Shared.Users
+open Household.Api.Client.Components.Html
+open Household.Api.Client.Router
+open Household.Api.Client.Server
+open Household.Api.Client.Auth.Context
+open Household.Api.Shared.Users
 open Feliz
 open Feliz.UseDeferred
 

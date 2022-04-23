@@ -1,15 +1,15 @@
-module Cookbook.Server.Users.Database
+module Household.Api.Server.Users.Database
 
 open System
 open Microsoft.Azure.Cosmos
 open FsToolkit.ErrorHandling
 open FSharp.Control.Tasks
 
-open Cookbook.Shared.Errors
-open Cookbook.Libraries.CosmosDb
-open Cookbook.Server.Users.Domain
-open Cookbook.Server.Configuration
-open Cookbook.Server.Users.Domain
+open Household.Api.Shared.Errors
+open Household.Libraries.CosmosDb
+open Household.Api.Server.Users.Domain
+open Household.Api.Server.Configuration
+open Household.Api.Server.Users.Domain
 
 
 

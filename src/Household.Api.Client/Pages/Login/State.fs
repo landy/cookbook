@@ -1,14 +1,14 @@
-module Cookbook.Client.Pages.Login.State
+module Household.Api.Client.Pages.Login.State
 open System
-open Cookbook.Shared.Users.Response
+open Household.Api.Shared.Users.Response
 open Elmish
 open FsToolkit.ErrorHandling
 
-open Cookbook.Shared.Users
-open Cookbook.Shared.Errors
-open Cookbook.Client.Router
-open Cookbook.Client.Server
-open Cookbook.Client.Pages.Login.Domain
+open Household.Api.Shared.Users
+open Household.Api.Shared.Errors
+open Household.Api.Client.Router
+open Household.Api.Client.Server
+open Household.Api.Client.Pages.Login.Domain
 
 
 let stateInit () =

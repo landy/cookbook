@@ -1,7 +1,7 @@
-module Cookbook.Client.Pages.Login.Domain
+module Household.Api.Client.Pages.Login.Domain
 
-open Cookbook.Shared.Users
-open Cookbook.Shared.Errors
+open Household.Api.Shared.Users
+open Household.Api.Shared.Errors
 
 
 type LoginForm = {

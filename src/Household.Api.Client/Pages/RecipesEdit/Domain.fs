@@ -1,10 +1,10 @@
-module Cookbook.Client.Pages.RecipeEdit.Domain
+module Household.Api.Client.Pages.RecipeEdit.Domain
 
 open System
 
-open Cookbook.Client.Server
-open Cookbook.Shared.Recipes.Contracts
-open Cookbook.Shared.Validation
+open Household.Api.Client.Server
+open Household.Api.Shared.Recipes.Contracts
+open Household.Api.Shared.Validation
 
 type Model = {
     Recipe: RemoteReadData<EditRecipe>

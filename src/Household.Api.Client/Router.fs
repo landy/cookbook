@@ -1,4 +1,4 @@
-module Cookbook.Client.Router
+module Household.Api.Client.Router
 
 open System
 open Elmish

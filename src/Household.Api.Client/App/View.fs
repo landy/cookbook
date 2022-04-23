@@ -1,16 +1,16 @@
-module Cookbook.Client.App.View
+module Household.Api.Client.App.View
 
 open Feliz
 open Feliz.DaisyUI
 open Feliz.Router
 
-open Cookbook.Client.Components.Html
-open Cookbook.Client.Auth
-open Cookbook.Client.Auth.Context
-open Cookbook.Client.Auth.Domain
-open Cookbook.Shared.Users.Response
-open Cookbook.Client.Router
-open Cookbook.Client.Components.NavBar
+open Household.Api.Client.Components.Html
+open Household.Api.Client.Auth
+open Household.Api.Client.Auth.Context
+open Household.Api.Client.Auth.Domain
+open Household.Api.Shared.Users.Response
+open Household.Api.Client.Router
+open Household.Api.Client.Components.NavBar
 
 
 [<ReactComponent>]
@@ -18,9 +18,9 @@ let MainContent page =
     Html.divClassed "container mx-auto" [
         match page with
         | RecipesList ->
-            Cookbook.Client.Pages.Recipes.Components.RecipesPage ()
+            Household.Api.Client.Pages.Recipes.Components.RecipesPage ()
         | RecipesEdit recipeId ->
-            Cookbook.Client.Pages.RecipeEdit.Components.RecipeForm recipeId
+            Household.Api.Client.Pages.RecipeEdit.Components.RecipeForm recipeId
         | _ -> Html.div "main"
     ]
 
@@ -28,7 +28,7 @@ let MainContent page =
 let private LoginContent () =
 
     Html.divClassed "" [
-        Cookbook.Client.Pages.Login.View.LoginForm ()
+        Household.Api.Client.Pages.Login.View.LoginForm ()
     ]
 
 [<ReactComponent>]

@@ -1,5 +1,5 @@
 [<RequireQualifiedAccess>]
-module Cookbook.Client.Stylesheet
+module Household.Api.Client.Stylesheet
 
 open Fable.Core
 open Fable.Core.JS

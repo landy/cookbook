@@ -1,15 +1,12 @@
-module Cookbook.Client.Application
+module Household.Api.Client.Application
 
-open Cookbook.Client.AppStyles
+open Household.Api.Client.AppStyles
 initStyles()
 
 open Feliz
 open Browser.Dom
 
-open Cookbook.Client.App.View
-
-open Cookbook.Client
-
+open Household.Api.Client.App.View
 
 
 ReactDOM.render(MainApplication() , document.getElementById("elmish-app"))

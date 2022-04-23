@@ -1,11 +1,11 @@
-module Cookbook.Server.Users.CommandHandlers
+module Household.Api.Server.Users.CommandHandlers
 
 open System.Threading.Tasks
 open FsToolkit.ErrorHandling
 open FSharp.Control.Tasks
 
-open Cookbook.Shared.Errors
-open Cookbook.Server.Users.Domain
+open Household.Api.Shared.Errors
+open Household.Api.Server.Users.Domain
 
 
 //TODO: fix validation

@@ -1,11 +1,11 @@
-module Cookbook.Client.Components.Forms
+module Household.Api.Client.Components.Forms
 
 open Feliz
 open Feliz.DaisyUI
 
 open Aether
-open Cookbook.Client.Server
-open Cookbook.Shared.Validation
+open Household.Api.Client.Server
+open Household.Api.Shared.Validation
 
 
 [<ReactComponent>]

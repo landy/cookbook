@@ -1,9 +1,9 @@
-module Cookbook.Server.Recipes.CommandHandlers
+module Household.Api.Server.Recipes.CommandHandlers
 
 open System.Threading.Tasks
 open FsToolkit.ErrorHandling
 
-open Cookbook.Server.Recipes.Domain
+open Household.Api.Server.Recipes.Domain
 
 let validate (recipesDb :RecipesStore) cmd : Task<Command> =
     match cmd with

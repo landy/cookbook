@@ -1,4 +1,4 @@
-module Cookbook.Shared.Validation
+module Household.Api.Shared.Validation
 
 open System
 open Aether

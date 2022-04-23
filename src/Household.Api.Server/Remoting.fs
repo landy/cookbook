@@ -1,9 +1,9 @@
-module Cookbook.Server.Remoting
+module Household.Api.Server.Remoting
 
 open System
 open Fable.Remoting.Server
 open Microsoft.AspNetCore.Http
-open Cookbook.Shared.Errors
+open Household.Api.Shared.Errors
 open Microsoft.Extensions.Logging
 
 [<RequireQualifiedAccess>]

@@ -1,7 +1,7 @@
-module Cookbook.Client.Pages.Recipes.Domain
+module Household.Api.Client.Pages.Recipes.Domain
 
-open Cookbook.Client.Server
-open Cookbook.Shared.Recipes.Contracts
+open Household.Api.Client.Server
+open Household.Api.Shared.Recipes.Contracts
 
 type Msg =
     | LoadRecipes

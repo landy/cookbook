@@ -1,4 +1,4 @@
-module Cookbook.Libraries.Password
+module Household.Libraries.Password
 
 //https://github.com/dotnet/AspNetCore/blob/master/src/Identity/Extensions.Core/src/PasswordHasher.cs
 

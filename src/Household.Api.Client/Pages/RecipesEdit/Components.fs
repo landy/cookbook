@@ -1,18 +1,18 @@
-module Cookbook.Client.Pages.RecipeEdit.Components
+module Household.Api.Client.Pages.RecipeEdit.Components
 
 open System
-open Cookbook.Client.Server
-open Cookbook.Shared.Recipes.Contracts
+open Household.Api.Client.Server
+open Household.Api.Shared.Recipes.Contracts
 open Fable.Core
 open Feliz
 open Feliz.UseElmish
 open Feliz.DaisyUI
 open Fable.MarkdownToJsx
 
-open Cookbook.Client
-open Cookbook.Client.Components.Html
-open Cookbook.Client.Components.Forms
-open Cookbook.Client.Pages.RecipeEdit.Domain
+open Household.Api.Client
+open Household.Api.Client.Components.Html
+open Household.Api.Client.Components.Forms
+open Household.Api.Client.Pages.RecipeEdit.Domain
 
 [<ReactComponent>]
 let RecipePreview (recipe: EditRecipe) =

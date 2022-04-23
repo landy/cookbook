@@ -1,14 +1,14 @@
-module Cookbook.Server.Recipes.Database
+module Household.Api.Server.Recipes.Database
 
 open System
 open System.Threading.Tasks
 open FsToolkit.ErrorHandling
 open Microsoft.Azure.Cosmos
 
-open Cookbook.Server.Recipes.Domain
-open Cookbook.Shared.Errors
-open Cookbook.Libraries.CosmosDb
-open Cookbook.Server.Configuration
+open Household.Api.Server.Recipes.Domain
+open Household.Api.Shared.Errors
+open Household.Libraries.CosmosDb
+open Household.Api.Server.Configuration
 
 module Schema =
     [<Literal>]

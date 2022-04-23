@@ -1,6 +1,6 @@
-module Cookbook.Shared.Errors
+module Household.Api.Shared.Errors
 
-open Cookbook.Shared.Validation
+open Household.Api.Shared.Validation
 
 type ServerError =
     | Exception of string

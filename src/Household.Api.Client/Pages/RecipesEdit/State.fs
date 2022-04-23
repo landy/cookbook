@@ -1,11 +1,11 @@
-module Cookbook.Client.Pages.RecipeEdit.State
+module Household.Api.Client.Pages.RecipeEdit.State
 
-open Cookbook.Client.Router
+open Household.Api.Client.Router
 open Elmish
 open Domain
 
-open Cookbook.Client.Server
-open Cookbook.Shared.Recipes.Contracts
+open Household.Api.Client.Server
+open Household.Api.Shared.Recipes.Contracts
 open Fable.Core
 
 let init recipeId () =

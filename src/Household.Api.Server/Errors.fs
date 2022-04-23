@@ -1,8 +1,8 @@
-module Cookbook.Server.Errors
+module Household.Api.Server.Errors
 
 open System.Threading.Tasks
-open Cookbook.Shared.Validation
-open Cookbook.Shared.Errors
+open Household.Api.Shared.Validation
+open Household.Api.Shared.Errors
 
 module ServerError =
     let validateAsync (validationFn:'a -> Task<ValidationError list>) (value:'a) =

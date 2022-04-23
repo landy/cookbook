@@ -1,7 +1,7 @@
-module Cookbook.Client.Auth.Context
+module Household.Api.Client.Auth.Context
 
 open Feliz
-open Cookbook.Client.Auth.Domain
+open Household.Api.Client.Auth.Domain
 
 
 let authContext = React.createContext(name = "AuthContext", defaultValue = {CurrentUser = None; SetUser = ignore; Logout = ignore})

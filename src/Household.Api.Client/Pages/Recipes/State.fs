@@ -1,6 +1,6 @@
-module Cookbook.Client.Pages.Recipes.State
+module Household.Api.Client.Pages.Recipes.State
 
-open Cookbook.Client.Server
+open Household.Api.Client.Server
 open Domain
 open Elmish
 

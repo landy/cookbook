@@ -1,8 +1,8 @@
-module Cookbook.Shared.Users
+module Household.Api.Shared.Users
 
 open System
 
-open Cookbook.Shared.Errors
+open Household.Api.Shared.Errors
 
 [<RequireQualifiedAccess>]
 module Request =

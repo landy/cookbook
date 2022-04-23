@@ -1,6 +1,6 @@
-module Cookbook.Client.Auth.Domain
+module Household.Api.Client.Auth.Domain
 
-open Cookbook.Shared.Users.Response
+open Household.Api.Shared.Users.Response
 
 type AuthContext = {
     CurrentUser : UserSession option

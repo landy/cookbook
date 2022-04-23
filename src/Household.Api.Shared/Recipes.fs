@@ -1,8 +1,8 @@
-module Cookbook.Shared.Recipes
+module Household.Api.Shared.Recipes
 
 open System
 open Aether
-open Cookbook.Shared.Validation
+open Household.Api.Shared.Validation
 
 [<RequireQualifiedAccess>]
 module Route =

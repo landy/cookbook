@@ -1,4 +1,4 @@
-module Cookbook.Server.Recipes.Domain
+module Household.Api.Server.Recipes.Domain
 
 open System
 open System.Threading.Tasks

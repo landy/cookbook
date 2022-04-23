@@ -1,7 +1,7 @@
 open System
 open System.IO
-open Cookbook.Server.Recipes.Database
-open Cookbook.Server.Recipes.Domain
+open Household.Api.Server.Recipes.Database
+open Household.Api.Server.Recipes.Domain
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -10,11 +10,11 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
 
-open Cookbook.Server.Users.Domain
-open Cookbook.Server.Users.Database
-open Cookbook.Libraries.CosmosDb
-open Cookbook.Server
-open Cookbook.Server.Configuration
+open Household.Api.Server.Users.Domain
+open Household.Api.Server.Users.Database
+open Household.Libraries.CosmosDb
+open Household.Api.Server
+open Household.Api.Server.Configuration
 
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x

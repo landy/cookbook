@@ -1,4 +1,4 @@
-﻿module Cookbook.Libraries.CosmosDb
+﻿module Household.Libraries.CosmosDb
 
 open System
 open System.Net

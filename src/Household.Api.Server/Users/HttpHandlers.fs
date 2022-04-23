@@ -1,4 +1,4 @@
-module Cookbook.Server.Users.HttpHandlers
+module Household.Api.Server.Users.HttpHandlers
 
 open System
 open System.Threading.Tasks
@@ -11,12 +11,12 @@ open FSharp.Control.Tasks
 open Giraffe
 open FsToolkit.ErrorHandling
 
-open Cookbook.Libraries
-open Cookbook.Shared.Errors
-open Cookbook.Shared.Users
-open Cookbook.Server.Users.Database
-open Cookbook.Server.Users.Domain
-open Cookbook.Shared.Users.Response
+open Household.Libraries
+open Household.Api.Shared.Errors
+open Household.Api.Shared.Users
+open Household.Api.Server.Users.Database
+open Household.Api.Server.Users.Domain
+open Household.Api.Shared.Users.Response
 
 let private toClaims (user:Views.CookbookUser) =
     [

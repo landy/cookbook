@@ -1,15 +1,15 @@
-module Cookbook.Client.Pages.Recipes.Components
+module Household.Api.Client.Pages.Recipes.Components
 
 open Feliz
 open Feliz.DaisyUI
 open Feliz.UseElmish
 
-open Cookbook.Shared.Recipes
-open Cookbook.Client.Router
-open Cookbook.Client.Server
-open Cookbook.Client.Components.Html
-open Cookbook.Client
-open Cookbook.Client.Pages.Recipes.Domain
+open Household.Api.Shared.Recipes
+open Household.Api.Client.Router
+open Household.Api.Client.Server
+open Household.Api.Client.Components.Html
+open Household.Api.Client
+open Household.Api.Client.Pages.Recipes.Domain
 
 
 let styles = Stylesheet.load "./recipeslist.module.scss"

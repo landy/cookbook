@@ -1,5 +1,5 @@
 [<RequireQualifiedAccess>]
-module Cookbook.Libraries.Jwt
+module Household.Libraries.Jwt
 
 open System
 open System.IdentityModel.Tokens.Jwt

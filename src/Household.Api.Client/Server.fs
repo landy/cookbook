@@ -1,12 +1,12 @@
-module Cookbook.Client.Server
+module Household.Api.Client.Server
 
 open Fable.Core.JS
 open Fable.Core
 open Fable.Remoting.Client
 open Fable.SimpleJson
 
-open Cookbook.Shared.Errors
-open Cookbook.Shared
+open Household.Api.Shared.Errors
+open Household.Api.Shared
 
 [<Emit("config.baseUrl")>]
 let baseUrl : string = jsNative

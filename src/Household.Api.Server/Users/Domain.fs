@@ -1,10 +1,10 @@
-module Cookbook.Server.Users.Domain
+module Household.Api.Server.Users.Domain
 
 open System
 open System.Threading.Tasks
 
-open Cookbook.Shared.Errors
-open Cookbook.Libraries
+open Household.Api.Shared.Errors
+open Household.Libraries
 open FsToolkit.ErrorHandling
 
 

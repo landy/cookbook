@@ -1,4 +1,4 @@
-module Cookbook.Server.Recipes.HttpHandlers
+module Household.Api.Server.Recipes.HttpHandlers
 
 open System
 open Microsoft.AspNetCore.Http
@@ -8,10 +8,10 @@ open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
 open FsToolkit.ErrorHandling
 
-open Cookbook.Server.Remoting
-open Cookbook.Shared.Recipes
-open Cookbook.Shared.Recipes.Contracts
-open Cookbook.Server.Recipes.Domain
+open Household.Api.Server.Remoting
+open Household.Api.Shared.Recipes
+open Household.Api.Shared.Recipes.Contracts
+open Household.Api.Server.Recipes.Domain
 open Microsoft.Extensions.Logging
 
 let private saveRecipeHandler pipeline (rq:Contracts.EditRecipe) = task {

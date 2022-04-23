@@ -1,7 +1,7 @@
-module Cookbook.Client.Auth.AuthStorage
+module Household.Api.Client.Auth.AuthStorage
 
 open System
-open Cookbook.Shared.Users.Response
+open Household.Api.Shared.Users.Response
 open Fable.Import
 open FsToolkit.ErrorHandling
 open Thoth.Json

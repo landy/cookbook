@@ -1,11 +1,11 @@
 [<AutoOpen>]
-module Cookbook.Client.Components.Html
+module Household.Api.Client.Components.Html
 
 open Feliz
 open Feliz.Router
 open Fable.Core
 
-open Cookbook.Client.Router
+open Household.Api.Client.Router
 
 
 [<Erase>]

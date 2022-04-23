@@ -1,11 +1,11 @@
-module Cookbook.Client.Components.NavBar
+module Household.Api.Client.Components.NavBar
 
 open Feliz
 open Feliz.DaisyUI
 
-open Cookbook.Client.Router
-open Cookbook.Client.Auth.Context
-open Cookbook.Client.Components.Html
+open Household.Api.Client.Router
+open Household.Api.Client.Auth.Context
+open Household.Api.Client.Components.Html
 
 
 let MenuLink isSelected (page: Page) (label: string) =
