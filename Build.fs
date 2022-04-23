@@ -7,9 +7,9 @@ open Helpers
 
 initializeContext()
 
-let sharedPath = Path.getFullName "src/Shared"
-let serverPath = Path.getFullName "src/Server"
-let clientPath = Path.getFullName "src/Client"
+let sharedPath = Path.getFullName "src/Household.Api.Shared"
+let serverPath = Path.getFullName "src/Household.Api.Server"
+let clientPath = Path.getFullName "src/Household.Api.Client"
 let deployPath = Path.getFullName "deploy"
 let sharedTestsPath = Path.getFullName "tests/Shared"
 let serverTestsPath = Path.getFullName "tests/Server"
@@ -22,7 +22,7 @@ Target.create "Clean" (fun _ ->
 
 Target.create "InstallClient" (fun _ -> run npm "install" ".")
 
-Target.create "Bundle" (fun _ ->
+Target.create "BundleApi" (fun _ ->
     [ "server", dotnet $"publish -c Release -o \"{deployPath}\"" serverPath
       "client", npm "run build" __SOURCE_DIRECTORY__ ]
     |> runParallel
@@ -66,7 +66,7 @@ open Fake.Core.TargetOperators
 let dependencies = [
     "Clean"
         ==> "InstallClient"
-        ==> "Bundle"
+        ==> "BundleApi"
 
     "Azure"
 

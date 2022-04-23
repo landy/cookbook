@@ -24,11 +24,11 @@ const isDevelopment = !isProduction
 var CONFIG = {
     // The tags to include the generated JS and CSS will be automatically injected in the HTML template
     // See https://github.com/jantimon/html-webpack-plugin
-    indexHtmlTemplate: "./src/Client/index.html",
-    cssEntry: "./src/Client/style.css",
+    indexHtmlTemplate: "./src/Household.Api.Client/index.html",
+    cssEntry: "./src/Household.Api.Client/style.css",
     fsharpEntry: "./.fable-build/Application.js",
     outputDir: './deploy/public',
-    assetsDir: "./src/Client/public",
+    assetsDir: "./src/Household.Api.Client/public",
     devServerPort: 8080,
     // When using webpack-dev-server, you may need to redirect some calls
     // to a external API server. See https://webpack.js.org/configuration/dev-server/#devserver-proxy

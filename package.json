@@ -2,9 +2,9 @@
     "private": true,
     "scripts": {
         "prestart": "dotnet tool restore",
-        "start": "NODE_ENV=development dotnet fable watch ./src/Client --outDir ./.fable-build --run webpack serve",
+        "start": "NODE_ENV=development dotnet fable watch ./src/Household.Api.Client --outDir ./.fable-build --run webpack serve",
         "prebuild": "dotnet tool restore",
-        "build": "dotnet fable ./src/Client --outDir ./.fable-build && webpack",
+        "build": "dotnet fable ./src/Household.Api.Client --outDir ./.fable-build && webpack",
         "test:live": "dotnet fable watch tests --run webpack-dev-server --config ./webpack.tests.js",
         "build:test": "dotnet fable tests && webpack --config webpack.tests.js",
         "pretest": "dotnet tool restore",

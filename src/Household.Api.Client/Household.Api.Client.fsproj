@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Cookbook.Client</RootNamespace>
+    <RootNamespace>Household.Api.Client</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Pages\Login\styles.module.scss" />
@@ -32,7 +32,7 @@
     <Compile Include="Application.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.fsproj" />
+    <ProjectReference Include="..\Household.Api.Shared\Household.Api.Shared.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

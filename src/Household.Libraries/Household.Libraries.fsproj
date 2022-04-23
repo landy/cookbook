@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Cookbook.Libraries</RootNamespace>
+    <RootNamespace>Household.Libraries</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CosmosDb.fs" />
