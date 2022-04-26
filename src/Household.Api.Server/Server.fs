@@ -17,6 +17,7 @@ open Household.Api.Server.Users.Database
 open Household.Libraries.CosmosDb
 open Household.Api.Server
 open Household.Api.Server.Configuration
+open Microsoft.Extensions.Logging
 
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
@@ -60,7 +61,10 @@ let cfgServices (cfg:IConfiguration) (sc:IServiceCollection) =
     sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
     sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
     sc.AddSingleton<RecipesStore, CosmosDbRecipeStore>() |> ignore
-    sc.AddSingleton<RecipesDaprService, RecipesDaprService>(fun _ -> RecipesDaprService(DaprClient.CreateInvokeHttpClient("recipes-api"))) |> ignore
+    sc.AddSingleton<RecipesDaprService, RecipesDaprService>(fun s ->
+        let logger = s.GetService<ILogger<RecipesDaprService>>()
+        RecipesDaprService(logger, DaprClient.CreateInvokeHttpClient("recipes-api"))
+        ) |> ignore
     sc.AddGiraffe() |> ignore
     sc.AddDaprClient()
     tryGetEnv "appinsightsinstrumentationkey" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
