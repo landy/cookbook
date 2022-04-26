@@ -1,10 +1,7 @@
-Fable.Remoting.Giraffe
+FSharp.Core
 FsToolkit.ErrorHandling
 FsToolkit.ErrorHandling.TaskResult
 Giraffe
 Giraffe.GoodRead
 Microsoft.ApplicationInsights.AspNetCore
 Microsoft.Azure.Cosmos
-System.IdentityModel.Tokens.Jwt
-FSharp.Core
-Dapr.AspNetCore

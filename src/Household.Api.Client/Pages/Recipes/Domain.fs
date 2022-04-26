@@ -5,6 +5,8 @@ open Household.Api.Shared.Recipes.Contracts
 
 type Msg =
     | LoadRecipes
+    | TestApi
+    | ApiTested of ServerResult<string>
     | RecipesLoaded of ServerResult<RecipeListItem list>
 
 

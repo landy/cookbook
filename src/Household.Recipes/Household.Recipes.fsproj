@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <Compile Include="Program.fs" />
+    <Content Include="paket.references" />
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

@@ -1,7 +1,9 @@
 open System
 open System.IO
+open Dapr.Client
 open Household.Api.Server.Recipes.Database
 open Household.Api.Server.Recipes.Domain
+open Household.Api.Server.Recipes.RecipesServices
 open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -34,46 +36,55 @@ let webApp =
     ]
 
 
-type Startup (cfg:IConfiguration) =
 
-    member _.ConfigureServices (sc:IServiceCollection) =
-        sc.AddApplicationInsightsTelemetry() |> ignore
+let cfgServices (cfg:IConfiguration) (sc:IServiceCollection) =
+    sc.AddApplicationInsightsTelemetry() |> ignore
 
-        let dbServer = cfg.["cosmosDb:connectionString"]
-        let dbKey = cfg.["cosmosDb:key"]
+    let dbServer = cfg["cosmosDb:connectionString"]
+    let dbKey = cfg["cosmosDb:key"]
 
-        let dbName = cfg.["cosmosDb:databaseName"]
-        let refreshTokensContainer = cfg.["cosmosDb:containers:refreshTokens"]
-        let usersContainer = cfg.["cosmosDb:containers:users"]
-        let recipesContainer = cfg.["cosmosDb:containers:recipes"]
+    let dbName = cfg["cosmosDb:databaseName"]
+    let refreshTokensContainer = cfg["cosmosDb:containers:refreshTokens"]
+    let usersContainer = cfg["cosmosDb:containers:users"]
+    let recipesContainer = cfg["cosmosDb:containers:recipes"]
 
-        let dbConfig = {
-            DatabaseName = dbName
-            RefreshTokensContainerName = refreshTokensContainer
-            UsersContainerName = usersContainer
-            RecipesContainerName = recipesContainer
-        }
+    let dbConfig = {
+        DatabaseName = dbName
+        RefreshTokensContainerName = refreshTokensContainer
+        UsersContainerName = usersContainer
+        RecipesContainerName = recipesContainer
+    }
 
-        let client = createCosmosClient dbServer dbKey
-        sc.AddSingleton<CosmosClient>(client) |> ignore
-        sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
-        sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
-        sc.AddSingleton<RecipesStore, CosmosDbRecipeStore>() |> ignore
-        sc.AddGiraffe() |> ignore
-        tryGetEnv "appinsightsinstrumentationkey" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
+    let client = createCosmosClient dbServer dbKey
+    sc.AddSingleton<CosmosClient>(client) |> ignore
+    sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
+    sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
+    sc.AddSingleton<RecipesStore, CosmosDbRecipeStore>() |> ignore
+    sc.AddSingleton<RecipesDaprService, RecipesDaprService>(fun _ -> RecipesDaprService(DaprClient.CreateInvokeHttpClient("recipes-api"))) |> ignore
+    sc.AddGiraffe() |> ignore
+    sc.AddDaprClient()
+    tryGetEnv "appinsightsinstrumentationkey" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
 
-    member _.Configure(app:IApplicationBuilder, env:IWebHostEnvironment) =
+let configure (app:IApplicationBuilder) =
+    app.UseDefaultFiles()
+        .UseStaticFiles()
+        .UseGiraffe webApp
 
+let builderOptions = WebApplicationOptions(WebRootPath = wwwRoot, ContentRootPath = contentRoot)
+let builder = WebApplication.CreateBuilder(builderOptions)
 
-        app.UseDefaultFiles()
-            .UseStaticFiles()
-            .UseGiraffe webApp
+cfgServices builder.Configuration builder.Services
 
+let app = builder.Build()
+configure app
 
-WebHost
-    .CreateDefaultBuilder()
-    .UseWebRoot(wwwRoot)
-    .UseContentRoot(contentRoot)
-    .UseStartup<Startup>()
-    .Build()
-    .Run()
+//
+//WebHost
+//    .CreateDefaultBuilder()
+//    .UseWebRoot(wwwRoot)
+//    .UseContentRoot(contentRoot)
+//    .UseStartup<Startup>()
+//    .Build()
+//    .Run()
+
+app.Run()

@@ -43,4 +43,5 @@ type RecipesService = {
     SaveRecipe: Contracts.EditRecipe -> Async<Guid>
     GetRecipe: Guid -> Async<EditRecipe>
     GetRecipesList: unit -> Async<RecipeListItem list>
+    TestDapr: unit -> Async<string>
 }

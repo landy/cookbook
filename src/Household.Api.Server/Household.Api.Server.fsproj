@@ -17,6 +17,7 @@
     <Compile Include="Recipes\Domain.fs" />
     <Compile Include="Recipes\Database.fs" />
     <Compile Include="Recipes\CommandHandlers.fs" />
+    <Compile Include="Recipes\RecipesService.fs" />
     <Compile Include="Recipes\HttpHandlers.fs" />
     <Content Include="public\favicon.png" />
     <Compile Include="Server.fs" />

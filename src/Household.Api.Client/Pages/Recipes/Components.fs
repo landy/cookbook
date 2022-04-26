@@ -56,6 +56,10 @@ let RecipesPage () =
                     Html.span "Přidat"
                 ]
             ]
+            Daisy.button.button [
+                prop.onClick (fun _ ->  TestApi |> dispatch)
+                prop.text "test dapr"
+            ]
             Html.div "filtery header"
             Html.div [
                 prop.text "filtery"
