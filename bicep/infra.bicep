@@ -177,6 +177,15 @@ resource recipesContainerApp 'Microsoft.App/containerApps@2022-01-01-preview' = 
         {
           image: 'landys/cookbook-recipes:${imageTag}'
           name: 'recipes-api'
+          probes: [
+            {
+              type: 'liveness'
+              httpGet: {
+                path: '/liveness'
+                port: 80
+              }
+            }
+          ]
           env:[
             {
               name: 'cosmosDb__connectionString'

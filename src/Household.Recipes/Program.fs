@@ -6,6 +6,7 @@ open Microsoft.Extensions.DependencyInjection
 
 let webApp = choose [
     route "/test" >=> json "hello world"
+    route "/liveness" >=> Successful.ok (text "Ok")
     route "/" >=> json "recipes api"
 ]
 
