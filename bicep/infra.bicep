@@ -10,9 +10,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   scope: resourceGroup()
 }
 
-@secure()
-param auth0Secret string = keyVault.getSecret('auth0secret')
-
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: 'cookbook-log-analytics-${appEnv}'
