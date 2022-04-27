@@ -76,7 +76,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
 }
 
 resource auth0 'Microsoft.App/containerApps/authConfigs@2022-01-01-preview' = {
-  name: 'cookbook-app-auth0-${appEnv}'
+  name: 'current'
   parent: containerApp
   properties: {
     globalValidation: {
