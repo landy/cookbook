@@ -79,15 +79,15 @@ resource appConfig 'Microsoft.AppConfiguration/configurationStores@2021-10-01-pr
 
 var settings = [
   {
-    key: 'cosmosDb__containers__users'
+    key: 'cosmosDb:containers:users'
     value: 'Users'
   }
   {
-    key: 'cosmosDb__containers__recipes'
+    key: 'cosmosDb:containers:recipes'
     value: 'Recipes'
   }
   {
-    key: 'cosmosDb__containers__refreshTokens'
+    key: 'cosmosDb:containers:refreshTokens'
     value: 'RefreshTokens'
   }
 ]
