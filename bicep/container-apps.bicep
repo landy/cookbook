@@ -83,7 +83,7 @@ resource auth0 'Microsoft.App/containerApps/authConfigs@2022-01-01-preview' = {
   parent: containerApp
   properties: {
     globalValidation: {
-      unauthenticatedClientAction: 'AllowAnonymous'
+      unauthenticatedClientAction:'RedirectToLoginPage'
     }
     identityProviders: {
       customOpenIdConnectProviders: {
