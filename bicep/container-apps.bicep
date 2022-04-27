@@ -10,6 +10,8 @@ param cosmosPrimaryKey string
 param appConfigConnectionString string
 @secure()
 param auth0Secret string
+@secure()
+param auth0ClientId string
 
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'cookbook-app-${appEnv}'
@@ -89,10 +91,18 @@ resource auth0 'Microsoft.App/containerApps/authConfigs@2022-01-01-preview' = {
             clientCredential: {
               clientSecretRefName: 'auth0-client-secret'
             }
+            clientId: auth0ClientId
+            openIdConnectConfiguration:{
+              wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
+            }
           }
         }
       }
     }
+    login: {
+      preserveUrlFragmentsForLogins: 'False'
+    }
+    state: 'Enabled'
   }
 }
 

@@ -117,6 +117,7 @@ module containerApp 'container-apps.bicep' = {
     cosmosDbName: cosmosDB.properties.resource.id
     appConfigConnectionString: appConfig.listKeys().value[2].connectionString
     auth0Secret: keyVault.getSecret('auth0secret')
+    auth0ClientId: keyVault.getSecret('auh0clientid')
     imageTag: imageTag
   }
 }
