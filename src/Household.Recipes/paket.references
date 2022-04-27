@@ -5,3 +5,6 @@ Giraffe
 Giraffe.GoodRead
 Microsoft.ApplicationInsights.AspNetCore
 Microsoft.Azure.Cosmos
+Serilog
+Serilog.Sinks.Console
+Microsoft.Azure.AppConfiguration.AspNetCore

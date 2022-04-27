@@ -25,6 +25,9 @@ nuget Thoth.Json
 nuget Fable.MarkdownToJsx
 nuget Giraffe.GoodRead
 nuget Dapr.AspNetCore
+nuget Serilog
+nuget Serilog.Sinks.Console
+nuget Microsoft.Azure.AppConfiguration.AspNetCore
 
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem

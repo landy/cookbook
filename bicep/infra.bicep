@@ -69,6 +69,37 @@ resource appEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-preview' =
   }
 }
 
+resource appConfig 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' = {
+  name: 'cookbook-app-config-${appEnv}'
+  location: location
+  sku: {
+    name: 'standard'
+  }
+}
+
+var settings = [
+  {
+    key: 'cosmosDb__containers__users'
+    value: 'Users'
+  }
+  {
+    key: 'cosmosDb__containers__recipes'
+    value: 'Recipes'
+  }
+  {
+    key: 'cosmosDb__containers__refreshTokens'
+    value: 'RefreshTokens'
+  }
+]
+
+resource appConfigValue 'Microsoft.AppConfiguration/configurationStores/keyValues@2021-10-01-preview' = [for (item,i) in settings: {
+  parent: appConfig
+  name: item.key
+  properties: {
+    value: item.value
+  }
+}]
+
 resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'cookbook-app-${appEnv}'
   location: location
@@ -95,8 +126,8 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           value:  cosmosAccount.listKeys().primaryMasterKey
         }
         {
-          name:'ai-intrumentation-key'
-          value: appInsights.properties.InstrumentationKey
+          name: 'app-config'
+          value: appConfig.listKeys().value[2].connectionString
         }
       ]
     }
@@ -119,20 +150,8 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
               value: cosmosDB.properties.resource.id
             }
             {
-              name: 'cosmosDb__containers__users'
-              value: 'Users'
-            }
-            {
-              name: 'cosmosDb__containers__recipes'
-              value: 'Recipes'
-            }
-            {
-              name: 'cosmosDb__containers__refreshTokens'
-              value: 'RefreshTokens'
-            }
-            {
-              name: 'appinsightsinstrumentationkey'
-              secretRef: 'ai-intrumentation-key'
+              name: 'ConnectionStrings__appCfg'
+              secretRef: 'app-config'
             }
           ]
         }
@@ -167,8 +186,8 @@ resource recipesContainerApp 'Microsoft.App/containerApps@2022-01-01-preview' = 
           value:  cosmosAccount.listKeys().primaryMasterKey
         }
         {
-          name:'ai-intrumentation-key'
-          value: appInsights.properties.InstrumentationKey
+          name: 'app-config'
+          value: appConfig.listKeys().value[2].connectionString
         }
       ]
     }
@@ -200,20 +219,8 @@ resource recipesContainerApp 'Microsoft.App/containerApps@2022-01-01-preview' = 
               value: cosmosDB.properties.resource.id
             }
             {
-              name: 'cosmosDb__containers__users'
-              value: 'Users'
-            }
-            {
-              name: 'cosmosDb__containers__recipes'
-              value: 'Recipes'
-            }
-            {
-              name: 'cosmosDb__containers__refreshTokens'
-              value: 'RefreshTokens'
-            }
-            {
-              name: 'appinsightsinstrumentationkey'
-              secretRef: 'ai-intrumentation-key'
+              name: 'ConnectionStrings__appCfg'
+              secretRef: 'app-config'
             }
           ]
         }

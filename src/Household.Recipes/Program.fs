@@ -1,7 +1,6 @@
-﻿open System
-open Microsoft.AspNetCore.Builder
+﻿open Microsoft.AspNetCore.Builder
 open Giraffe
-open Microsoft.AspNetCore.Hosting
+open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 
 let webApp = choose [
@@ -18,6 +17,10 @@ let configure (app:IApplicationBuilder) =
     app.UseGiraffe webApp
 
 let builder = WebApplication.CreateBuilder()
+
+let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
+builder.Configuration.AddAzureAppConfiguration("") |> ignore
+
 cfgServices builder.Services |> ignore
 
 let app = builder.Build()

@@ -1,12 +1,9 @@
-open System
 open System.IO
 open Dapr.Client
 open Household.Api.Server.Recipes.Database
 open Household.Api.Server.Recipes.Domain
 open Household.Api.Server.Recipes.RecipesServices
-open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Hosting
 open Microsoft.Azure.Cosmos
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
@@ -67,7 +64,6 @@ let cfgServices (cfg:IConfiguration) (sc:IServiceCollection) =
         ) |> ignore
     sc.AddGiraffe() |> ignore
     sc.AddDaprClient()
-    tryGetEnv "appinsightsinstrumentationkey" |> Option.iter (sc.AddApplicationInsightsTelemetry >> ignore)
 
 let configure (app:IApplicationBuilder) =
     app.UseDefaultFiles()
@@ -76,6 +72,9 @@ let configure (app:IApplicationBuilder) =
 
 let builderOptions = WebApplicationOptions(WebRootPath = wwwRoot, ContentRootPath = contentRoot)
 let builder = WebApplication.CreateBuilder(builderOptions)
+
+let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
+builder.Configuration.AddAzureAppConfiguration("") |> ignore
 
 cfgServices builder.Configuration builder.Services
 

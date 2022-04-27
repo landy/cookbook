@@ -8,3 +8,6 @@ Microsoft.Azure.Cosmos
 System.IdentityModel.Tokens.Jwt
 FSharp.Core
 Dapr.AspNetCore
+Serilog
+Serilog.Sinks.Console
+Microsoft.Azure.AppConfiguration.AspNetCore
