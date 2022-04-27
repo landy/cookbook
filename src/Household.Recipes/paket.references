@@ -7,4 +7,5 @@ Microsoft.ApplicationInsights.AspNetCore
 Microsoft.Azure.Cosmos
 Serilog
 Serilog.Sinks.Console
+Serilog.AspNetCore
 Microsoft.Azure.AppConfiguration.AspNetCore

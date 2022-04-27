@@ -2,6 +2,10 @@
 open Giraffe
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.Hosting
+open Serilog
+open Serilog.Events
+
 
 let webApp = choose [
     route "/test" >=> json "hello world"
@@ -12,20 +16,35 @@ let webApp = choose [
 let cfgServices (sc:IServiceCollection) =
     sc.AddGiraffe()
 
-
 let configure (app:IApplicationBuilder) =
     app.UseGiraffe webApp
 
-let builder = WebApplication.CreateBuilder()
+Log.Logger <-
+    LoggerConfiguration()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .CreateLogger()
 
-let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
-builder.Configuration.AddAzureAppConfiguration(appCfgConnString) |> ignore
+try
+    try
+        Log.Information("Starting application")
 
-cfgServices builder.Services |> ignore
+        let builder = WebApplication.CreateBuilder()
+        builder.Host.UseSerilog() |> ignore
 
-let app = builder.Build()
+        let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
+        builder.Configuration.AddAzureAppConfiguration(appCfgConnString) |> ignore
 
-configure app
-//app.MapGet("/test", Func<string>(fun () -> JSon"Hello World!")) |> ignore
+        cfgServices builder.Services |> ignore
 
-app.Run()
+        let app = builder.Build()
+
+        configure app
+        //app.MapGet("/test", Func<string>(fun () -> JSon"Hello World!")) |> ignore
+
+        app.Run()
+    with ex ->
+        Log.Fatal(ex, "Host terminated unexpectedly")
+finally
+    Log.CloseAndFlush()

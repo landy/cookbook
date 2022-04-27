@@ -8,6 +8,9 @@ open Microsoft.Azure.Cosmos
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
+open Serilog
+open Serilog.Events
+
 
 open Household.Api.Server.Users.Domain
 open Household.Api.Server.Users.Database
@@ -32,8 +35,6 @@ let webApp =
         Recipes.HttpHandlers.recipesHandler
         htmlFile <| Path.Combine(wwwRoot, "index.html")
     ]
-
-
 
 let cfgServices (cfg:IConfiguration) (sc:IServiceCollection) =
     sc.AddApplicationInsightsTelemetry() |> ignore
@@ -70,24 +71,30 @@ let configure (app:IApplicationBuilder) =
         .UseStaticFiles()
         .UseGiraffe webApp
 
-let builderOptions = WebApplicationOptions(WebRootPath = wwwRoot, ContentRootPath = contentRoot)
-let builder = WebApplication.CreateBuilder(builderOptions)
+Log.Logger <-
+    LoggerConfiguration()
+        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+        .Enrich.FromLogContext()
+        .WriteTo.Console()
+        .CreateLogger()
 
-let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
-builder.Configuration.AddAzureAppConfiguration(appCfgConnString) |> ignore
+try
+    try
 
-cfgServices builder.Configuration builder.Services
+        let builderOptions = WebApplicationOptions(WebRootPath = wwwRoot, ContentRootPath = contentRoot)
+        let builder = WebApplication.CreateBuilder(builderOptions)
 
-let app = builder.Build()
-configure app
+        let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
+        builder.Configuration.AddAzureAppConfiguration(appCfgConnString) |> ignore
 
-//
-//WebHost
-//    .CreateDefaultBuilder()
-//    .UseWebRoot(wwwRoot)
-//    .UseContentRoot(contentRoot)
-//    .UseStartup<Startup>()
-//    .Build()
-//    .Run()
+        cfgServices builder.Configuration builder.Services
 
-app.Run()
+        let app = builder.Build()
+        configure app
+
+
+        app.Run()
+    with ex ->
+        Log.Fatal(ex, "Host terminated unexpectedly")
+finally
+    Log.CloseAndFlush()

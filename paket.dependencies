@@ -27,6 +27,7 @@ nuget Giraffe.GoodRead
 nuget Dapr.AspNetCore
 nuget Serilog
 nuget Serilog.Sinks.Console
+nuget Serilog.AspNetCore
 nuget Microsoft.Azure.AppConfiguration.AspNetCore
 
 nuget Fake.Core.Target

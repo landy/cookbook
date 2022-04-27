@@ -10,4 +10,5 @@ FSharp.Core
 Dapr.AspNetCore
 Serilog
 Serilog.Sinks.Console
+Serilog.AspNetCore
 Microsoft.Azure.AppConfiguration.AspNetCore
