@@ -19,7 +19,7 @@ let configure (app:IApplicationBuilder) =
 let builder = WebApplication.CreateBuilder()
 
 let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
-builder.Configuration.AddAzureAppConfiguration("") |> ignore
+builder.Configuration.AddAzureAppConfiguration(appCfgConnString) |> ignore
 
 cfgServices builder.Services |> ignore
 

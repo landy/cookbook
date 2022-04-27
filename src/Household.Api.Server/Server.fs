@@ -74,7 +74,7 @@ let builderOptions = WebApplicationOptions(WebRootPath = wwwRoot, ContentRootPat
 let builder = WebApplication.CreateBuilder(builderOptions)
 
 let appCfgConnString = builder.Configuration.GetConnectionString("appCfg")
-builder.Configuration.AddAzureAppConfiguration("") |> ignore
+builder.Configuration.AddAzureAppConfiguration(appCfgConnString) |> ignore
 
 cfgServices builder.Configuration builder.Services
 

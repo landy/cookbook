@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Household.Recipes</RootNamespace>
+      <UserSecretsId>391011ec-4151-4857-a1c9-5d82bd27b00e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
