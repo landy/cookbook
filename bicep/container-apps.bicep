@@ -22,6 +22,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       ingress: {
         targetPort:80
         external: true
+        allowInsecure: false
       }
       dapr: {
         enabled: true
