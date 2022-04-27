@@ -5,6 +5,15 @@ param imageTag string = 'latest'
 param location string = resourceGroup().location
 
 
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'cookbook-keyvault-dev'
+  scope: resourceGroup()
+}
+
+@secure()
+param auth0Secret string = keyVault.getSecret('auth0secret')
+
+
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' = {
   name: 'cookbook-log-analytics-${appEnv}'
   location: location
@@ -100,131 +109,19 @@ resource appConfigValue 'Microsoft.AppConfiguration/configurationStores/keyValue
   }
 }]
 
-resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
-  name: 'cookbook-app-${appEnv}'
-  location: location
-  properties:{
-    managedEnvironmentId: appEnvironment.id
-    configuration: {
-      ingress: {
-        targetPort:80
-        external: true
-      }
-      dapr: {
-        enabled: true
-        appId: 'cookbook-app'
-        appPort: 80
-      }
-      activeRevisionsMode: 'single'
-      secrets: [
-        {
-          name: 'cosmos-endpoint'
-          value: cosmosAccount.properties.documentEndpoint
-        }
-        {
-          name: 'cosmos-key'
-          value:  cosmosAccount.listKeys().primaryMasterKey
-        }
-        {
-          name: 'app-config'
-          value: appConfig.listKeys().value[2].connectionString
-        }
-      ]
-    }
-    template: {
-      containers: [
-        {
-          image: 'landys/cookbook-api:${imageTag}'
-          name: 'cookbook-web'
-          env:[
-            {
-              name: 'cosmosDb__connectionString'
-              secretRef: 'cosmos-endpoint'
-            }
-            {
-              name: 'cosmosDb__key'
-              secretRef: 'cosmos-key'
-            }
-            {
-              name: 'cosmosDb__databaseName'
-              value: cosmosDB.properties.resource.id
-            }
-            {
-              name: 'ConnectionStrings__appCfg'
-              secretRef: 'app-config'
-            }
-          ]
-        }
-      ]
-    }
+module containerApp 'container-apps.bicep' = {
+  name: '${deployment().name}-container-app'
+  params: {
+    appEnv: appEnv
+    location: location
+    containerAppEnvironmentId: appEnvironment.id
+    cosmosDocumentEndpoint: cosmosAccount.properties.documentEndpoint
+    cosmosPrimaryKey: cosmosAccount.listKeys().primaryMasterKey
+    cosmosDbName: cosmosDB.properties.resource.id
+    appConfigConnectionString: appConfig.listKeys().value[2].connectionString
+    auth0Secret: keyVault.getSecret('auth0secret')
+    imageTag: imageTag
   }
 }
 
-resource recipesContainerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
-  name: 'cookbook-app-recipes-${appEnv}'
-  location: location
-  properties:{
-    managedEnvironmentId: appEnvironment.id
-    configuration: {
-      ingress: {
-        targetPort:80
-        external: false
-      }
-      activeRevisionsMode: 'single'
-      dapr: {
-        enabled: true
-        appId: 'recipes-api'
-        appPort: 80
-      }
-      secrets: [
-        {
-          name: 'cosmos-endpoint'
-          value: cosmosAccount.properties.documentEndpoint
-        }
-        {
-          name: 'cosmos-key'
-          value:  cosmosAccount.listKeys().primaryMasterKey
-        }
-        {
-          name: 'app-config'
-          value: appConfig.listKeys().value[2].connectionString
-        }
-      ]
-    }
-    template: {
-      containers: [
-        {
-          image: 'landys/cookbook-recipes:${imageTag}'
-          name: 'recipes-api'
-          probes: [
-            {
-              type: 'liveness'
-              httpGet: {
-                path: '/liveness'
-                port: 80
-              }
-            }
-          ]
-          env:[
-            {
-              name: 'cosmosDb__connectionString'
-              secretRef: 'cosmos-endpoint'
-            }
-            {
-              name: 'cosmosDb__key'
-              secretRef: 'cosmos-key'
-            }
-            {
-              name: 'cosmosDb__databaseName'
-              value: cosmosDB.properties.resource.id
-            }
-            {
-              name: 'ConnectionStrings__appCfg'
-              secretRef: 'app-config'
-            }
-          ]
-        }
-      ]
-    }
-  }
-}
+
