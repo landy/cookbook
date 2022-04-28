@@ -80,7 +80,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
     name: 'current'
     properties: {
       globalValidation: {
-        unauthenticatedClientAction:'RedirectToLoginPage'
+        unauthenticatedClientAction: 'AllowAnonymous'
       }
       identityProviders: {
         customOpenIdConnectProviders: {
@@ -94,6 +94,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
                 wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
               }
             }
+            state: 'Enabled'
           }
         }
       }
