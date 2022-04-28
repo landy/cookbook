@@ -76,33 +76,33 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       ]
     }
   }
-}
-
-resource auth0 'Microsoft.App/containerApps/authConfigs@2022-01-01-preview' = {
-  name: 'current'
-  parent: containerApp
-  properties: {
-    globalValidation: {
-      unauthenticatedClientAction:'RedirectToLoginPage'
-    }
-    identityProviders: {
-      customOpenIdConnectProviders: {
-        auth0 : {
-          registration: {
-            clientCredential: {
-              clientSecretRefName: 'auth0-client-secret'
-            }
-            clientId: auth0ClientId
-            openIdConnectConfiguration:{
-              wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
+  resource auth0 'authConfigs@2022-01-01-preview' = {
+    name: 'current'
+    properties: {
+      globalValidation: {
+        unauthenticatedClientAction:'RedirectToLoginPage'
+      }
+      identityProviders: {
+        customOpenIdConnectProviders: {
+          auth0 : {
+            registration: {
+              clientCredential: {
+                clientSecretRefName: 'auth0-client-secret'
+              }
+              clientId: auth0ClientId
+              openIdConnectConfiguration:{
+                wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
+              }
             }
           }
         }
       }
+      state: 'Enabled'
     }
-    state: 'Enabled'
   }
 }
+
+
 
 resource recipesContainerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
   name: 'cookbook-app-recipes-${appEnv}'
