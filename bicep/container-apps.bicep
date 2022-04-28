@@ -76,7 +76,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       ]
     }
   }
-  resource auth0 'authConfigs@2022-03-01' = {
+  resource auth0 'authConfigs@2022-01-01-preview' = {
     name: 'current'
     properties: {
       globalValidation: {
@@ -87,7 +87,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
           auth0 : {
             registration: {
               clientCredential: {
-                clientSecretSettingName: 'auth0-client-secret'
+                clientSecretRefName: 'auth0-client-secret'
               }
               clientId: auth0ClientId
               openIdConnectConfiguration:{
@@ -98,11 +98,10 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
         }
       }
       login: {
-        preserveUrlFragmentsForLogins: false
+        preserveUrlFragmentsForLogins: 'False'
       }
-      platform: {
-        enabled: true
-      }
+      
+      state: 'Enabled'
     }
   }
 }
