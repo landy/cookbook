@@ -60,7 +60,7 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-04-15
   }
 }
 
-resource appEnvironment 'Microsoft.App/managedEnvironments@2022-01-01-preview' = {
+resource appEnvironment 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: 'cookbook-app-env-${appEnv}'
   location: location
   properties: {

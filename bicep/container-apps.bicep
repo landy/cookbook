@@ -13,7 +13,7 @@ param auth0Secret string
 @secure()
 param auth0ClientId string
 
-resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
+resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: 'cookbook-app-${appEnv}'
   location: location
   properties:{
@@ -76,15 +76,16 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
       ]
     }
   }
-  resource auth0 'authConfigs@2022-01-01-preview' = {
+  resource auth0 'authConfigs@2022-03-01' = {
     name: 'current'
     properties: {
       globalValidation: {
-        unauthenticatedClientAction: 'AllowAnonymous'
+        redirectToProvider: 'authzero'
+        unauthenticatedClientAction: 'RedirectToLoginPage'
       }
       identityProviders: {
         customOpenIdConnectProviders: {
-          auth0 : {
+          authzero : {
             registration: {
               clientCredential: {
                 clientSecretRefName: 'auth0-client-secret'
@@ -94,18 +95,22 @@ resource containerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
                 wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
               }
             }
-            state: 'Enabled'
           }
         }
+        login: {
+          preserveUrlFragmentsForLogins: false
+        }
       }
-      state: 'Enabled'
+      platform: {
+        enabled: true
+      }
     }
   }
 }
 
 
 
-resource recipesContainerApp 'Microsoft.App/containerApps@2022-01-01-preview' = {
+resource recipesContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
   name: 'cookbook-app-recipes-${appEnv}'
   location: location
   properties:{
