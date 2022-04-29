@@ -88,12 +88,20 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
           authzero : {
             registration: {
               clientCredential: {
-                clientSecretRefName: 'auth0-client-secret'
+                clientSecretSettingName: 'auth0-client-secret'
               }
               clientId: auth0ClientId
               openIdConnectConfiguration:{
                 wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
               }
+            }
+            login: {
+              nameClaimType: 'name'
+              scopes: [
+                'openid'
+                'profile'
+                'email'
+              ]
             }
           }
         }
