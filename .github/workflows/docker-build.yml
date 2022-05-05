@@ -87,4 +87,5 @@ jobs:
                     subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
                     resourceGroupName: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
                     template: ./bicep/infra.bicep
+                    failOnStdErr: false
                     parameters: appEnv=dev imageTag=${{ needs.build.outputs.imageTag }}
