@@ -21,7 +21,7 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
     configuration: {
       ingress: {
         targetPort:80
-        external: true
+        external: false
         allowInsecure: false
       }
       dapr: {
@@ -76,44 +76,44 @@ resource containerApp 'Microsoft.App/containerApps@2022-03-01' = {
       ]
     }
   }
-  resource auth0 'authConfigs@2022-03-01' = {
-    name: 'current'
-    properties: {
-      globalValidation: {
-        redirectToProvider: 'authzero'
-        unauthenticatedClientAction: 'RedirectToLoginPage'
-      }
-      identityProviders: {
-        customOpenIdConnectProviders: {
-          authzero : {
-            registration: {
-              clientCredential: {
-                clientSecretSettingName: 'auth0-client-secret'
-              }
-              clientId: auth0ClientId
-              openIdConnectConfiguration:{
-                wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
-              }
-            }
-            login: {
-              nameClaimType: 'name'
-              scopes: [
-                'openid'
-                'profile'
-                'email'
-              ]
-            }
-          }
-        }
-        login: {
-          preserveUrlFragmentsForLogins: false
-        }
-      }
-      platform: {
-        enabled: true
-      }
-    }
-  }
+  // resource auth0 'authConfigs@2022-03-01' = {
+  //   name: 'current'
+  //   properties: {
+  //     globalValidation: {
+  //       redirectToProvider: 'authzero'
+  //       unauthenticatedClientAction: 'RedirectToLoginPage'
+  //     }
+  //     identityProviders: {
+  //       customOpenIdConnectProviders: {
+  //         authzero : {
+  //           registration: {
+  //             clientCredential: {
+  //               clientSecretSettingName: 'auth0-client-secret'
+  //             }
+  //             clientId: auth0ClientId
+  //             openIdConnectConfiguration:{
+  //               wellKnownOpenIdConfiguration: 'https://landy-cookbook.eu.auth0.com/.well-known/openid-configuration'
+  //             }
+  //           }
+  //           login: {
+  //             nameClaimType: 'name'
+  //             scopes: [
+  //               'openid'
+  //               'profile'
+  //               'email'
+  //             ]
+  //           }
+  //         }
+  //       }
+  //       login: {
+  //         preserveUrlFragmentsForLogins: false
+  //       }
+  //     }
+  //     platform: {
+  //       enabled: true
+  //     }
+  //   }
+  // }
 }
 
 
@@ -181,6 +181,62 @@ resource recipesContainerApp 'Microsoft.App/containerApps@2022-03-01' = {
               secretRef: 'app-config'
             }
           ]
+        }
+      ]
+    }
+  }
+}
+
+resource spaApp 'Microsoft.App/containerApps@2022-03-01' = {
+  name: 'cookbook-app-spa-${appEnv}'
+  location: location
+  properties:{
+    managedEnvironmentId: containerAppEnvironmentId
+    configuration: {
+      ingress: {
+        targetPort:80
+        external: false
+      }
+      activeRevisionsMode: 'single'
+      dapr: {
+        enabled: true
+        appId: 'spa'
+        appPort: 80
+      }
+    }
+    template: {
+      containers: [
+        {
+          image: 'landys/cookbook-spa:${imageTag}'
+          name: 'recipes-spa'
+        }
+      ]
+    }
+  }
+}
+
+resource gateway 'Microsoft.App/containerApps@2022-03-01' = {
+  name: 'cookbook-app-gateway-${appEnv}'
+  location: location
+  properties:{
+    managedEnvironmentId: containerAppEnvironmentId
+    configuration: {
+      ingress: {
+        targetPort:80
+        external: true
+      }
+      activeRevisionsMode: 'single'
+      dapr: {
+        enabled: true
+        appId: 'gateway'
+        appPort: 80
+      }
+    }
+    template: {
+      containers: [
+        {
+          image: 'landys/cookbook-gateway:${imageTag}'
+          name: 'recipes-gateway'
         }
       ]
     }

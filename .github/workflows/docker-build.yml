@@ -16,19 +16,33 @@ jobs:
         strategy:
             matrix:
                 include:
-                    - dockerfile: src/Household.Api.Server/Dockerfile
-                      tags: |
-                          landys/cookbook-api:${{ github.sha }}
-                          landys/cookbook-api:latest
-                      cacheTo: type=registry,ref=landys/cookbook-api:buildcache,mode=max
-                      cacheFrom: type=registry,ref=landys/cookbook-api:buildcache
+                    -   dockerfile: src/Household.Api.Server/Dockerfile
+                        tags: |
+                            landys/cookbook-api:${{ github.sha }}
+                            landys/cookbook-api:latest
+                        cacheTo: type=registry,ref=landys/cookbook-api:buildcache,mode=max
+                        cacheFrom: type=registry,ref=landys/cookbook-api:buildcache
 
-                    - dockerfile: src/Household.Recipes/Dockerfile
-                      tags: |
-                          landys/cookbook-recipes:${{ github.sha }}
-                          landys/cookbook-recipes:latest
-                      cacheTo: type=registry,ref=landys/cookbook-recipes:buildcache,mode=max
-                      cacheFrom: type=registry,ref=landys/cookbook-recipes:buildcache
+                    -   dockerfile: src/Household.Recipes/Dockerfile
+                        tags: |
+                            landys/cookbook-recipes:${{ github.sha }}
+                            landys/cookbook-recipes:latest
+                        cacheTo: type=registry,ref=landys/cookbook-recipes:buildcache,mode=max
+                        cacheFrom: type=registry,ref=landys/cookbook-recipes:buildcache
+
+                    -   dockerfile: src/Household.Api.Client/Dockerfile
+                        tags: |
+                            landys/cookbook-spa:${{ github.sha }}
+                            landys/cookbook-spa:latest
+                        cacheTo: type=registry,ref=landys/cookbook-spa:buildcache,mode=max
+                        cacheFrom: type=registry,ref=landys/cookbook-spa:buildcache
+
+                    -   dockerfile: dockerfiles/gateway.Dockerfile
+                        tags: |
+                            landys/cookbook-gateway:${{ github.sha }}
+                            landys/cookbook-gateway:latest
+                        cacheTo: type=registry,ref=landys/cookbook-gateway:buildcache,mode=max
+                        cacheFrom: type=registry,ref=landys/cookbook-gateway:buildcache
 
         steps:
             -   uses: actions/checkout@v2

@@ -11,6 +11,7 @@ let sharedPath = Path.getFullName "src/Household.Api.Shared"
 let serverApiPath = Path.getFullName "src/Household.Api.Server"
 let recipesPath = Path.getFullName "src/Household.Recipes"
 let clientPath = Path.getFullName "src/Household.Api.Client"
+let nginxPath = Path.getFullName "nginx"
 let deployApiPath = Path.getFullName "deploy"
 let deployRecipesPath = Path.getFullName "deployRecipes"
 let sharedTestsPath = Path.getFullName "tests/Shared"
@@ -31,6 +32,12 @@ Target.create "InstallClient" (fun _ -> run Tools.npm "install" ".")
 Target.create "BundleApi" (fun _ ->
     [ "server", Tools.dotnet $"publish -c Release -o \"{deployApiPath}\"" serverApiPath
       "client", Tools.npm "run build" __SOURCE_DIRECTORY__ ]
+    |> runParallel
+)
+
+Target.create "BundleClientApp" (fun _ ->
+    Shell.copyFile deployApiPath $"{nginxPath}/spa.conf"
+    [ "client", Tools.npm "run build" __SOURCE_DIRECTORY__ ]
     |> runParallel
 )
 
@@ -81,6 +88,10 @@ let dependencies = [
 
     "CleanRecipes"
         ==> "BundleRecipesApi"
+
+    "CleanApi"
+        ==> "InstallClient"
+        ==> "BundleClientApp"
 
     "Azure"
 
