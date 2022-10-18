@@ -182,7 +182,7 @@ NUGET
     FSharp.Control.Reactive (5.0.2)
       FSharp.Core (>= 4.7.2)
       System.Reactive (>= 5.0)
-    FSharp.Core (6.0.3)
+    FSharp.Core (6.0.6)
     FsToolkit.ErrorHandling (2.13)
       FSharp.Core (>= 4.7.2)
     FsToolkit.ErrorHandling.TaskResult (2.13)
