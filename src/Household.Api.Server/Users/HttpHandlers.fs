@@ -7,7 +7,6 @@ open Microsoft.AspNetCore.Http
 open System.Security.Claims
 open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
-open FSharp.Control.Tasks
 open Giraffe
 open FsToolkit.ErrorHandling
 

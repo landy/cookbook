@@ -3,7 +3,6 @@ module Household.Api.Server.Users.Database
 open System
 open Microsoft.Azure.Cosmos
 open FsToolkit.ErrorHandling
-open FSharp.Control.Tasks
 
 open Household.Api.Shared.Errors
 open Household.Libraries.CosmosDb
