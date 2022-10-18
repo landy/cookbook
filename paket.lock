@@ -140,7 +140,7 @@ NUGET
     Fake.IO.FileSystem (5.23)
       Fake.Core.String (>= 5.23)
       FSharp.Core (>= 6.0)
-    Farmer (1.6.31)
+    Farmer (1.7.10)
       FSharp.Core (>= 5.0)
       System.Text.Json (>= 5.0)
     Feliz (1.68)

@@ -22,7 +22,7 @@ nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
 nuget Microsoft.Azure.Cosmos
 nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
-nuget Fable.MarkdownToJsx
+nuget Fable.MarkdownToJsx ~> 1.0
 nuget Giraffe.GoodRead
 nuget Dapr.AspNetCore
 nuget Serilog

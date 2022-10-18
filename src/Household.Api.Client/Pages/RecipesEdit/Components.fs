@@ -3,7 +3,6 @@ module Household.Api.Client.Pages.RecipeEdit.Components
 open System
 open Household.Api.Client.Server
 open Household.Api.Shared.Recipes.Contracts
-open Fable.Core
 open Feliz
 open Feliz.UseElmish
 open Feliz.DaisyUI
