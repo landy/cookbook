@@ -2,6 +2,13 @@
 param appEnv string = 'dev'
 param location string = resourceGroup().location
 
+resource appConfig 'Microsoft.AppConfiguration/configurationStores@2022-05-01' = {
+  name: 'household-configstore-${appEnv}'
+  location: location
+  sku: {
+    name: 'free'
+  }
+}
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: 'household-loganalytics-${appEnv}'
@@ -80,24 +87,30 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
           value: appInsights.properties.InstrumentationKey
         }
         {
-          name: 'cosmosDb:endpoint'
+          name: 'cosmosDb_endpoint'
           value: cosmosAccount.properties.documentEndpoint
         }
         {
-          name: 'cosmosDb:key'
+          name: 'cosmosDb_key'
           value: cosmosAccount.listKeys().primaryMasterKey
         }
         {
-          name: 'cosmosDb:databaseName'
+          name: 'cosmosDb_databaseName'
           value: cosmosDB.properties.resource.id
         }
         {
-          name: 'cosmosDb:containers:users'
+          name: 'cosmosDb_containers:users'
           value: 'Users'
         }
         {
-          name: 'cosmosDb:containers:recipes'
+          name: 'cosmosDb_containers:recipes'
           value: 'Recipes'
+        }
+      ]
+      connectionStrings: [
+        {
+          name: 'appCfg'
+          connectionString: appConfig.listKeys().value[2].connectionString
         }
       ]
       alwaysOn: true
