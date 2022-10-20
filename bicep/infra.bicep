@@ -67,13 +67,13 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
   }
 }
 
-resource staticWebAppLinkedBackend 'Microsoft.Web/staticSites/linkedBackends@2022-03-01' = {
-  name: 'household-staticsite-backend-${appEnv}'
-  parent: staticWebApp
-  properties: {
-    backendResourceId: appService.id
-  }
-}
+// resource staticWebAppLinkedBackend 'Microsoft.Web/staticSites/linkedBackends@2022-03-01' = {
+//   name: 'household-staticsite-backend-${appEnv}'
+//   parent: staticWebApp
+//   properties: {
+//     backendResourceId: appService.id
+//   }
+// }
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: 'household-appserviceplan-${appEnv}'
