@@ -21,8 +21,6 @@ let update (msg:Msg) (state: Model) =
             {state with Recipes = RemoteReadData.setResponse recipes},Cmd.none
         | Error err ->
             {state with Recipes = RemoteReadData.init},Cmd.none
-    | TestApi ->
-        state, Cmd.OfAsync.eitherAsResult (fun _ -> onRecipesService(fun s -> s.TestDapr())) ApiTested
     | ApiTested stringResult ->
         match stringResult with
         | Ok str ->

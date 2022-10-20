@@ -8,6 +8,7 @@ nuget Fable.Aether
 nuget Fable.Remoting.Client
 nuget Fable.Remoting.Giraffe
 nuget Feliz
+nuget Fable.React ~> 8.0
 nuget Feliz.Router
 nuget Feliz.DaisyUI
 nuget Feliz.Bulma
@@ -16,7 +17,7 @@ nuget Feliz.UseDeferred
 nuget FSharp.Control.AsyncSeq
 nuget FsToolkit.ErrorHandling
 nuget FsToolkit.ErrorHandling.TaskResult
-nuget Giraffe
+nuget Giraffe ~> 5.0
 nuget Microsoft.ApplicationInsights.AspNetCore
 nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
 nuget Microsoft.Azure.Cosmos
@@ -24,7 +25,6 @@ nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
 nuget Fable.MarkdownToJsx ~> 1.0
 nuget Giraffe.GoodRead
-nuget Dapr.AspNetCore
 nuget Serilog
 nuget Serilog.Sinks.Console
 nuget Serilog.AspNetCore
@@ -32,4 +32,3 @@ nuget Microsoft.Azure.AppConfiguration.AspNetCore
 
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem
-nuget Farmer

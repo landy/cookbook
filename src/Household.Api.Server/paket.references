@@ -7,7 +7,6 @@ Microsoft.ApplicationInsights.AspNetCore
 Microsoft.Azure.Cosmos
 System.IdentityModel.Tokens.Jwt
 FSharp.Core
-Dapr.AspNetCore
 Serilog
 Serilog.Sinks.Console
 Serilog.AspNetCore

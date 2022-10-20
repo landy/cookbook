@@ -1,9 +1,6 @@
 module Household.Api.Server.Recipes.HttpHandlers
 
 open System
-open System.Net.Http
-open Dapr.Client
-open Household.Api.Server.Recipes.RecipesServices
 open Microsoft.AspNetCore.Http
 open Giraffe
 open Giraffe.GoodRead
@@ -28,10 +25,6 @@ let private saveRecipeHandler pipeline (rq:Contracts.EditRecipe) = task {
         |> SaveRecipe
         |> pipeline
         |> Task.map (fun _ -> recipeId)
-}
-
-let private testDaprHandler (log:ILogger) (daprClient:RecipesDaprService) () = task {
-    return! daprClient.Test()
 }
 
 let private createLoadRecipesList (recipesDb: RecipesStore) ()=
@@ -67,22 +60,20 @@ let private mapRecipeSaved (RecipeSaved recipe) =
         Description = recipe.Description
     } : Contracts.EditRecipe
 
-let private recipesService (log:ILogger) recipesDb daprClient (httpContext: HttpContext) =
+let private recipesService (log:ILogger) recipesDb (httpContext: HttpContext) =
     let pipeline = CommandHandlers.pipeline recipesDb
     {
         SaveRecipe = saveRecipeHandler pipeline >> Async.AwaitTask
         GetRecipesList = createLoadRecipesList recipesDb >> Async.AwaitTask
         GetRecipe = createGetRecipe recipesDb >> Async.AwaitTask
-        TestDapr = testDaprHandler log daprClient >> Async.AwaitTask
     }
 
-
 let recipesHandler : HttpHandler =
-    Require.services<ILogger<_>, RecipesStore, RecipesDaprService> (fun logger recipesStore daprClient ->
+    Require.services<ILogger<_>, RecipesStore> (fun logger recipesStore ->
         Remoting.createApi ()
         |> Remoting.withErrorHandler (Remoting.errorHandler logger)
         |> Remoting.withRouteBuilder Route.builder
         |> Remoting.withBinarySerialization
-        |> Remoting.fromContext (recipesService logger recipesStore daprClient)
+        |> Remoting.fromContext (recipesService logger recipesStore)
         |> Remoting.buildHttpHandler
     )

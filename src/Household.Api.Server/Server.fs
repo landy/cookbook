@@ -1,8 +1,6 @@
 open System.IO
-open Dapr.Client
 open Household.Api.Server.Recipes.Database
 open Household.Api.Server.Recipes.Domain
-open Household.Api.Server.Recipes.RecipesServices
 open Microsoft.AspNetCore.Builder
 open Microsoft.Azure.Cosmos
 open Microsoft.Extensions.Configuration
@@ -17,7 +15,6 @@ open Household.Api.Server.Users.Database
 open Household.Libraries.CosmosDb
 open Household.Api.Server
 open Household.Api.Server.Configuration
-open Microsoft.Extensions.Logging
 
 
 let tryGetEnv = System.Environment.GetEnvironmentVariable >> function null | "" -> None | x -> Some x
@@ -33,13 +30,13 @@ let webApp =
     choose [
         Users.HttpHandlers.authServiceHandler
         Recipes.HttpHandlers.recipesHandler
-        htmlFile <| Path.Combine(wwwRoot, "index.html")
+        // htmlFile <| Path.Combine(wwwRoot, "index.html")
     ]
 
 let cfgServices (cfg:IConfiguration) (sc:IServiceCollection) =
     sc.AddApplicationInsightsTelemetry() |> ignore
 
-    let dbServer = cfg["cosmosDb:connectionString"]
+    let dbServer = cfg["cosmosDb:endpoint"]
     let dbKey = cfg["cosmosDb:key"]
 
     let dbName = cfg["cosmosDb:databaseName"]
@@ -59,12 +56,7 @@ let cfgServices (cfg:IConfiguration) (sc:IServiceCollection) =
     sc.AddSingleton<DatabaseConfiguration>(dbConfig) |> ignore
     sc.AddSingleton<UsersStore, CosmosDbUserStore>() |> ignore
     sc.AddSingleton<RecipesStore, CosmosDbRecipeStore>() |> ignore
-    sc.AddSingleton<RecipesDaprService, RecipesDaprService>(fun s ->
-        let logger = s.GetService<ILogger<RecipesDaprService>>()
-        RecipesDaprService(logger, DaprClient.CreateInvokeHttpClient("recipes-api"))
-        ) |> ignore
     sc.AddGiraffe() |> ignore
-    sc.AddDaprClient()
 
 let configure (app:IApplicationBuilder) =
     app.UseDefaultFiles()

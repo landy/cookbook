@@ -1,69 +1,34 @@
 open Fake.Core
 open Fake.IO
-open Farmer
-open Farmer.Builders
 
 open Helpers
 
 initializeContext()
 
 let sharedPath = Path.getFullName "src/Household.Api.Shared"
-let serverApiPath = Path.getFullName "src/Household.Api.Server"
-let recipesPath = Path.getFullName "src/Household.Recipes"
+let serverPath = Path.getFullName "src/Household.Api.Server"
 let clientPath = Path.getFullName "src/Household.Api.Client"
-let nginxPath = Path.getFullName "nginx"
-let deployApiPath = Path.getFullName "deploy"
-let deployRecipesPath = Path.getFullName "deployRecipes"
+let deployPath = Path.getFullName "deploy"
 let sharedTestsPath = Path.getFullName "tests/Shared"
 let serverTestsPath = Path.getFullName "tests/Server"
 let clientTestsPath = Path.getFullName "tests/Client"
 
-Target.create "CleanApi" (fun _ ->
-    Shell.cleanDir deployApiPath
+Target.create "Clean" (fun _ ->
+    Shell.cleanDir deployPath
     run Tools.dotnet "fable clean --yes" clientPath // Delete *.fs.js files created by Fable
-)
-
-Target.create "CleanRecipes" (fun _ ->
-    Shell.cleanDir deployRecipesPath
 )
 
 Target.create "InstallClient" (fun _ -> run Tools.npm "install" ".")
 
-Target.create "BundleApi" (fun _ ->
-    [ "server", Tools.dotnet $"publish -c Release -o \"{deployApiPath}\"" serverApiPath
+Target.create "Bundle" (fun _ ->
+    [ "server", Tools.dotnet $"publish -c Release -o \"{deployPath}\"" serverPath
       "client", Tools.npm "run build" __SOURCE_DIRECTORY__ ]
     |> runParallel
 )
 
-Target.create "BundleClientApp" (fun _ ->
-    Shell.copyFile deployApiPath $"{nginxPath}/spa.conf"
-    [ "client", Tools.npm "run build" __SOURCE_DIRECTORY__ ]
-    |> runParallel
-)
-
-Target.create "BundleRecipesApi" (fun _ ->
-    [ "server", Tools.dotnet $"publish -c Release -o \"{deployRecipesPath}\"" recipesPath ]
-    |> runParallel
-)
-
-Target.create "Azure" (fun _ ->
-    let environment = Environment.environVarOrDefault "environment" "dev"
-    let resourceGroupName = "cookbook-" + environment
-
-    Infrastructure.deployment environment
-    |> Deploy.execute resourceGroupName Deploy.NoParameters
-    |> ignore
-)
-
-Target.create "farmer" (fun _ ->
-
-    Infrastructure.deployment "dev"
-    |> Writer.quickWrite "my-template"
-)
-
 Target.create "Run" (fun _ ->
     run Tools.dotnet "build" sharedPath
-    [ "server", Tools.dotnet "watch run" serverApiPath
+    [ "server", Tools.dotnet "watch run" serverPath
       "client", Tools.npm "start" __SOURCE_DIRECTORY__ ]
     |> runParallel
 )
@@ -82,20 +47,13 @@ Target.create "Format" (fun _ ->
 open Fake.Core.TargetOperators
 
 let dependencies = [
-    "CleanApi"
+    "Clean"
         ==> "InstallClient"
-        ==> "BundleApi"
-
-    "CleanRecipes"
-        ==> "BundleRecipesApi"
-
-    "CleanApi"
-        ==> "InstallClient"
-        ==> "BundleClientApp"
+        ==> "Bundle"
 
     "Azure"
 
-    "CleanApi"
+    "Clean"
         ==> "InstallClient"
         ==> "Run"
 
