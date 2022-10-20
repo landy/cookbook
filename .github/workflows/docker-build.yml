@@ -13,56 +13,24 @@ jobs:
 
         runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                include:
-                    -   dockerfile: src/Household.Api.Server/Dockerfile
-                        tags: |
-                            landys/cookbook-api:${{ github.sha }}
-                            landys/cookbook-api:latest
-                        cacheTo: type=registry,ref=landys/cookbook-api:buildcache,mode=max
-                        cacheFrom: type=registry,ref=landys/cookbook-api:buildcache
-
-                    -   dockerfile: src/Household.Recipes/Dockerfile
-                        tags: |
-                            landys/cookbook-recipes:${{ github.sha }}
-                            landys/cookbook-recipes:latest
-                        cacheTo: type=registry,ref=landys/cookbook-recipes:buildcache,mode=max
-                        cacheFrom: type=registry,ref=landys/cookbook-recipes:buildcache
-
-                    -   dockerfile: src/Household.Api.Client/Dockerfile
-                        tags: |
-                            landys/cookbook-spa:${{ github.sha }}
-                            landys/cookbook-spa:latest
-                        cacheTo: type=registry,ref=landys/cookbook-spa:buildcache,mode=max
-                        cacheFrom: type=registry,ref=landys/cookbook-spa:buildcache
-
-                    -   dockerfile: dockerfiles/gateway.Dockerfile
-                        tags: |
-                            landys/cookbook-gateway:${{ github.sha }}
-                            landys/cookbook-gateway:latest
-                        cacheTo: type=registry,ref=landys/cookbook-gateway:buildcache,mode=max
-                        cacheFrom: type=registry,ref=landys/cookbook-gateway:buildcache
-
         steps:
             -   uses: actions/checkout@v2
 
-
-
-            -   name: build docker image
-                uses: docker/build-push-action@v2.6.1
+            -   name: setup dotnet
+                uses: actions/setup-dotnet@v3
                 with:
-                    context: ./
-                    file: ${{ matrix.dockerfile }}
-                    push: true
-                    tags: ${{ matrix.tags }}
-                    cache-from: ${{ matrix.cacheFrom }}
-                    cache-to: ${{ matrix.cacheTo }}
+                    global-json-file: ./global.json
 
-        outputs:
-            imageTag: ${{ github.sha }}
+            -   name: Install dotnet tools
+                run: dotnet tool restore
+              
+            -   name: restore dependencies
+                run: dotnet paket install
+            -   name: build app
+                run: dotnet run Bundle
+              
 
-    deploy:
+    deploy-infrastructure:
         runs-on: ubuntu-latest
         needs: build
 
