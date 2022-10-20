@@ -65,8 +65,8 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
   properties: {}
   tags: null
   sku:{
-    name: 'Free'
-    tier: 'Free'
+    name: 'Standard'
+    tier: 'Standard'
   }
 }
 
