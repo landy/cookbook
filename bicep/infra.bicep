@@ -99,11 +99,11 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
           value: cosmosDB.properties.resource.id
         }
         {
-          name: 'cosmosDb_containers:users'
+          name: 'cosmosDb_containers_users'
           value: 'Users'
         }
         {
-          name: 'cosmosDb_containers:recipes'
+          name: 'cosmosDb_containers_recipes'
           value: 'Recipes'
         }
       ]
