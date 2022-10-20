@@ -59,6 +59,16 @@ resource cosmosDB 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-04-15
   }
 }
 
+resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
+  name: 'household-staticsite-${appEnv}'
+  location: location
+}
+
+resource staticWebAppLinkedBackend 'Microsoft.Web/staticSites/linkedBackends@2022-03-01' = {
+  name: 'household-staticsite-backend-${appEnv}'
+  parent: staticWebApp
+}
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: 'household-appserviceplan-${appEnv}'
   location: location
