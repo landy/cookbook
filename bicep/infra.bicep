@@ -63,7 +63,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2022-03-01' = {
   name: 'household-staticsite-${appEnv}'
   location: location
   sku:{
-    name: 'free'
+    name: 'Free'
   }
 }
 
