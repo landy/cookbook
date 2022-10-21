@@ -107,23 +107,23 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
           value: appInsights.properties.InstrumentationKey
         }
         {
-          name: 'cosmosDb_endpoint'
+          name: 'cosmosDb__endpoint'
           value: cosmosAccount.properties.documentEndpoint
         }
         {
-          name: 'cosmosDb_key'
+          name: 'cosmosDb__key'
           value: cosmosAccount.listKeys().primaryMasterKey
         }
         {
-          name: 'cosmosDb_databaseName'
+          name: 'cosmosDb__databaseName'
           value: cosmosDB.properties.resource.id
         }
         {
-          name: 'cosmosDb_containers_users'
+          name: 'cosmosDb__containers__users'
           value: 'Users'
         }
         {
-          name: 'cosmosDb_containers_recipes'
+          name: 'cosmosDb__containers__recipes'
           value: 'Recipes'
         }
       ]
@@ -136,6 +136,6 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       alwaysOn: true
     }
     httpsOnly:true
-    
+
   }
 }
