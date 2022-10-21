@@ -28,6 +28,7 @@ Target.create "BundleApi" (fun _ ->
 )
 
 Target.create "BundleFrontend" (fun _ ->
+    System.IO.File.Copy(Path.combine clientPath "staticwebapp.config.json", Path.combine deployFrontendPath "staticwebapp.config.json")
     [ "client", Tools.npm "run build" __SOURCE_DIRECTORY__ ]
     |> runParallel
 )

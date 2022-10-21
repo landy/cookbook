@@ -369,3 +369,5 @@ cookbookSchema.json
 .fable-build/
 .docker-env
 .paket/load
+deploy-fe
+deploy-api
