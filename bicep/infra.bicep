@@ -103,8 +103,8 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
       linuxFxVersion: 'DOTNETCORE|6.0'
       appSettings: [
         {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: appInsights.properties.InstrumentationKey
+          name: 'ApplicationInsights__ConnectionString'
+          value: appInsights.properties.ConnectionString
         }
         {
           name: 'cosmosDb__endpoint'
