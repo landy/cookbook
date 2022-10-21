@@ -30,6 +30,7 @@ let webApp =
     choose [
         Users.HttpHandlers.authServiceHandler
         Recipes.HttpHandlers.recipesHandler
+        route "/" >=> text "Household API"
         // htmlFile <| Path.Combine(wwwRoot, "index.html")
     ]
 

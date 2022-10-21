@@ -27,7 +27,7 @@ var CONFIG = {
     indexHtmlTemplate: "./src/Household.Api.Client/index.html",
     cssEntry: "./src/Household.Api.Client/style.css",
     fsharpEntry: "./.fable-build/Application.js",
-    outputDir: './deploy/public',
+    outputDir: './deploy-fe',
     assetsDir: "./src/Household.Api.Client/public",
     devServerPort: 8080,
     // When using webpack-dev-server, you may need to redirect some calls

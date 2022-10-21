@@ -1,0 +1,83 @@
+name: Build and deploy app
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'Infrastructure.fs'
+
+jobs:
+  deploy-infrastructure:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Azure Login
+        uses: Azure/login@v1.1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy infrastructure
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURESUBSCRIPTIONID }}
+          resourceGroupName: ${{ secrets.AZURE_DEV_RESOURCEGROUP}}
+          template: ./bicep/infra.bicep
+          failOnStdErr: false
+          parameters: appEnv=dev
+
+  build-api:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          global-json-file: ./global.json
+
+      - name: Install dotnet tools
+        run: dotnet tool restore
+
+      - name: restore dependencies
+        run: dotnet paket install
+
+      - name: build app
+        run: dotnet run BundleApi
+
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: deploy to azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: household-appservice-dev
+          package: ./deploy
+
+  build-fe:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          global-json-file: ./global.json
+
+      - name: Install dotnet tools
+        run: dotnet tool restore
+
+      - name: restore dependencies
+        run: dotnet paket install
+
+      - name: build app
+        run: dotnet run BundleFrontend
+
