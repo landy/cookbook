@@ -29,6 +29,8 @@ nuget Serilog
 nuget Serilog.Sinks.Console
 nuget Serilog.AspNetCore
 nuget Microsoft.Azure.AppConfiguration.AspNetCore
+nuget Fable.SimpleHttp
+
 
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem

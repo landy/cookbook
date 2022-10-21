@@ -1,5 +1,7 @@
 module Household.Api.Client.App.View
 
+open Fable.Core
+open Fable.SimpleHttp
 open Feliz
 open Feliz.DaisyUI
 open Feliz.Router
@@ -51,6 +53,15 @@ let TemplateSelector (page:Page) =
 let MainApplication () =
     let currentPage = Router.currentPath () |> Page.parseFromUrlSegments
     let page,setPage = React.useState(currentPage)
+
+    let loadUser () = async {
+        let! status, data = Http.get "/.auth/me"
+
+        JS.console.log(status)
+        JS.console.log(data)
+    }
+
+    React.useEffectOnce (loadUser >> Async.StartImmediate)
 
     let (user: UserSession option),setUser = React.useState(None)
 

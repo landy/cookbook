@@ -11,3 +11,4 @@ FSharp.Core
 Thoth.Json
 Fable.MarkdownToJsx
 Fable.FormValidation
+Fable.SimpleHttp
