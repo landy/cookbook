@@ -75,6 +75,7 @@ resource staticWebAppLinkedBackend 'Microsoft.Web/staticSites/linkedBackends@202
   parent: staticWebApp
   properties: {
     backendResourceId: appService.id
+    region: location
   }
 }
 
