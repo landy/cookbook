@@ -60,7 +60,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: household-appservice-dev
-          package: ./deploy
+          package: ./deploy-api
 
   build-fe:
     runs-on: ubuntu-latest
