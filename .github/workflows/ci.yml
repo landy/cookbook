@@ -83,3 +83,12 @@ jobs:
       - name: build app
         run: dotnet run BundleFrontend
 
+      - name: deploy to azure
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{secrets.AZURE_STATICWEBAPP_TOKEN}}
+          action: upload
+          app_location: ./deploy-fe
+          output_location: .
+          skip_app_build: true
+
