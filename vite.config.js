@@ -4,6 +4,6 @@ import react from '@vitejs/plugin-react'
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
     plugins: [react()],
-    root: "./Household.Api.Client"
+    root: "./src/Household.Api.Client"
 
 })

@@ -2,7 +2,7 @@
 module.exports = {
     content: [
         "./index.html",
-        "./Household.Api.Client/.fable-build/**/*.{js,ts,jsx,tsx}",
+        "./src/Household.Api.Client/.fable-build/**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
         extend: {},
