@@ -5,12 +5,8 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Layouts\Main\View.fs" />
+        <Compile Include="App\View.fs" />
         <Compile Include="App.fs" />
     </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Feliz" Version="1.68.0" />
-        <PackageReference Include="Fable.Core" Version="4.0.0-theta-006" />
-        <PackageReference Include="Feliz.CompilerPlugins" Version="2.0.0-prerelease-003" />
-        <PackageReference Include="Feliz.DaisyUI" Version="2.1.0" />
-    </ItemGroup>
+    <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
