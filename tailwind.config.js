@@ -1,11 +1,13 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
-        './src/**/*.html',
-        './src/**/*.fs',
-        '.fable-build/**/*.js',
+        "./index.html",
+        "./Household.Api.Client/.fable-build/**/*.{js,ts,jsx,tsx}",
     ],
+    theme: {
+        extend: {},
+    },
     plugins: [
-        require('daisyui'),
-        require('@tailwindcss/typography'),
-    ]
-}
+        require("daisyui")
+    ],
+};

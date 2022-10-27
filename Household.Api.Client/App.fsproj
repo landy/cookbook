@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+<!--        <Compile Include="Helpers.fs" />-->
+<!--        <Compile Include="TodoMVC.fs" />-->
+        <Compile Include="Components/Login.fs" />
+        <Compile Include="FelizApp.fs" />
+        <Compile Include="Main.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Feliz" Version="1.68.0" />
+        <PackageReference Include="Fable.Core" Version="4.0.0-theta-006" />
+        <PackageReference Include="Feliz.CompilerPlugins" Version="2.0.0-prerelease-003" />
+<!--        <ProjectReference Include="/Users/landsman/projects/private/Feliz.DaisyUI/src/Feliz.DaisyUI/Feliz.DaisyUI.fsproj" />-->
+        <PackageReference Include="Feliz.DaisyUI" Version="2.1.0" />
+    </ItemGroup>
+</Project>
