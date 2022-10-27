@@ -75,6 +75,7 @@ module Tools =
 
 
     let dotnet arg dir = createProcess "dotnet" arg dir
+    let npx arg dir = createProcess "npx" arg dir
     let npm arg dir =
         let npmPath =
             match ProcessUtils.tryFindFileOnPath "npm" with

@@ -23,6 +23,7 @@
         "tailwindcss": "^3.0.1"
     },
     "devDependencies": {
+        "@azure/static-web-apps-cli": "^1.0.3",
         "@babel/core": "^7.17.8",
         "@babel/plugin-transform-runtime": "^7.17.0",
         "@babel/polyfill": "^7.12.1",

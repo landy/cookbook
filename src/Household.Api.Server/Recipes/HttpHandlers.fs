@@ -1,6 +1,11 @@
 module Household.Api.Server.Recipes.HttpHandlers
 
 open System
+open System.Text
+open System.Linq
+open System.Text.Json
+open Microsoft.AspNetCore.Http
+open System.Security.Claims
 open Microsoft.AspNetCore.Http
 open Giraffe
 open Giraffe.GoodRead
@@ -60,7 +65,39 @@ let private mapRecipeSaved (RecipeSaved recipe) =
         Description = recipe.Description
     } : Contracts.EditRecipe
 
+type  ClientPrincipal() =
+    member val IdentityProvider = "" with get, set
+    member val UserId  = "" with get, set
+    member val UserDetails = "" with get, set
+    member val UserRoles : seq<string> = List.empty with get, set
+
+
 let private recipesService (log:ILogger) recipesDb (httpContext: HttpContext) =
+    let headerExists, headerValue = httpContext.Request.Headers.TryGetValue("x-ms-client-principal")
+    let principal =
+        if headerExists then
+            headerValue[0]
+            |> Convert.FromBase64String
+            |> Encoding.UTF8.GetString
+            |> fun v -> JsonSerializer.Deserialize<ClientPrincipal>(v, JsonSerializerOptions(PropertyNameCaseInsensitive = true))
+            |> fun p ->
+                p.UserRoles <- p.UserRoles.Except([| "anonymous" |], StringComparer.CurrentCultureIgnoreCase)
+                p
+            |> Some
+        else
+            None
+        |> Option.map (fun p ->
+            let identity = ClaimsIdentity(p.IdentityProvider)
+            identity.AddClaim(Claim(ClaimTypes.NameIdentifier, p.UserId))
+            identity.AddClaim(Claim(ClaimTypes.Name, p.UserDetails))
+            identity.AddClaims(p.UserRoles.Select(fun r -> Claim(ClaimTypes.Role, r)))
+            ClaimsPrincipal(identity)
+        )
+        |> Option.defaultWith (fun _ ->
+            ClaimsPrincipal()
+        )
+    log.LogInformation("Principal is authenticated: {isAuthenticated} as {principal}", principal.Identity.IsAuthenticated, principal.Identity.Name)
+
     let pipeline = CommandHandlers.pipeline recipesDb
     {
         SaveRecipe = saveRecipeHandler pipeline >> Async.AwaitTask

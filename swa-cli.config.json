@@ -1,0 +1,13 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "cookbook": {
+      "appLocation": ".",
+      "apiLocation" : "http://localhost:5000",
+      "outputLocation": "deploy-fe",
+      "appBuildCommand": "npm run build",
+      "run": "npm start",
+      "appDevserverUrl": "http://localhost:8080"
+    }
+  }
+}

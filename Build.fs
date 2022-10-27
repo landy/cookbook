@@ -36,7 +36,7 @@ Target.create "BundleFrontend" (fun _ ->
 Target.create "Run" (fun _ ->
     run Tools.dotnet "build" sharedPath
     [ "server", Tools.dotnet "watch run" serverPath
-      "client", Tools.npm "start" __SOURCE_DIRECTORY__ ]
+      "client", Tools.npx "swa start" __SOURCE_DIRECTORY__ ]
     |> runParallel
 )
 
