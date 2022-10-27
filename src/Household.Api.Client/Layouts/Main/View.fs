@@ -4,4 +4,7 @@ open Feliz
 
 [<ReactComponent>]
 let MainLayout () =
-    Html.div "main layout"
+    Html.div [
+        prop.className "w-[300px]"
+        prop.text "dd"
+    ]
