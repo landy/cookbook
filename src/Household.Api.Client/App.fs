@@ -1,4 +1,4 @@
-module Household.Api.Client.App
+module Household.Api.Client.App.Entrypoint
 
 open Feliz
 open Browser.Dom

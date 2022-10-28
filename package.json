@@ -2,18 +2,21 @@
   "private": true,
   "scripts": {
     "postinstall": "dotnet tool restore",
-    "start": "dotnet fable watch ./src/Household.Api.Client -o ./src/Household.Api.Client/.fable-build --run vite"
+    "start": "dotnet fable watch ./src/Household.Api.Client -o ./src/Household.Api.Client/.fable-build --run vite",
+    "prebuild": "dotnet tool restore",
+    "build": "dotnet fable ./src/Household.Api.Client --outDir ./src/Household.Api.Client/.fable-build --run vite build"
   },
   "dependencies": {
+    "daisyui": "^2.33.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "tailwindcss": "^3.2.1",
-    "daisyui": "^2.33.0"
+    "tailwindcss": "^3.2.1"
   },
   "devDependencies": {
-    "vite": "^3.1.0",
+    "@azure/static-web-apps-cli": "^1.0.3",
     "@vitejs/plugin-react": "^2.1.0",
+    "autoprefixer": "^10.4.12",
     "postcss": "^8.4.18",
-    "autoprefixer": "^10.4.12"
+    "vite": "^3.1.0"
   }
 }

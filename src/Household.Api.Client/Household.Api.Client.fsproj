@@ -4,9 +4,21 @@
         <RootNamespace>Household.Api.Client</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Layouts\Main\View.fs" />
+        <Compile Include="App\Domain.fs" />
+        <Compile Include="App\Router.fs" />
+        <Compile Include="Server.fs" />
+        <Compile Include="Components\Html.fs" />
+        <Compile Include="Components\NavBar.fs" />
+        <Compile Include="Pages\Main\View.fs" />
+        <Compile Include="Pages\RecipesList\Domain.fs" />
+        <Compile Include="Pages\RecipesList\State.fs" />
+        <Compile Include="Pages\RecipesList\View.fs" />
+        <Compile Include="App\State.fs" />
         <Compile Include="App\View.fs" />
         <Compile Include="App.fs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Household.Api.Shared\Household.Api.Shared.fsproj" />
     </ItemGroup>
     <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

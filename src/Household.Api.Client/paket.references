@@ -1,6 +1,9 @@
 Feliz
 Feliz.Router
 Feliz.UseElmish
-Fable.Core
 Feliz.CompilerPlugins
 Feliz.DaisyUI
+Fable.Core
+Fable.Remoting.Client
+Fable.SimpleJson
+FsToolkit.ErrorHandling.TaskResult

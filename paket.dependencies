@@ -23,17 +23,17 @@ nuget Feliz.UseDeferred
 nuget FSharp.Control.AsyncSeq
 nuget FsToolkit.ErrorHandling
 nuget FsToolkit.ErrorHandling.TaskResult
-nuget Giraffe ~> 5.0
-nuget Giraffe.GoodRead
+nuget Giraffe
 nuget Microsoft.ApplicationInsights.AspNetCore
 nuget Microsoft.AspNetCore.Cryptography.KeyDerivation
+nuget Microsoft.Azure.AppConfiguration.AspNetCore
 nuget Microsoft.Azure.Cosmos
 nuget System.IdentityModel.Tokens.Jwt
 nuget Thoth.Json
 nuget Serilog
 nuget Serilog.Sinks.Console
 nuget Serilog.AspNetCore
-nuget Microsoft.Azure.AppConfiguration.AspNetCore
+nuget Newtonsoft.Json
 
 
 nuget Fake.Core.Target

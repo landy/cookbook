@@ -8,7 +8,6 @@ open Microsoft.AspNetCore.Http
 open System.Security.Claims
 open Microsoft.AspNetCore.Http
 open Giraffe
-open Giraffe.GoodRead
 open Fable.Remoting.Server
 open Fable.Remoting.Giraffe
 open FsToolkit.ErrorHandling
@@ -72,7 +71,11 @@ type  ClientPrincipal() =
     member val UserRoles : seq<string> = List.empty with get, set
 
 
-let private recipesService (log:ILogger) recipesDb (httpContext: HttpContext) =
+let private recipesService  (httpContext: HttpContext) =
+    // (log:ILogger)
+    let recipesDb = httpContext.GetService<RecipesStore>()
+    let logFactory = httpContext.GetService<ILoggerFactory>()
+    let log = logFactory.CreateLogger("requestLogger")
     let headerExists, headerValue = httpContext.Request.Headers.TryGetValue("x-ms-client-principal")
     let principal =
         if headerExists then
@@ -105,11 +108,9 @@ let private recipesService (log:ILogger) recipesDb (httpContext: HttpContext) =
     }
 
 let recipesHandler : HttpHandler =
-    Require.services<ILogger<_>, RecipesStore> (fun logger recipesStore ->
-        Remoting.createApi ()
-        |> Remoting.withErrorHandler (Remoting.errorHandler logger)
-        |> Remoting.withRouteBuilder Route.builder
-        |> Remoting.withBinarySerialization
-        |> Remoting.fromContext (recipesService logger recipesStore)
-        |> Remoting.buildHttpHandler
-    )
+    Remoting.createApi ()
+    // |> Remoting.withErrorHandler (Remoting.errorHandler logger)
+    |> Remoting.withRouteBuilder Route.builder
+    |> Remoting.withBinarySerialization
+    |> Remoting.fromContext recipesService
+    |> Remoting.buildHttpHandler
