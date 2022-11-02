@@ -34,6 +34,7 @@ let Recipes (state: Contracts.RecipeListItem list) =
     |> List.map RecipeCard
     |> Html.divClassed "grid lg:grid-cols-3 gap-4"
 
+[<ReactComponent>]
 let RecipesListPage() =
     let state,dispatch = React.useElmish(State.init, State.update, [|  |])
 
