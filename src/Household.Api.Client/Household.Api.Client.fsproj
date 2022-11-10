@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>Household.Api.Client</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="ElmishHelpers.fs" />
         <Compile Include="App\Domain.fs" />
         <Compile Include="App\Router.fs" />
         <Compile Include="Server.fs" />

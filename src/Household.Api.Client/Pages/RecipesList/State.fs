@@ -1,9 +1,10 @@
 module Household.Api.Client.Pages.RecipesList.State
 
-open Fable.Core
-open Household.Api.Client.Server
-open Domain
 open Elmish
+
+open Household.Api.Client.ElmishHelpers
+open Household.Api.Client.Server
+open Household.Api.Client.Pages.RecipesList.Domain
 
 let init () =
     {
@@ -18,7 +19,7 @@ let update (msg:Msg) (state: Model) =
     | RecipesLoaded res ->
         match res with
         | Ok recipes ->
-            JS.console.log(recipes)
-            {state with Recipes = RemoteReadData.setResponse recipes},Cmd.none
+            {state with Recipes = RemoteReadData.setResponse recipes}
+            |> Cmd.withoutCmd
         | Error err ->
             {state with Recipes = RemoteReadData.init},Cmd.none

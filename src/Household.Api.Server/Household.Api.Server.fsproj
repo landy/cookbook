@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>Household.Api.Server</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <UserSecretsId>391011ec-4151-4857-a1c9-5d82bd27b00e</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
